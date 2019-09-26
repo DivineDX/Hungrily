@@ -4190,6 +4190,11 @@ flat-cache@^2.0.1:
     rimraf "2.6.3"
     write "1.0.3"
 
+flatpickr@^4.5.7:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.3.tgz#15a8b76b6e34e3a072861250503a5995b9d3bc60"
+  integrity sha512-007VucCkqNOMMb9ggRLNuJowwaJcyOh4sKAFcdGfahfGc7JQbf94zSzjdBq/wVyHWUEs5o3+idhFZ0wbZMRmVQ==
+
 flatted@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.1.tgz#69e57caa8f0eacbc281d2e2cb458d46fdb449e08"
@@ -8288,6 +8293,14 @@ react-fast-compare@^2.0.1:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
+
+react-flatpickr@^3.9.1:
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/react-flatpickr/-/react-flatpickr-3.9.1.tgz#2fcee71a2664df9c9290ea3550cb40fe06c99305"
+  integrity sha512-g3FdnrYfFWOj/cWuPwHhYigpchu8GwAJvUzxUrba20dhrAdW1+dwAQxE+3aGe6eFYhYlTosVYTP8XAefnn5kxg==
+  dependencies:
+    flatpickr "^4.5.7"
+    prop-types "^15.5.10"
 
 react-instantsearch-core@^5.7.0:
   version "5.7.0"

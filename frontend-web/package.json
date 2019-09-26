@@ -6,6 +6,7 @@
     "formik": "^1.5.8",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-flatpickr": "^3.9.1",
     "react-instantsearch-dom": "^5.7.0",
     "react-particles-js": "^2.7.0",
     "react-router-dom": "^5.1.0",
