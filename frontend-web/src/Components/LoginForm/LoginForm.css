@@ -1,0 +1,24 @@
+.loginText {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.loginFormText {
+    width: 60% !important;
+}
+
+#LoginButs {
+    display: flex; 
+    align-items: center !important;
+    justify-content: center !important;
+    color: white;
+}
+
+.loginButtons {
+    background-color: #421805;
+}
+
+label {
+    color: white !important;
+}

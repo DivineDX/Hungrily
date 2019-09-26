@@ -10,6 +10,11 @@
   background-color: #421805;
 }
 
+.button {
+  background-color: #421805 !important;
+  color: white !important;
+}
+
 .particles {
   position: fixed; 
   top: 0;
