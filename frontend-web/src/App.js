@@ -9,6 +9,7 @@ import NavBar from './Containers/NavBar/NavBar';
 import Restaurants from './Containers/Restaurants/Restaurants';
 import Reviews from './Containers/Reviews/Review';
 import LoginPage from './Containers/LoginPage/LoginPage';
+import Register from './Containers/RegisterPage/RegisterPage';
 
 const particlesOptions = { 
 	"particles":{
@@ -122,6 +123,7 @@ class App extends Component {
 						<Route path="/restaurants" exact component={Restaurants} />
 						<Route path="/reviews" exact component={Reviews} />
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
+						<Route path="/register" exact component={Register} />
 						<Route path="*" component={NonExistentPage} />
 					</Switch>
 				</div>

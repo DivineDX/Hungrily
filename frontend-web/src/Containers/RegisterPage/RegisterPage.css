@@ -1,0 +1,11 @@
+h1 {
+    color: white;
+}
+
+/* Large Screens */
+@media screen and (min-width: 846px) {
+    #RegisterContainer {
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+}

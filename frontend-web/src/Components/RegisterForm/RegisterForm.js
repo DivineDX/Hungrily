@@ -1,10 +1,9 @@
 import React from 'react';
 import { Button, Checkbox, Form } from 'semantic-ui-react';
-import './LoginForm.css';
-import { Link } from 'react-router-dom';
+import './RegisterForm.css';
 // import url from '../../Configs/url';
 
-class LoginForm extends React.Component {
+class RegisterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -46,22 +45,20 @@ class LoginForm extends React.Component {
     render() {
         return (
             <Form>
-                <Form.Field className='loginText'>
-                    <input className='loginFormText' placeholder='UserID' onChange = {this.onNameChange}/>
+                <Form.Field className='registerText'>
+                    <input className='registerFormText' placeholder='Name' onChange = {this.onNameChange}/>
                 </Form.Field>
-                <Form.Field className='loginText'>
-                    <input className='loginFormText' placeholder='Password' type="password" onChange = {this.onPasswordChange}/>
+                <Form.Field className='registerText'>
+                    <input className='registerFormText' placeholder='UserID' onChange = {this.onNameChange}/>
                 </Form.Field>
-                <Form.Field className='loginText'>
-                    <Checkbox label='Keep me signed in' />
+                <Form.Field className='registerText'>
+                    <input className='registerFormText' placeholder='Password' type="password" onChange = {this.onPasswordChange}/>
+                </Form.Field>
+                <Form.Field className='registerText'>
+                    <input className='registerFormText' placeholder='Confirm Password' type="password" onChange = {this.onPasswordChange}/>
                 </Form.Field>
                 <div id='LoginButs'>
-                    <Button className='button' type='submit' onClick={() => this.onSignIn()}>Sign In</Button>
-                    <Link to="/register">
-                        <Button className='button'> 
-                            Register
-                        </Button>
-                    </Link> 
+                    <Button className='button' type='submit' onClick={() => this.Register()}> Register </Button>
                 </div>
                 </Form>
 
@@ -70,4 +67,4 @@ class LoginForm extends React.Component {
 
 }
 
-export default LoginForm;
+export default RegisterForm;
