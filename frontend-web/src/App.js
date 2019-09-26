@@ -73,7 +73,8 @@ const particlesOptions = {
 			"push":{"particles_nb":4},
 			"remove":{"particles_nb":2}
 		}
-	}
+	},
+	"retina_detect":true
 }
 
 
