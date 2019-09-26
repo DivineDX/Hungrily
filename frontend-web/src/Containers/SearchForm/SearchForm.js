@@ -15,7 +15,7 @@ Date, Time, Number of Adults (with Dropdown),
 Cuisine (Dropdown), Location (Dropdown), Restaurant (Dropdown with Search bar)
 */
 
-const SearchForm = () => (
+const SearchForm = ({triggerDisplay}) => (
     <Formik
         initialValues={{
             date: '',
@@ -28,6 +28,7 @@ const SearchForm = () => (
 
         onSubmit={(values) => {
             console.log(values);
+            triggerDisplay();
         }}
 
 
@@ -102,7 +103,7 @@ const SearchForm = () => (
 
                         <Button
                             icon='search'
-                            color='yellow'
+                            color='yellow'  
                             onClick={handleSubmit}
                             type='submit'
                         />
