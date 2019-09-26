@@ -1,10 +1,10 @@
-.loginText {
+.registerText {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
 }
 
-.loginFormText {
+.registerFormText {
     width: 60% !important;
 }
 
@@ -15,6 +15,3 @@
     color: white;
 }
 
-label {
-    color: white !important;
-}
