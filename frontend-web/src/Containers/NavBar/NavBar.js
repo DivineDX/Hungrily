@@ -56,7 +56,7 @@ class NavBar extends Component {
 
                                 {isSignedIn === false //conditional
                                     ? <Link to="/login">
-                                        <Button className="SIObut">Login</Button>
+                                        <Button className="SIObut appColor">Login</Button>
                                     </Link>
                                     : <Link to="/">
                                         <Button className="SIObut" onClick={() => loginProp()}>Sign Out</Button>

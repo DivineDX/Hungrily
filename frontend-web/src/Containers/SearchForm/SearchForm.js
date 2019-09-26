@@ -3,9 +3,9 @@ import { Button, Form, Input } from 'semantic-ui-react'
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import CuisineOptions from '../Data/CuisineOptions';
-import RestaurantOptions from '../Data/RestaurantOptions';
-import LocationOptions from '../Data/LocationOptions';
+import CuisineOptions from '../../Data/CuisineOptions';
+import RestaurantOptions from '../../Data/RestaurantOptions';
+import LocationOptions from '../../Data/LocationOptions';
 
 /*
 Date, Time, Number of Adults (with Dropdown), 
@@ -43,8 +43,8 @@ const SearchForm = () => (
             };
 
             return (
-                <Form size='big' className='ba br4 b--light-silver pa3'>
-                    <h3 className='f2'>Reserve your Restaurant</h3>
+                <Form size='big' className='ba br4 b--light-silver pa3 appColor'>
+                    <h3 className='f2 white '>Reserve your Restaurant</h3>
                     <Form.Group widths='equal' className=''>
                         <Form.Field>
                             <Input //Input Date Picker

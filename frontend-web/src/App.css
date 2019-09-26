@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+.body {
+  padding-top: 50px;
+}
+
+.appColor {
+  background-color: #421805;
+}
+
 .particles {
   position: fixed; 
   top: 0;
