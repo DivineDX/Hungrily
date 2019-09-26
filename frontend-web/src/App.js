@@ -6,6 +6,9 @@ import Particles from 'react-particles-js';
 import Homepage from './Containers/Homepage';
 import NonExistentPage from './Containers/NonExistentPage';
 import NavBar from './Containers/NavBar/NavBar';
+import Restaurants from './Containers/Restaurants/Restaurants';
+import Reviews from './Containers/Reviews/Review';
+import LoginPage from './Containers/LoginPage/LoginPage';
 
 const particlesOptions = { 
 	"particles":{
@@ -116,6 +119,9 @@ class App extends Component {
 				<div className = 'body'>
 					<Switch>
 						<Route path="/" exact component={Homepage} />
+						<Route path="/restaurants" exact component={Restaurants} />
+						<Route path="/reviews" exact component={Reviews} />
+						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="*" component={NonExistentPage} />
 					</Switch>
 				</div>
