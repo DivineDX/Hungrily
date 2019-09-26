@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Menu, Dropdown, Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import "./NavBar.css";
-// import Logo from '../../Images/Logo.png'; 
+import Logo from '../../Images/Logo.png'; 
 
 class NavBar extends Component {
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
@@ -23,7 +23,7 @@ class NavBar extends Component {
         return (
             <Menu borderless id="Navbar">
                 <Link to="/" className="link no-underline flex items-center pl3">
-                    <img src={""} id='Logo' alt = 'logo'/>
+                <img src={Logo} id='Logo' alt = 'logo'/>
                 </Link>
 
                 <div className=" dib flex items-left" id='NormalD'>
