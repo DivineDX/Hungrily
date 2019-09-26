@@ -1,27 +1,20 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+//Import Containers
+import Homepage from './Containers/Homepage';
+import NonExistentPage from './Containers/NonExistentPage';
 
 class App extends Component {
 	render() {
 		return (
-			<div className="App">
-				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<p>
-						CS2102 Restaurant Reservation App!
-          			</p>
-					<a
-						className="App-link"
-						href="https://reactjs.org"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Learn React
-          			</a>
-				</header>
-			</div>
-		);
+			<BrowserRouter>
+				<Switch>
+					<Route path="/" exact component={Homepage} />
+					<Route path="*" component={NonExistentPage} />
+				</Switch>
+			</BrowserRouter>
+		)
 	}
 
 }
