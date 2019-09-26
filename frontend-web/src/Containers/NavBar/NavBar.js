@@ -46,8 +46,7 @@ class NavBar extends Component {
                     </Menu>
 
                     <Menu.Menu>
-                        {/* <SearchBar searchChange={this.onSearchChange} className='search' /> */}
-                        <Menu.Item id='SignInOut'>
+                       <Menu.Item id='SignInOut'>
                             <div>
                                 {isSignedIn
                                     ? <i className='underline LogInText'>Logged in as {name}</i>
@@ -56,7 +55,7 @@ class NavBar extends Component {
 
                                 {isSignedIn === false //conditional
                                     ? <Link to="/login">
-                                        <Button className="SIObut appColor">Login</Button>
+                                        <Button className="SIObut">Login</Button>
                                     </Link>
                                     : <Link to="/">
                                         <Button className="SIObut" onClick={() => loginProp()}>Sign Out</Button>
@@ -85,10 +84,20 @@ class NavBar extends Component {
                         </Dropdown.Item>
                         <Dropdown.Divider />
                         <Dropdown.Item classname='tl'>
-                            Logout
+                            {isSignedIn
+                                ? <i className='LogInText'> {name}</i>
+                                : null
+                            }
                         </Dropdown.Item>
                         <Dropdown.Item classname='tl'>
-                           Login
+                            {isSignedIn === false //conditional
+                                ? <Link to="/login">
+                                    <Button className="SIObut DropdownBut">Login</Button>
+                                </Link>
+                                : <Link to="/">
+                                    <Button className="SIObut DropdownBut" onClick={() => loginProp()}>Sign Out</Button>
+                                </Link>
+                            }
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
