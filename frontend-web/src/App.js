@@ -5,6 +5,7 @@ import Particles from 'react-particles-js';
 //Import Containers
 import Homepage from './Containers/Homepage';
 import NonExistentPage from './Containers/NonExistentPage';
+import NavBar from './Containers/NavBar/NavBar';
 
 const particlesOptions = { 
 	"particles":{
@@ -79,11 +80,39 @@ const particlesOptions = {
 
 
 class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+			isSignedIn: false, //default is false (not signed in)
+			userID: '', //userID
+			name: ''
+		}
+	}
+
+	isSignedIn = () => {
+		return this.state.isSignedIn;
+	}
+
+	loginUser = (userID, name) => {
+		this.setState({
+			isSignedIn: true,
+			userID: userID,
+			name: name,
+		});
+	}
+
+	getUserID = () => {
+		return this.state.userID;
+	}
 	render() {
-		
+		const isSignedIn = this.state.isSignedIn;
+		let loginProp =
+			(isSignedIn) ? this.signoutUser : this.loginUser;
+
 		return (	
 			<BrowserRouter>
 				<Particles className='particles' params={particlesOptions}/>
+				<NavBar loginProp={loginProp} isSignedIn={isSignedIn} name = {this.state.name}/>
 				<div className = 'body'>
 					<Switch>
 						<Route path="/" exact component={Homepage} />

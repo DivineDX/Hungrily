@@ -1,0 +1,152 @@
+/* @font-face {
+    font-family: 'Orbitron';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Orbitron'), url('Orbitron.woff') format('woff');
+} */
+
+@import url('https://fonts.googleapis.com/css?family=Orbitron&display=swap');
+#Logo {
+	height: 60px;
+	border-bottom: none !important;
+} 
+
+#HeaderWord {
+	display: flex;
+	justify-content: flex-start;
+	font-size: 1.2em;
+	width: 150px;
+	border: none;
+	box-shadow: none;
+}
+
+#HeaderWord :hover {
+	background-color: white;
+}
+
+#SignInOut {
+	position: fixed;
+	right: 0px;
+	top: 0px;
+	padding-top: 12px;
+	margin-top: 0px;
+}
+
+#Navbar {
+	margin: 0;
+	position: fixed;
+	width: 100%;
+	z-index: 4;
+}
+
+.HeaderBut {
+	background-color: white !important;
+	transition: all .2s ease-in-out; 
+}
+
+.HeaderBut :hover {
+    color: black;
+	cursor: pointer;
+	transform: scale(1.1); 
+} 
+
+#RestaurantFS, #ReviewFS {
+	font-size: 18px;
+}
+
+#SmallerD {
+	display: none; 
+}
+
+.ui.menu {
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	box-shadow: none;
+	border-top: 0px;
+	border-right: 0px;
+	border-left: 0px;
+}
+
+.SIObut {
+	margin-left: 3px !important;
+	background-color: #41a3c4 !important;
+    color: white !important;
+}
+
+.LogInText {
+	color: #41a3c4 !important;
+}
+
+@media screen and (max-width: 700px) {
+	#Logo {
+		margin-left: 3px;
+	}
+
+	#Navbar {
+		display: flex;
+		flex-direction: row;
+	}
+
+	#HeaderWord {
+		display: flex;
+	}
+
+	#RestaurantFS, #ReviewFS {
+		font-size: 18px;
+	}
+
+	.ui.button.HeaderBut  {
+		padding-left: 0px;
+	}
+
+	#SignInOut {
+		margin-top: 50px !important;
+		position: fixed;
+		left: 0px;
+	}
+
+	#SmallerD {
+		display: block;
+		position: fixed;
+		top: 20px;
+		right: 10px;
+		height: 20px;
+	}
+
+	#NormalD {
+		display: none;
+	}
+
+	.SIObut {
+		margin-left: 0px !important;
+		background-color: white !important;
+		color: black !important;
+		font-weight: normal !important;
+		font-size: 16px !important;
+	}
+
+	.DropdownBut {
+		background-color: white !important;
+		transition: all .2s ease-in-out !important; 
+		padding: 0px !important;
+	}
+
+	.DropdownBut :hover {
+		background-color: white !important;
+
+	}
+
+	/* .DropdownBut :hover {
+		color: black !important;
+		cursor: pointer;
+		transform: scale(1.1); 
+	}  */
+	
+	#RestaurantFS, #ReviewFS {
+		font-size: 16px;
+		color: black;
+		font-weight: normal !important;
+	}
+}
+
