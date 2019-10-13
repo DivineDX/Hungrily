@@ -14,7 +14,7 @@ class Homepage extends Component {
 			displayResults: false,
 			loading: true,
 			restaurants: [],
-			displayedResults: []
+			filteredResults: []
 		}
 	}
 
@@ -29,25 +29,21 @@ class Homepage extends Component {
 			}).catch(error => {
 				console.log(error);
 			})
-
-		console.log("Mounting");
 	}
 
 	displayResults = (filters) => {
-		//filters is object of date, starttime, pax, cuisine, area, restaurant
-
 		fetch(`${url.fetchURL}/search`, {
-            method: 'post',
-            headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify(filters)
-        })
-            .then(resp => resp.json())
-            .then(data => {
-				console.log("Displayed Data", data);
+			method: 'post',
+			headers: { 'Content-type': 'application/json' },
+			body: JSON.stringify(filters)
+		})
+			.then(resp => resp.json())
+			.then(data => {
 				this.setState({
-					displayResults: true
+					displayResults: true,
+					filteredResults: data
 				})
-            });
+			});
 	}
 
 	render() {
@@ -56,16 +52,12 @@ class Homepage extends Component {
 				<SearchForm triggerDisplay={this.displayResults} />
 				{
 					this.state.displayResults &&
-					<div>
-						<RestaurantCard
-							resName="Lorem Ipsum Restaurant"
-							cuisine="Asian"
-							area="Kent Ridge"
-							operatingHours="9am - 9pm"
-							price="$$$"
-							id='1'
+					this.state.filteredResults.map((data) => {
+						return <RestaurantCard
+							data = {data}
+							key = {data.name}
 						/>
-					</div>
+					})
 				}
 			</div>
 		);

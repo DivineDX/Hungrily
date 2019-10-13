@@ -7,39 +7,27 @@ import 'flatpickr/dist/themes/light.css'
 
 import PaxOptions from '../../Data/PaxOptions';
 
-/*
-Date, Time, Number of Adults (with Dropdown), 
-Cuisine (Dropdown), Location (Dropdown), Restaurant (Dropdown with Search bar)
-*/
 
-const SearchFormRestaurants = ({triggerDisplay}) => (
+const SearchFormRestaurants = () => (
     <Formik
         initialValues={{
             date: '',
             startTime: '',
             pax: '',
-            cuisine: '',
-            location: '',
-            restaurant: '',
         }}
 
         onSubmit={(values) => {
             console.log(values);
-            triggerDisplay();
         }}
-
 
         validationSchema={yup.object().shape({
             date: yup.date("Invalid Date")
                 .min(new Date(), "Your cannot state a past date"),
             startTime: yup.string(),
-            pax: yup.number().min(1).max(20),
-            cuisine: yup.string(),
-            location: yup.string(),
-            restaurant: yup.string(),
+            pax: yup.number().min(1).max(20)
         })}
 
-        render={({ values, handleBlur, handleSubmit, setFieldValue }) => {
+        render={({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => {
             const handleDropdownChange = (e, { name, value }) => {
                 setFieldValue(name, value);
             };
@@ -65,7 +53,7 @@ const SearchFormRestaurants = ({triggerDisplay}) => (
                             value={values.pax}
                             onChange={handleDropdownChange}
                         />
-                        <Button onClick={handleSubmit} type='submit'> Book </Button>
+                        <Button onClick={handleSubmit} type='submit'>Book</Button>
                     </Form.Group>
                 </Form>
             );
