@@ -16,14 +16,14 @@ class SearchForm extends Component {
         this.state = {
             'cuisines': [],
             'areas': [],
-            'restaurants': []
+            'franchisors': []
         }
     }
 
     componentDidMount() {
         this.createDropdown('cuisines');
         this.createDropdown('areas');
-        this.createDropdown('restaurants');
+        this.createDropdown('franchisors');
     }
 
     createDropdown = (route) => {        
@@ -31,6 +31,7 @@ class SearchForm extends Component {
 			.then(resp => resp.json())
 			.then(data => {
                 const dropdownOptions = [];
+                dropdownOptions.push({key: '0', text: 'None', value: ''});
                 data.forEach(data => {
                     const obj = {key: data, text: data, value: data}
                     dropdownOptions.push(obj);
@@ -48,27 +49,24 @@ class SearchForm extends Component {
             <Formik
                 initialValues={{
                     date: '',
-                    startTime: '',
                     pax: '',
                     cuisine: '',
                     area: '',
-                    restaurant: '',
+                    franchise: '',
                 }}
 
                 onSubmit={(values) => {
-                    console.log(values);
-                    this.props.triggerDisplay();
+                    this.props.triggerDisplay(values);
                 }}
 
 
                 validationSchema={yup.object().shape({
                     date: yup.date("Invalid Date")
                         .min(new Date(), "Your cannot state a past date"),
-                    startTime: yup.string(),
                     pax: yup.number().min(1).max(20),
                     cuisine: yup.string(),
                     area: yup.string(),
-                    restaurant: yup.string(),
+                    franchise: yup.string(),
                 })}
 
                 render={({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => {
@@ -94,10 +92,10 @@ class SearchForm extends Component {
 
                                 <Form.Field>
                                     <Form.Select //Dropdown
-                                        placeholder='Any Restaurant'
-                                        name="restaurant"
-                                        options={this.state.restaurants}
-                                        value={values.restaurant}
+                                        placeholder='Any Franchise'
+                                        name="franchise"
+                                        options={this.state.franchisors}
+                                        value={values.franchise}
                                         onChange={handleDropdownChange}
                                     />
 

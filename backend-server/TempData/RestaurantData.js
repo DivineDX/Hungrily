@@ -8,6 +8,7 @@ const RestaurantData = [
         price: 1,
         opening_hrs: "1030",
         closing_hrs: "2300",
+        franchisor: "4Fingers",
         url: "4fingers-crispy-chicken-changi-airport-t3" 
     },
     {
@@ -19,6 +20,7 @@ const RestaurantData = [
         price: 2,
         opening_hrs: "1000",
         closing_hrs: "2300",
+        franchisor: "Fish & Co.",
         url: "fish-co-changi-airport-t2"
     },
     {
@@ -30,6 +32,7 @@ const RestaurantData = [
         price: 2,
         opening_hrs: "1000",
         closing_hrs: "2300",
+        franchisor: "Fish & Co.",
         url: "fish-co-amk-hub"
     },
     {
@@ -41,6 +44,7 @@ const RestaurantData = [
         price: 2,
         opening_hrs: "1400",
         closing_hrs: "0100",
+        franchisor: "Major 99",
         url: "major-99"
     },
     {
@@ -52,6 +56,7 @@ const RestaurantData = [
         price: 2,
         opening_hrs: "1700",
         closing_hrs: "0100",
+        franchisor: "Urbana Rooftop bar",
         url: "urbana-rooftop-bar"
     }
 ]

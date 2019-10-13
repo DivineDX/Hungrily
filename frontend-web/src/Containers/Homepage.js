@@ -1,28 +1,59 @@
 import React, { Component } from 'react';
 
-import '../App.css'
-import SearchFormMain from './SearchForm/SearchFormMain';
+import SearchForm from './SearchForm/SearchForm';
 import RestaurantCard from '../Components/Cards/RestaurantCard';
+import url from '../Config/url';
 import '../Components/Cards/RestaurantCard.css';
+import '../App.css'
+
 
 class Homepage extends Component {
 	constructor() {
 		super();
 		this.state = {
-			displayResults: false
+			displayResults: false,
+			loading: true,
+			restaurants: [],
+			displayedResults: []
 		}
 	}
 
-	displayResults = () => {
-		this.setState({
-			displayResults: true
-		})
+	componentDidMount() {
+		fetch(`${url.fetchURL}/resData`)
+			.then(resp => resp.json())
+			.then(data => {
+				this.setState({
+					restaurants: data,
+					loading: false,
+				});
+			}).catch(error => {
+				console.log(error);
+			})
+
+		console.log("Mounting");
+	}
+
+	displayResults = (filters) => {
+		//filters is object of date, starttime, pax, cuisine, area, restaurant
+
+		fetch(`${url.fetchURL}/search`, {
+            method: 'post',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(filters)
+        })
+            .then(resp => resp.json())
+            .then(data => {
+				console.log("Displayed Data", data);
+				this.setState({
+					displayResults: true
+				})
+            });
 	}
 
 	render() {
 		return (
 			<div className="pa7">
-				<SearchFormMain triggerDisplay={this.displayResults} />
+				<SearchForm triggerDisplay={this.displayResults} />
 				{
 					this.state.displayResults &&
 					<div>
@@ -35,8 +66,6 @@ class Homepage extends Component {
 							id='1'
 						/>
 					</div>
-
-
 				}
 			</div>
 		);

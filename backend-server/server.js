@@ -18,8 +18,9 @@ app.use(cors());
 app.get('/', (req, res) => { test.test(req, res) });
 app.get('/cuisines', (req, res) => {res.json(queries.cuisines)});
 app.get('/areas', (req, res) => {res.json(queries.areas)});
-app.get('/restaurants', (req, res) => {res.json(queries.restaurants)});
+app.get('/franchisors', (req, res) => {res.json(queries.franchisors)}); //res names only
 app.get('/resData', (req, res) => {res.json(RestaurantData)}); //data of all restaurants
 app.get('/restaurant/:name', (req, res, db) => retrieve.getRestaurant(req, res, db));
+app.post('/search', (req, res, db) => retrieve.findRestaurant(req, res, db));
 
 app.listen(process.env.PORT || 3001);

@@ -19,16 +19,16 @@ const getAllAreas = () => {
     return Array.from(allLocations);
 }
 
-const getAllRestaurants = () => {
-    const resNames = new Set();
+const getAllFranchise = () => {
+    const franchiseName = new Set();
     RestaurantData.forEach(data => {
-        resNames.add(data.name);
+        franchiseName.add(data.franchisor);
     })
-    return Array.from(resNames);
+    return Array.from(franchiseName);
 }
 
 module.exports = {
     cuisines: getAllCuisines(),
     areas: getAllAreas(),
-    restaurants: getAllRestaurants()
+    franchisors: getAllFranchise()
 }
