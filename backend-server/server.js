@@ -5,6 +5,7 @@ const app = express();
 
 //import controllers
 const test = require('./controllers/test');
+const retrieve = require('./controllers/retrieve');
 
 const urls = require('./config/urls');
 const db = require('./config/database');
@@ -18,6 +19,7 @@ app.get('/', (req, res) => { test.test(req, res) });
 app.get('/cuisines', (req, res) => {res.json(queries.cuisines)});
 app.get('/areas', (req, res) => {res.json(queries.areas)});
 app.get('/restaurants', (req, res) => {res.json(queries.restaurants)});
-app.get('/resData', (req, res) => {res.json(RestaurantData)});
+app.get('/resData', (req, res) => {res.json(RestaurantData)}); //data of all restaurants
+app.get('/restaurant/:name', (req, res, db) => retrieve.getRestaurant(req, res, db));
 
 app.listen(process.env.PORT || 3001);
