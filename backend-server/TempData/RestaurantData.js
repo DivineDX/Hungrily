@@ -6,8 +6,8 @@ const RestaurantData = [
         "area": "Changi",
         "cuisine": ["Korean", "Burgers", "Halal"],
         "price": 1,
-        "opening_hrs": new Date(2019, 1, 1, 10, 30),
-        "closing_hrs": new Date(2019, 1, 1, 23, 00)
+        "opening_hrs": "1030",
+        "closing_hrs": "2300"
     },
     {
         "name": "Fish & Co.",
@@ -16,8 +16,8 @@ const RestaurantData = [
         "area": "Changi",
         "cuisine": ["Seafood", "Halal"],
         "price": 2,
-        "opening_hrs": new Date(2019, 1, 1, 10, 00),
-        "closing_hrs": new Date(2019, 1, 1, 23, 00)
+        "opening_hrs": "1000",
+        "closing_hrs": "2300"
     },
     {
         "name": "Fish & Co.",
@@ -26,8 +26,8 @@ const RestaurantData = [
         "area": "Ang Mo Kio",
         "cuisine": ["Seafood", "Halal"],
         "price": 2,
-        "opening_hrs": new Date(2019, 1, 1, 10, 00),
-        "closing_hrs": new Date(2019, 1, 1, 23, 00)
+        "opening_hrs": "1000",
+        "closing_hrs": "2300"
     },
     {
         "name": "Major 99",
@@ -36,8 +36,8 @@ const RestaurantData = [
         "area": "Ang Mo Kio",
         "cuisine": ["Bar"],
         "price": 2,
-        "opening_hrs": new Date(2019, 1, 1, 14, 00),
-        "closing_hrs": new Date(2019, 1, 2, 1, 00)
+        "opening_hrs": "1400",
+        "closing_hrs": "0100"
     },
     {
         "name": "Urbana Rooftop Bar",
@@ -46,8 +46,8 @@ const RestaurantData = [
         "area": "Novena",
         "cuisine": ["Bar", "International", "Burgers"],
         "price": 2,
-        "opening_hrs": new Date(2019, 1, 1, 17, 00),
-        "closing_hrs": new Date(2019, 1, 2, 1, 00)
+        "opening_hrs": "1700",
+        "closing_hrs": "0100"
     }
 ]
 
