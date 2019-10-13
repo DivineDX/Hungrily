@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Menu, Dropdown, Modal } from 'semantic-ui-react';
+import { Button, Menu, Dropdown } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import "./NavBar.css";
 import Logo from '../../Images/Logo.png'; 
@@ -83,13 +83,13 @@ class NavBar extends Component {
                             </Button>
                         </Dropdown.Item>
                         <Dropdown.Divider />
-                        <Dropdown.Item classname='tl'>
+                        <Dropdown.Item className='tl'>
                             {isSignedIn
                                 ? <i className='LogInText'> {name}</i>
                                 : null
                             }
                         </Dropdown.Item>
-                        <Dropdown.Item classname='tl'>
+                        <Dropdown.Item className='tl'>
                             {isSignedIn === false //conditional
                                 ? <Link to="/login">
                                     <Button className="SIObut DropdownBut">Login</Button>

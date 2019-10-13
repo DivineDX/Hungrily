@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Form } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
 import './RegisterForm.css';
 // import url from '../../Configs/url';
 
