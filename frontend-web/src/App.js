@@ -125,7 +125,7 @@ class App extends Component {
 						<Route path="/reviews" exact component={Reviews} />
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
-						<Route path="/restaurant/:name" render={(props) => <LandingPage {...props} />} />
+						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} />} />
 						<Route path="*" component={NonExistentPage} />
 					</Switch>
 				</div>
