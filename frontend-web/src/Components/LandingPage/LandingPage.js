@@ -46,20 +46,20 @@ class LandingPage extends Component {
             return (
                 <article id='landingPage'>
                     <img
-                        className="mt3 pt4"
+                        className="mt3 pt4 relative"
                         id='pageImage'
                         src= ""
                         onError={(e) => { e.target.onerror = null; e.target.src = wireframeImage }}
                         alt="Error" />
                     <div className="pv3">
-                        <h1 className='f2 pageText'> {name} </h1>
+                        <h1 className='f2 pageText relative'> {name} </h1>
                     </div>
-                    <div className="pt2 pl7 pr7" id='BookBox'>
+                    <div className="pt2 pl7 pr7 relative" id='BookBox'>
                         <SearchFormRestaurants triggerDisplay={this.displayResults} />
                         {this.state.displayResults}
                     </div>
-                    <div className='row'>
-                        <div className = 'column'>
+                    <div className='row relative'>
+                        <div className = 'column bg-mid-gray pt3'>
                             <div className='containerText'>
                                 <h3> Cuisine </h3>   
                                 <p className='smallText'> {cuisine} </p>  
@@ -67,20 +67,13 @@ class LandingPage extends Component {
                             <div className='containerText'>
                                 <h3> Menu </h3>   
                                 <Modal trigger={<Button> Menu </Button>}>
-                                <Header icon='archive' content='Archive Old Messages' />
-                                <Modal.Content>
-                                <p>
-                                    Your inbox is getting full, would you like us to enable automatic
-                                    archiving of old messages?
-                                </p>
-                                </Modal.Content>
+                                    <Modal.Content>
+                                    <p> Menu </p>
+                                    </Modal.Content>
                                 <Modal.Actions>
-                                <Button basic color='red' inverted>
-                                    <Icon name='remove' /> No
-                                </Button>
-                                <Button color='green' inverted>
-                                    <Icon name='checkmark' /> Yes
-                                </Button>
+                                    <Button color='green' inverted>
+                                        <Icon name='checkmark' /> Yes
+                                    </Button>
                                 </Modal.Actions>
                                 </Modal>  
                             </div>
@@ -89,7 +82,7 @@ class LandingPage extends Component {
                                 <p className='smallText'> Mon-Sun: {opening_hrs} - {closing_hrs} </p>
                             </div>
                         </div>
-                        <div className='column'>
+                        <div className='column pl4 bg-mid-gray pr6 pt3'>
                             <div className='containerText'>
                                 <h3> Location </h3> 
                                 <p className='smallText'> {area} </p>  
