@@ -10,6 +10,7 @@ import Restaurants from './Containers/Restaurants/Restaurants';
 import Reviews from './Containers/Reviews/Review';
 import LoginPage from './Containers/LoginPage/LoginPage';
 import Register from './Containers/RegisterPage/RegisterPage';
+import LandingPage from './Components/LandingPage/LandingPage';
 
 const particlesOptions = { 
 	"particles":{
@@ -124,6 +125,7 @@ class App extends Component {
 						<Route path="/reviews" exact component={Reviews} />
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
+						<Route path="/restaurant/:name" render={(props) => <LandingPage {...props} />} />
 						<Route path="*" component={NonExistentPage} />
 					</Switch>
 				</div>

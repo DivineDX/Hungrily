@@ -1,0 +1,64 @@
+#landingpage {
+    border-style: solid;
+    border-width: 10px;
+}
+
+#pageImage {
+    height: 450px;
+    width: 57%;
+    margin-left: 20%
+}
+
+#BookBox { 
+    width:87%;
+    position: absolute;
+    left: 5%;
+}
+
+.pageText {
+    margin-bottom: 10px;
+    margin-left: 20%;
+    font-size: 3em;
+}
+
+.containerText {
+    margin-bottom: 10px;
+    padding-left: 20%;
+    font-size: 1em;
+    padding-bottom: 5px;
+}
+
+.ui.progress {
+    margin-bottom: 1em;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    width: 50%;
+    padding-top: 85px;
+    margin-left: 20%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+    
+}
+
+h3 {
+    color: white;
+}
+
+.smallText {
+    color: white;
+}
+
+/* Mobile Screens */
+@media screen and (max-width: 700px) {
+   
+}

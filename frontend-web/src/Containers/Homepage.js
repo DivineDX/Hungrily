@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import '../App.css'
-import SearchForm from './SearchForm/SearchForm';
+import SearchFormMain from './SearchForm/SearchFormMain';
 import RestaurantCard from '../Components/Cards/RestaurantCard';
 import '../Components/Cards/RestaurantCard.css';
 
@@ -22,7 +22,7 @@ class Homepage extends Component {
 	render() {
 		return (
 			<div className="pa7">
-				<SearchForm triggerDisplay={this.displayResults} />
+				<SearchFormMain triggerDisplay={this.displayResults} />
 				{
 					this.state.displayResults &&
 					<div>

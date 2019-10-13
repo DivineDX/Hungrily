@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "formik": "^1.5.8",
+    "interweave": "^11.2.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-flatpickr": "^3.9.1",
