@@ -9,9 +9,8 @@ const getRestaurant = (req, res, db) => {
 }
 
 const findRestaurants = (req, res, db) => {
-    const {date, pax, cuisine, area, franchise} = req.body; //ignoring cuisine for now
-    //console.log(req.body);
-    const restaurant = db.select(
+    const {date, pax, cuisine, area, franchise} = req.body; //ignore data and pax for now
+    db().select(
         "Restaurant.Name",
         "Restaurant.Address",
         "Restaurant.Capacity",
@@ -25,19 +24,16 @@ const findRestaurants = (req, res, db) => {
         .where('Area', 'like', `%${area}%`)
         .andWhere('FranchisorName', 'like', `%${franchise}%`)
         .andWhere('Cuisine', 'like', `%${cuisine}%`)
-        //add cuisine
-    .timeout(1000).then(
-        result => {
-            //console.log(result)
-            res.status(200).json(result)
-        }
-    ).catch(err =>res.status(400).json('Unable to Retrieve'));
+        .distinct().timeout(1000).then(
+            result => {
+                res.status(200).json(result)
+        }).catch(err =>res.status(400).json('Unable to Retrieve'));
 }
 
 const getAllCuisines = (req, res, db) => {
     db('Food').select("Cuisine").distinct().timeout(1000)
         .then(cuisine => {
-            res.status(200).json(cuisine);
+            res.status(200).json(cuisine.map(x=>x.Cuisine));
         }).catch(err =>  res.status(400).json('Unable to Retrieve'));
 }
 

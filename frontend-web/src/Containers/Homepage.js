@@ -55,7 +55,7 @@ class Homepage extends Component {
 					this.state.filteredResults.map((data) => {
 						return <RestaurantCard
 							data = {data}
-							key = {data.name}
+							key = {data.Name}
 						/>
 					})
 				}
