@@ -1,6 +1,6 @@
 const RestaurantData = require('./RestaurantData');
 
-
+// depreciated
 
 // const getAllCuisines = () => {
 //     const restaurant = db.select("Cuisine").distinct.from("Food").where({Name:req.params.name}).timeout(1000)
