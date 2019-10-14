@@ -27,7 +27,8 @@ const getAllCuisines = (req, res, db) => {
     const restaurant = db.select("Cuisine").distinct().from("Food").timeout(1000)
     .then(
         function(result) { 
-                res.status(200).json(result);
+                const returndata = Object.values(result);
+                res.status(200).json(returndata);
         }
     ).catch(
         err =>  res.status(400).json('Unable to Retrieve')
@@ -38,7 +39,8 @@ const getAllAreas = (req, res, db) => {
     const restaurant = db.select().from("Area").timeout(1000)
     .then(
         function(result) { 
-                res.status(200).json(result);
+                const returndata = Array.from(result.map(x=>x['Area_name']));
+                res.status(200).json(returndata);
         }
     ).catch(
         err =>  res.status(400).json('Unable to Retrieve')
@@ -49,7 +51,8 @@ const getAllFranchise = (req, res, db) => {
     const restaurant = db.select().from("Franchisor").timeout(1000)
     .then(
         function(result) { 
-                res.status(200).json(result);
+                const returndata = Array.from(result.map(x=>x['FNAME']));
+                res.status(200).json(returndata);
         }
     ).catch(
         err =>  res.status(400).json('Unable to Retrieve')
