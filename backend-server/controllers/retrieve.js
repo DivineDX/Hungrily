@@ -1,59 +1,47 @@
-
-
 const getRestaurant = (req, res, db) => {
-    const restaurant = db.select().from("Restaurant").where({Name:req.params.name}).timeout(1000)
-    .then(
-        function(result) { 
-                res.status(200).json(result);
-        }
-    ).catch(
-        err =>  res.status(400).json('Unable to Retrieve')
-    );
+    db('Restaurant').select().where({url:req.params.name}).timeout(1000)
+        .then(rest => {
+            if(!rest || !rest.length) {
+                throw err;
+            }
+            res.status(200).json(rest[0]);
+        }).catch(err =>  res.status(400).json('Unable to Retrieve'));
 }
 
 const findRestaurants = (req, res, db) => {
     const {date, pax, cuisine, area, franchise} = req.body; //ignoring cuisine for now
-    const restaurant = db.select().from("Restaurant").where({
-        FranchisorName:franchise,
-        Area:area
-    }).timeout(1000).then(
-        result => res.status(200).json(result)
-    )
-    .catch(err => 
-        res.status(400).json('Unable to Retrieve'));
+    console.log(req.body);
+    const restaurant = db.select().from("Restaurant")
+        .where('Area', 'like', `%${area}%`)
+        .andWhere('FranchisorName', 'like', `%${franchise}%`)
+        //add cuisine
+    .timeout(1000).then(
+        result => {
+            console.log(result)
+            res.status(200).json(result)
+        }
+    ).catch(err =>res.status(400).json('Unable to Retrieve'));
 }
 
 const getAllCuisines = (req, res, db) => {
-    const restaurant = db.select("Cuisine").distinct().from("Food").timeout(1000)
-    .then(
-        function(result) { 
-                res.status(200).json(result);
-        }
-    ).catch(
-        err =>  res.status(400).json('Unable to Retrieve')
-    );
+    db('Food').select("Cuisine").distinct().timeout(1000)
+        .then(cuisine => {
+            res.status(200).json(cuisine);
+        }).catch(err =>  res.status(400).json('Unable to Retrieve'));
 }
 
 const getAllAreas = (req, res, db) => {
-    const restaurant = db.select().from("Area").timeout(1000)
-    .then(
-        function(result) { 
-                res.status(200).json(result);
-        }
-    ).catch(
-        err =>  res.status(400).json('Unable to Retrieve')
-    );
+    db('Area').select("Area_name").timeout(1000)
+        .then(area => {
+            res.status(200).json(area.map(x => x.Area_name));
+        }).catch(err =>  res.status(400).json('Unable to Retrieve'));
 }
 
 const getAllFranchise = (req, res, db) => {
-    const restaurant = db.select().from("Franchisor").timeout(1000)
-    .then(
-        function(result) { 
-                res.status(200).json(result);
-        }
-    ).catch(
-        err =>  res.status(400).json('Unable to Retrieve')
-    );
+    db('Franchisor').select().timeout(1000)
+        .then(franchisor => {
+            res.status(200).json(franchisor.map(x=>x.FNAME));
+        }).catch(err =>  res.status(400).json('Unable to Retrieve'));
 }
 
 const getAllRestaurants = (req, res, db) => {

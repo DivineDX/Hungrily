@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button, Icon } from 'semantic-ui-react'
 import NonExistentPage from '../../Containers/NonExistentPage';
 import wireframeImage from '../../Images/wireframeImage.png';
-import url from '../../Configs/url';
+import url from '../../Config/url';
 import './LandingPage.css';
 import SearchFormRestaurants from '../../Containers/SearchForm/SearchFormRestaurant';
 

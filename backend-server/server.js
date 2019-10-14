@@ -12,7 +12,6 @@ const db = require('./config/database')
 const queries = require('./TempData/Queries');
 const RestaurantData = require('./TempData/RestaurantData');
 
-
 app.use(bodyParser.json());
 app.use(cors());
 
