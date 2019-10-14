@@ -1,0 +1,21 @@
+CREATE TABLE "Franchisor" ("FNAME" varchar(100));
+ALTER TABLE "Franchisor" add constraint "Franchisor_pkey" primary key ("FNAME");
+CREATE TABLE "Area" ("Area_name" varchar(100));
+ALTER TABLE "Area" add constraint "Area_pkey" primary key ("Area_name");
+CREATE TABLE "Restaurant" ("Name" varchar(100), "Address" varchar(500), "Capacity" integer not null, "Area" varchar(100) not null, "Opening_hours" time not null default '09:00:00', "Closing_hours" time not null default '21:00:00', "FranchisorName" varchar(100), "url" varchar(300));
+ALTER TABLE "Restaurant" add constraint "Restaurant_pkey" primary key ("Name");
+ALTER TABLE "Restaurant" add constraint "restaurant_franchisorname_foreign" foreign key ("FranchisorName") references "Franchisor" ("FNAME");
+ALTER TABLE "Restaurant" add constraint "restaurant_area_foreign" foreign key ("Area") references "Area" ("Area_name");
+CREATE TABLE "Food" ("RestaurantName" varchar(100) not null, "Name" varchar(100), "Cuisine" varchar(100), "Type" varchar(100), "Price" decimal(6, 2) not null);
+ALTER TABLE "Food" add constraint "Food_pkey" primary key ("Name", "RestaurantName");
+ALTER TABLE "Food" add constraint "food_restaurantname_foreign" foreign key ("RestaurantName") references "Restaurant" ("Name") on delete CASCADE;
+CREATE TABLE "Seating" ("RestaurantName" varchar(100) not null, "SeatingNum" integer, "Capacity" integer not null);
+ALTER TABLE "Seating" add constraint "Seating_pkey" primary key ("SeatingNum", "RestaurantName");
+ALTER TABLE "Seating" add constraint "seating_restaurantname_foreign" foreign key ("RestaurantName") references "Restaurant" ("Name") on delete CASCADE;
+CREATE TABLE "Customer" ("UserID" uuid, "Name" varchar(100) not null, "Password" varchar(60) not null, "Points" integer);
+ALTER TABLE "Customer" add constraint "Customer_pkey" primary key ("UserID");
+CREATE TABLE "Booking" ("BookingID" uuid, "Customer_id" uuid not null, "RestaurantName" varchar(100), "Pax" integer not null, "Rating" integer, "Timestart" time not null);
+ALTER TABLE "Booking" add constraint "Booking_pkey" primary key ("BookingID");
+ALTER TABLE "Food" ADD CONSTRAINT priceconstraint CHECK("Price">=0);
+ALTER TABLE "Seating" ADD CONSTRAINT seatingcapacityconstraint CHECK("Capacity">=0);
+ALTER TABLE "Booking" ADD CONSTRAINT ratingconstraint CHECK(("Rating" IS NULL) OR ("Rating" > 0 AND "Rating" <=5))
