@@ -10,24 +10,52 @@ const getRestaurant = (req, res, db) => {
 
 const findRestaurants = (req, res, db) => {
     const {date, pax, cuisine, area, franchise} = req.body; //ignore data and pax for now
-    db().select(
-        "Restaurant.Name",
-        "Restaurant.Address",
-        "Restaurant.Capacity",
-        "Restaurant.Area",
-        "Restaurant.Opening_hours",
-        "Restaurant.Closing_hours",
-        "Restaurant.FranchisorName",
-        "Restaurant.url"
-        ).from("Restaurant")
-        .innerJoin("Food", 'Restaurant.Name','Food.RestaurantName' )
-        .where('Area', 'like', `%${area}%`)
-        .andWhere('FranchisorName', 'like', `%${franchise}%`)
-        .andWhere('Cuisine', 'like', `%${cuisine}%`)
-        .distinct().timeout(1000).then(
+    // const query = db.select(
+    //     "Restaurant.Name",
+    //     "Restaurant.Address",
+    //     "Restaurant.Capacity",
+    //     "Restaurant.Area",
+    //     "Restaurant.Opening_hours",
+    //     "Restaurant.Closing_hours",
+    //     "Restaurant.FranchisorName",
+    //     "Restaurant.url",
+    //     'array_agg( Food.Cuisine )'
+    //     ).from("Restaurant")
+    //     .innerJoin("Food", 'Restaurant.Name','Food.RestaurantName' )
+    //     .where('Area', 'like', `%${area}%`)
+    //     .andWhere('FranchisorName', 'like', `%${franchise}%`)
+    //     .andWhere('Cuisine', 'like', `%${cuisine}%`)
+    //     .distinct()
+    //     .groupBy(        
+    //     "Restaurant.Name",
+    //     "Restaurant.Address",
+    //     "Restaurant.Capacity",
+    //     "Restaurant.Area",
+    //     "Restaurant.Opening_hours",
+    //     "Restaurant.Closing_hours",
+    //     "Restaurant.FranchisorName",
+    //     "Restaurant.url")
+    //     console.log(query.toString())
+
+    //Keep for the moment if we want/can do postgre aggregate array function from knex
+    const query = db.raw(`
+            SELECT distinct "Restaurant"."Name", "Restaurant"."Address", "Restaurant"."Capacity", "Restaurant"."Area", "Restaurant"."Opening_hours", "Restaurant"."Closing_hours", "Restaurant"."FranchisorName", "Restaurant"."url", 
+                (
+                SELECT array_agg("Food"."Cuisine") AS c
+                FROM "Food"
+                WHERE "Food"."RestaurantName" = "Restaurant"."Name"
+                ) AS cuisine
+            FROM "Restaurant" INNER JOIN "Food"
+            ON "Restaurant"."Name" = "Food"."RestaurantName" 
+            WHERE "Area" LIKE '%${area}%'
+            AND "FranchisorName" LIKE '%${franchise}%'
+            AND "Cuisine" LIKE '%${cuisine}%'
+            GROUP BY "Restaurant"."Name", "Restaurant"."Address", "Restaurant"."Capacity", "Restaurant"."Area", "Restaurant"."Opening_hours", "Restaurant"."Closing_hours", "Restaurant"."FranchisorName", "Restaurant"."url"
+            `)
+            .timeout(1000).then(
             result => {
-                res.status(200).json(result)
-        }).catch(err =>res.status(400).json('Unable to Retrieve'));
+                res.status(200).json(result.rows)
+        }).catch(err =>res.status(400).json(err));//'Unable to Retrieve'));
 }
 
 const getAllCuisines = (req, res, db) => {
