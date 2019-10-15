@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button, Icon } from 'semantic-ui-react'
 import NonExistentPage from '../../Containers/NonExistentPage';
 import wireframeImage from '../../Images/wireframeImage.png';
-import url from '../../Configs/url';
+import url from '../../Config/url';
 import './LandingPage.css';
 import SearchFormRestaurants from '../../Containers/SearchForm/SearchFormRestaurant';
 
@@ -18,9 +18,8 @@ class LandingPage extends Component {
 
     componentDidMount() {
         const name = this.props.match.params.name;
-        console.log(name)
         this.setState({ name: name });
-        fetch(`http://${url.fetchURL}/restaurant/${name}`)
+        fetch(`${url.fetchURL}/restaurant/${name}`)
             .then(resp => resp.json())
             .then(data => {
                 this.setState({ data: data, notFound: false });
@@ -28,9 +27,7 @@ class LandingPage extends Component {
     }
 
     render() {
-        const { opening_hrs, price, closing_hrs, cuisine, area, name, address } = this.state.data;
-        //unused consts: date-end, tags, numFollowing, finished
-        // const { type, title, recipient, name, anonymity, date_started, description, imageurl, targetnumsupporters, currnumsupporters } = this.state.loadedData;
+        const { Name, Address, Area, Opening_hours, Closing_hours, Cuisine, price } = this.state.data;
         if (this.state.notFound) {
             return (
                 <NonExistentPage />
@@ -45,7 +42,7 @@ class LandingPage extends Component {
                         onError={(e) => { e.target.onerror = null; e.target.src = wireframeImage }}
                         alt="Error" />
                     <div className="pv3">
-                        <h1 className='f2 pageText relative'> {name} </h1>
+                        <h1 className='f2 pageText relative'> {Name} </h1>
                     </div>
                     <div className="pt2 pl7 pr7 relative" id='BookBox'>
                         <SearchFormRestaurants/>
@@ -54,7 +51,7 @@ class LandingPage extends Component {
                         <div className='column bg-mid-gray pt3'>
                             <div className='containerText'>
                                 <h3> Cuisine </h3>
-                                <p className='smallText'> {cuisine} </p>
+                                <p className='smallText'> {Cuisine} </p>
                             </div>
                             <div className='containerText'>
                                 <h3> Menu </h3>
@@ -71,18 +68,18 @@ class LandingPage extends Component {
                             </div>
                             <div className='containerText'>
                                 <h3> Opening Hours </h3>
-                                <p className='smallText'> Mon-Sun: {opening_hrs} - {closing_hrs} </p>
+                                <p className='smallText'> Mon-Sun: {Opening_hours} - {Closing_hours} </p>
                             </div>
                         </div>
                         <div className='column pl4 bg-mid-gray pr6 pt3'>
                             <div className='containerText'>
                                 <h3> Location </h3>
-                                <p className='smallText'> {area} </p>
+                                <p className='smallText'> {Area} </p>
 
                             </div>
                             <div className='containerText'>
                                 <h3> Address </h3>
-                                <p className='smallText'> {address} </p>
+                                <p className='smallText'> {Address} </p>
 
                             </div>
                             <div className='containerText'>

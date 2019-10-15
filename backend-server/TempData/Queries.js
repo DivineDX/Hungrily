@@ -1,15 +1,18 @@
 const RestaurantData = require('./RestaurantData');
 
-const getAllCuisines = () => {
-    const allCuisine = new Set();
-    RestaurantData.forEach(data => {
-        const resCuisines = data.cuisine;
-        resCuisines.forEach(cuisine => {
-            allCuisine.add(cuisine);
-        })
-    })
-    return Array.from(allCuisine);
-}
+// depreciated
+
+// const getAllCuisines = () => {
+//     const restaurant = db.select("Cuisine").distinct.from("Food").where({Name:req.params.name}).timeout(1000)
+//     .then(
+//         function(result) { 
+//                 res.status(200).json(result);
+//         }
+//     ).catch(
+//         err =>  res.status(400).json('Unable to Retrieve')
+//     );
+//     return Array.from(allCuisine);
+// }
 
 const getAllAreas = () => {
     const allLocations = new Set();
@@ -28,7 +31,7 @@ const getAllFranchise = () => {
 }
 
 module.exports = {
-    cuisines: getAllCuisines(),
+    //cuisines: getAllCuisines(),
     areas: getAllAreas(),
     franchisors: getAllFranchise()
 }
