@@ -27,7 +27,8 @@ class LandingPage extends Component {
     }
 
     render() {
-        const { Name, Address, Area, Opening_hours, Closing_hours, Cuisine, price } = this.state.data;
+        const { Name, Address, Area, Opening_hours, Closing_hours, cuisine, price } = this.state.data;
+        console.log(this.state.data);
         if (this.state.notFound) {
             return (
                 <NonExistentPage />
@@ -51,7 +52,7 @@ class LandingPage extends Component {
                         <div className='column bg-mid-gray pt3'>
                             <div className='containerText'>
                                 <h3> Cuisine </h3>
-                                <p className='smallText'> {Cuisine} </p>
+                                <p className='smallText'> {cuisine} </p>
                             </div>
                             <div className='containerText'>
                                 <h3> Menu </h3>

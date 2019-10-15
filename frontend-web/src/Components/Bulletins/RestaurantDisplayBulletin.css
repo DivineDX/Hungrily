@@ -1,0 +1,14 @@
+#RDB {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    justify-items: center;
+}
+
+/* Desktop */
+@media screen and (min-width: 846px) {
+    #RDB {
+        /* margin-left: 2rem; */
+        /* margin-right: 2rem; */
+    }
+}

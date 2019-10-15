@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import SearchForm from './SearchForm/SearchForm';
+import RestaurantDisplayBulletin from '../Components/Bulletins/RestaurantDisplayBulletin';
 import RestaurantCard from '../Components/Cards/RestaurantCard';
 import url from '../Config/url';
 import '../Components/Cards/RestaurantCard.css';
@@ -52,12 +53,14 @@ class Homepage extends Component {
 				<SearchForm triggerDisplay={this.displayResults} />
 				{
 					this.state.displayResults &&
-					this.state.filteredResults.map((data) => {
+					<RestaurantDisplayBulletin resDisplay = {this.state.filteredResults}/>
+					
+					/* this.state.filteredResults.map((data) => {
 						return <RestaurantCard
 							data = {data}
 							key = {data.Name}
 						/>
-					})
+					}) */
 				}
 			</div>
 		);
