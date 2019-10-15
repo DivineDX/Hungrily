@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import SearchForm from './SearchForm/SearchForm';
 import RestaurantDisplayBulletin from '../Components/Bulletins/RestaurantDisplayBulletin';
-import RestaurantCard from '../Components/Cards/RestaurantCard';
 import url from '../Config/url';
 import '../Components/Cards/RestaurantCard.css';
 import '../App.css'
@@ -53,14 +52,7 @@ class Homepage extends Component {
 				<SearchForm triggerDisplay={this.displayResults} />
 				{
 					this.state.displayResults &&
-					<RestaurantDisplayBulletin resDisplay = {this.state.filteredResults}/>
-					
-					/* this.state.filteredResults.map((data) => {
-						return <RestaurantCard
-							data = {data}
-							key = {data.Name}
-						/>
-					}) */
+					<RestaurantDisplayBulletin resDisplay={this.state.filteredResults} />
 				}
 			</div>
 		);

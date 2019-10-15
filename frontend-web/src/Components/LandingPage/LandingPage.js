@@ -28,7 +28,6 @@ class LandingPage extends Component {
 
     render() {
         const { Name, Address, Area, Opening_hours, Closing_hours, cuisine, price } = this.state.data;
-        console.log(this.state.data);
         if (this.state.notFound) {
             return (
                 <NonExistentPage />
