@@ -5,7 +5,8 @@ import foodImage from '../../Images/food.jpg';
 import './RestaurantCard.css';
 
 const RestaurantCard = (props) => {
-    const { Name, Area, cuisine, Opening_hours, Closing_hours, url } = props.data;
+    const loadedData = props.data;
+    const { Name, Area, cuisine, Opening_hours, Closing_hours, url } = loadedData;
 
     return (
         <Card className='ResCard'>

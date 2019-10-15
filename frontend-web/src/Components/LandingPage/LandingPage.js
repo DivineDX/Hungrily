@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Modal, Button, Icon } from 'semantic-ui-react'
 import NonExistentPage from '../../Containers/NonExistentPage';
-import wireframeImage from '../../Images/wireframeImage.png';
 import url from '../../Config/url';
 import './LandingPage.css';
 import SearchFormRestaurants from '../../Containers/SearchForm/SearchFormRestaurant';
+import food from '../../Images/food.jpg'
 
 class LandingPage extends Component {
     constructor(props) {
@@ -39,7 +39,7 @@ class LandingPage extends Component {
                         className="mt3 pt4 relative"
                         id='pageImage'
                         src=""
-                        onError={(e) => { e.target.onerror = null; e.target.src = wireframeImage }}
+                        onError={(e) => { e.target.onerror = null; e.target.src = food }}
                         alt="Error" />
                     <div className="pv3">
                         <h1 className='f2 pageText relative'> {Name} </h1>
@@ -48,7 +48,7 @@ class LandingPage extends Component {
                         <SearchFormRestaurants/>
                     </div>
                     <div className='row relative'>
-                        <div className='column bg-mid-gray pt3'>
+                        <div className='column pt3 pb3'>
                             <div className='containerText'>
                                 <h3> Cuisine </h3>
                                 <p className='smallText'> {cuisine} </p>
@@ -71,7 +71,7 @@ class LandingPage extends Component {
                                 <p className='smallText'> Mon-Sun: {Opening_hours} - {Closing_hours} </p>
                             </div>
                         </div>
-                        <div className='column pl4 bg-mid-gray pr6 pt3'>
+                        <div className='column bb pl4 pr6 pt3 pb3'>
                             <div className='containerText'>
                                 <h3> Location </h3>
                                 <p className='smallText'> {Area} </p>

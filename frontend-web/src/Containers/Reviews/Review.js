@@ -50,7 +50,7 @@ class Reviews extends Component {
         return (	 //acts as a card list here
             <div>
                 <div className="w-75 pt5 center bb b--black-10">
-                    <h1 className="tc baskerville f1 fw5">Your Dashboard</h1>
+                    <h1 className="tc baskerville f1 fw5"> Reviews </h1>
                 </div>
 
                 {/* {this.state.displayedData.map((data) => {
