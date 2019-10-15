@@ -66,8 +66,8 @@ const RestaurantRows =  Restaurants.map(function(x) {
     Address: x['Address'],
     Capacity: x['Capacity'],
     Area: x['Area'],
-    Opening_hours: x['opening_hrs'],
-    Closing_hours: x['closing_hrs'],
+    Opening_hours: x['Opening_hours'],
+    Closing_hours: x['Closing_hours'],
     FranchisorName:  x['FranchisorName'],
     url: x['url']
   }

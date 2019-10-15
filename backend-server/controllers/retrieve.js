@@ -37,14 +37,15 @@ const findRestaurants = (req, res, db) => {
     //     "Restaurant.url")
     //     console.log(query.toString())
 
-    //Keep for the moment if we want/can do postgre aggregate array function from knex
+    //Keep for the moment if we want/can do postgre aggregate array/string function from knex
     const query = db.raw(`
             SELECT distinct "Restaurant"."Name", "Restaurant"."Address", "Restaurant"."Capacity", "Restaurant"."Area", "Restaurant"."Opening_hours", "Restaurant"."Closing_hours", "Restaurant"."FranchisorName", "Restaurant"."url", 
                 (
-                SELECT array_agg("Food"."Cuisine") AS c
+                SELECT string_agg("Food"."Cuisine",', ') AS c
                 FROM "Food"
                 WHERE "Food"."RestaurantName" = "Restaurant"."Name"
                 ) AS cuisine
+
             FROM "Restaurant" INNER JOIN "Food"
             ON "Restaurant"."Name" = "Food"."RestaurantName" 
             WHERE "Area" LIKE '%${area}%'
@@ -54,6 +55,7 @@ const findRestaurants = (req, res, db) => {
             `)
             .timeout(1000).then(
             result => {
+                console.log(result.rows)
                 res.status(200).json(result.rows)
         }).catch(err =>res.status(400).json(err));//'Unable to Retrieve'));
 }
