@@ -29,6 +29,7 @@ const loginUserStub = (req, res, db) => {
     const {userID, password} = req.body;
     res.status(200).json({
         UserID: userID,
+        Name: "Fish & Co", //returns either User Name or Name of the Franchise
         FranchiseOwner: true //false if account is just a customer
     }); 
 }
