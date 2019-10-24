@@ -17,19 +17,6 @@ class Homepage extends Component {
 		}
 	}
 
-	componentDidMount() {
-		fetch(`${url.fetchURL}/resData`)
-			.then(resp => resp.json())
-			.then(data => {
-				this.setState({
-					restaurants: data,
-					loading: false,
-				});
-			}).catch(error => {
-				console.log(error);
-			})
-	}
-
 	displayResults = (filters) => {
 		fetch(`${url.fetchURL}/search`, {
 			method: 'post',
@@ -46,7 +33,7 @@ class Homepage extends Component {
 	}
 
 	render() {
-		// console.log(this.state.restaurants);
+		console.log(this.state.restaurants);
 		return (
 			<div className="pa7">
 				<SearchForm triggerDisplay={this.displayResults} />

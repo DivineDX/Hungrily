@@ -10,35 +10,7 @@ const getRestaurant = (req, res, db) => {
 
 const findRestaurants = (req, res, db) => {
     const {date, pax, cuisine, area, franchise} = req.body; //ignore data and pax for now
-    // const query = db.select(
-    //     "Restaurant.Name",
-    //     "Restaurant.Address",
-    //     "Restaurant.Capacity",
-    //     "Restaurant.Area",
-    //     "Restaurant.Opening_hours",
-    //     "Restaurant.Closing_hours",
-    //     "Restaurant.FranchisorName",
-    //     "Restaurant.url",
-    //     'array_agg( Food.Cuisine )'
-    //     ).from("Restaurant")
-    //     .innerJoin("Food", 'Restaurant.Name','Food.RestaurantName' )
-    //     .where('Area', 'like', `%${area}%`)
-    //     .andWhere('FranchisorName', 'like', `%${franchise}%`)
-    //     .andWhere('Cuisine', 'like', `%${cuisine}%`)
-    //     .distinct()
-    //     .groupBy(        
-    //     "Restaurant.Name",
-    //     "Restaurant.Address",
-    //     "Restaurant.Capacity",
-    //     "Restaurant.Area",
-    //     "Restaurant.Opening_hours",
-    //     "Restaurant.Closing_hours",
-    //     "Restaurant.FranchisorName",
-    //     "Restaurant.url")
-    //     console.log(query.toString())
-
-    //Keep for the moment if we want/can do postgre aggregate array/string function from knex
-    const query = db.raw(`
+    db.raw(`
             SELECT distinct "Restaurant"."Name", "Restaurant"."Address", "Restaurant"."Capacity", "Restaurant"."Area", "Restaurant"."Opening_hours", "Restaurant"."Closing_hours", "Restaurant"."FranchisorName", "Restaurant"."url", 
                 (
                 SELECT string_agg("Food"."Cuisine",', ') AS c
@@ -55,7 +27,6 @@ const findRestaurants = (req, res, db) => {
             `)
             .timeout(1000).then(
             result => {
-                console.log(result.rows)
                 res.status(200).json(result.rows)
         }).catch(err =>res.status(400).json(err));//'Unable to Retrieve'));
 }
