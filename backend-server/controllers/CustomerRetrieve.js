@@ -51,7 +51,7 @@ const findRestaurants = (req, res, db) => {
             WHERE "Area" LIKE '%${area}%'
             AND "FranchisorName" LIKE '%${franchise}%'
             AND "Cuisine" LIKE '%${cuisine}%'
-            GROUP BY "Restaurant"."Name", "Restaurant"."Address", "Restaurant"."Capacity", "Restaurant"."Area", "Restaurant"."Opening_hours", "Restaurant"."Closing_hours", "Restaurant"."FranchisorName", "Restaurant"."url"
+            GROUP BY "Restau    rant"."Name", "Restaurant"."Address", "Restaurant"."Capacity", "Restaurant"."Area", "Restaurant"."Opening_hours", "Restaurant"."Closing_hours", "Restaurant"."FranchisorName", "Restaurant"."url"
             `)
             .timeout(1000).then(
             result => {

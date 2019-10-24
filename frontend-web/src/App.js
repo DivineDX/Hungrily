@@ -10,7 +10,7 @@ import RestaurantsPage from './Containers/Restaurants/RestaurantsPage';
 import Reviews from './Containers/Reviews/Review';
 import LoginPage from './Containers/LoginPage/LoginPage';
 import Register from './Containers/RegisterPage/RegisterPage';
-import LandingPage from './Components/LandingPage/LandingPage';
+import LandingPage from './Components/RestaurantLandingPage/LandingPage';
 
 const particlesOptions = { 
 	"particles":{
