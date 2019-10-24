@@ -6,7 +6,7 @@ import Particles from 'react-particles-js';
 import Homepage from './Containers/Homepage';
 import NonExistentPage from './Containers/NonExistentPage';
 import NavBar from './Containers/NavBar/NavBar';
-import Restaurants from './Containers/Restaurants/Restaurants';
+import RestaurantsPage from './Containers/Restaurants/RestaurantsPage';
 import Reviews from './Containers/Reviews/Review';
 import LoginPage from './Containers/LoginPage/LoginPage';
 import Register from './Containers/RegisterPage/RegisterPage';
@@ -121,7 +121,7 @@ class App extends Component {
 				<div className = 'body'>
 					<Switch>
 						<Route path="/" exact component={Homepage} />
-						<Route path="/restaurants" exact component={Restaurants} />
+						<Route path="/restaurants" exact component={RestaurantsPage} />
 						<Route path="/reviews" exact component={Reviews} />
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />

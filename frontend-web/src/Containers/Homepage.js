@@ -6,7 +6,6 @@ import url from '../Config/url';
 import '../Components/Cards/RestaurantCard.css';
 import '../App.css'
 
-
 class Homepage extends Component {
 	constructor() {
 		super();
@@ -47,6 +46,7 @@ class Homepage extends Component {
 	}
 
 	render() {
+		// console.log(this.state.restaurants);
 		return (
 			<div className="pa7">
 				<SearchForm triggerDisplay={this.displayResults} />

@@ -7,23 +7,26 @@ import url from '../../Config/url'
 // import EmptyDashboard from '../../Components/EmptyFillers/EmptyDashboard';
 // import url from '../../Configs/url';
 
-class Restaurants extends Component {
+class RestaurantsPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            displayedData: [],
+            restaurants: [],
+            loading: true
         }
     }
 
     componentDidMount() {
-        fetch(`http://${url.fetchURL}/resData`)
-        .then(resp => resp.json())
-        .then(data => {
-            this.setState({ displayedData: data
-        });
-    }).catch(error => {
-        console.log(error);
-    })
+        fetch(`${url.fetchURL}/resData`)
+            .then(resp => resp.json())
+            .then(data => {
+                this.setState({
+                    restaurants: data,
+                    loading: false,
+                });
+            }).catch(error => {
+                console.log(error);
+            })
     }
 
     render() {
@@ -33,13 +36,12 @@ class Restaurants extends Component {
                     <h1 className="tc baskerville f1 fw5">Restaurants</h1>
                 </div>
 
-                {this.state.displayedData.map((data) => {
-                    return <RestaurantCard loadedData = {data}>
-                    </RestaurantCard>
+                {this.state.restaurants.map((data) => {
+                    return <RestaurantCard data={data} />
                 })}
             </div>
         );
     }
 }
 
-export default Restaurants;
+export default RestaurantsPage;
