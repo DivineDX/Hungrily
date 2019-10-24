@@ -30,18 +30,21 @@ const viewAllReservationsStub = (req, res, db) => {
             UserID: "Person1",
             RestaurantName: "Fish & Co. (AMK Hub)",
             DateTime: "20th October 2018, 0900", //warning: Its a String now
+            Table: 20,
             Pax: 2,
         }, 
         {
             UserID: "Person2",
             RestaurantName: "Fish & Co. (AMK Hub)",
             DateTime: "25th October 2018, 0900", //warning: Its a String now
+            Table: 2,
             Pax: 4,
         },
         {
             UserID: "Person3",
             RestaurantName: "4Fingers Crispy Chicken (Changi Airport T3)",
             DateTime: "1st October 2018, 0900", //warning: Its a String now
+            Table: 5,
             Pax: 2,
         }]);
 }
@@ -62,16 +65,19 @@ const viewRestaurantReservationStub = (req, res, db) => {
         [{
             UserID: "PersonX",
             DateTime: "20th October 2018, 0900", //warning: Its a String now
+            Table: 3,
             Pax: 2,
         }, 
         {
             UserID: "PersonY",
             DateTime: "25th October 2018, 0900", //warning: Its a String now
+            Table: 7,
             Pax: 4,
         },
         {
             UserID: "PersonZ",
             DateTime: "1st October 2018, 0900", //warning: Its a String now
+            Table: 10,
             Pax: 2,
         }]);
 }

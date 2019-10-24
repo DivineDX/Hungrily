@@ -8,6 +8,7 @@ const test = require('./controllers/test');
 const retrieve = require('./controllers/Retrieve');
 const account = require('./controllers/account');
 const franchiseOwner = require('./controllers/FranchiseOwner');
+const customerReservations = require('./controllers/CustomerReservations');
 
 const urls = require('./config/urls');
 const db = require('./config/database')
@@ -35,5 +36,13 @@ app.post('/login', (req, res) => account.loginUser(req, res, db));
 app.post('/ownedRestaurants', (req, res) => franchiseOwner.ownedRestaurants(req, res, db));
 app.post('/viewAllReservations', (req, res) => franchiseOwner.viewAllReservations(req, res, db));
 app.post('/viewRestaurantReservations', (req, res) => franchiseOwner.viewRestaurantReservations(req, res, db));
+
+//Customer Reservations
+app.post('/resvAvailability', (req, res) => customerReservations.checkAvailability(req, res, db));
+app.post('/bookResv', (req, res) => customerReservations.checkAvailability(req, res, db));
+app.put('/editResv', (req, res) => customerReservations.editReservation(req, res, db));
+app.delete('/cancelResv', (req, res) => customerReservations.cancelReservation(req, res, db));
+app.post('/seeMyResv', (req, res) => customerReservations.seeCustomerReservations(req, res, db));
+
 
 app.listen(process.env.PORT || 3001);
