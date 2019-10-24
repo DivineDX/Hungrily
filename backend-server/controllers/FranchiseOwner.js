@@ -16,7 +16,7 @@ const ownedRestaurants = (req, res, db) => {
 }
 
 /**
- * Check through all Restaurants that the FranchiseOwner owns, returns all reservations under all restaurants owned
+ * Check through all Restaurants that the FranchiseOwner owns, returns all reservations booked under all restaurants owned
  * Omits reservations that are in the past
  */
 const viewAllReservations = (req, res, db) => {
@@ -28,21 +28,21 @@ const viewAllReservationsStub = (req, res, db) => {
     res.status(200).json(
         [{
             UserID: "Person1",
-            RestaurantName: "Fish & Co. (AMK Hub)",
+            Location: "AMK Hub",
             DateTime: "20th October 2018, 0900", //warning: Its a String now
             Table: 20,
             Pax: 2,
         }, 
         {
             UserID: "Person2",
-            RestaurantName: "Fish & Co. (AMK Hub)",
+            Location: "AMK Hub",
             DateTime: "25th October 2018, 0900", //warning: Its a String now
             Table: 2,
             Pax: 4,
         },
         {
             UserID: "Person3",
-            RestaurantName: "4Fingers Crispy Chicken (Changi Airport T3)",
+            Location: "Changi Airport T3",
             DateTime: "1st October 2018, 0900", //warning: Its a String now
             Table: 5,
             Pax: 2,
