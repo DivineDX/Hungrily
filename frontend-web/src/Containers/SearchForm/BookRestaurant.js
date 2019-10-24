@@ -8,7 +8,7 @@ import 'flatpickr/dist/themes/light.css'
 import PaxOptions from '../../Data/PaxOptions';
 
 
-const SearchFormRestaurants = () => (
+const BookRestaurant = () => (
     <Formik
         initialValues={{
             date: '',
@@ -73,4 +73,4 @@ const SearchFormRestaurants = () => (
     />
 );
 
-export default SearchFormRestaurants;
+export default BookRestaurant;

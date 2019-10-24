@@ -45,26 +45,23 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            <Form>
-                <Form.Field className='loginText'>
-                    <input className='loginFormText' placeholder='UserID' onChange = {this.onNameChange}/>
-                </Form.Field>
-                <Form.Field className='loginText'>
-                    <input className='loginFormText' placeholder='Password' type="password" onChange = {this.onPasswordChange}/>
-                </Form.Field>
-                <Form.Field className='loginText'>
-                    <Checkbox label='Keep me signed in' />
-                </Form.Field>
-                <div id='LoginButs'>
-                    <Button className='button' type='submit' onClick={() => this.onSignIn()}>Sign In</Button>
-                    <Link to="/register">
-                        <Button className='button'> 
-                            Register
-                        </Button>
-                    </Link> 
-                </div>
+            <div>
+                <Form>
+                    <Form.Field className='loginText'>
+                        <input className='loginFormText' placeholder='UserID' onChange = {this.onNameChange}/>
+                    </Form.Field>
+                    <Form.Field className='loginText'>
+                        <input className='loginFormText' placeholder='Password' type="password" onChange = {this.onPasswordChange}/>
+                    </Form.Field>
+                    <Form.Field className='loginText'>
+                        <Checkbox label='Keep me signed in' />
+                    </Form.Field>
+                    <div id='LoginButs'>
+                        <Button className='button toSignIn' type='submit' onClick={() => this.onCSignIn()}> Customer </Button>
+                        <Button className='button toSignIn' type='submit' onClick={() => this.onFOSignIn()}> Franchise Owner </Button>
+                    </div>
                 </Form>
-
+            </div>
         );
     }
 

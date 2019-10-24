@@ -3,7 +3,7 @@ import { Modal, Button, Icon } from 'semantic-ui-react'
 import NonExistentPage from '../../Containers/NonExistentPage';
 import url from '../../Config/url';
 import './LandingPage.css';
-import SearchFormRestaurants from '../../Containers/SearchForm/SearchFormRestaurant';
+import BookRestaurant from '../../Containers/SearchForm/BookRestaurant';
 import food from '../../Images/food.jpg'
 
 class LandingPage extends Component {
@@ -27,7 +27,7 @@ class LandingPage extends Component {
     }
 
     render() {
-        const { Name, Address, Area, Opening_hours, Closing_hours, cuisine, price } = this.state.data;
+        const { Name, Address, Area, Opening_hours, Closing_hours, Cuisine, Price } = this.state.data;
         if (this.state.notFound) {
             return (
                 <NonExistentPage />
@@ -45,13 +45,13 @@ class LandingPage extends Component {
                         <h1 className='f2 pageText relative'> {Name} </h1>
                     </div>
                     <div className="pt2 pl7 pr7 relative" id='BookBox'>
-                        <SearchFormRestaurants />
+                        <BookRestaurant/>
                     </div>
                     <div className='row relative'>
                         <div className='column pt3 pb3'>
                             <div className='containerText'>
                                 <h3> Cuisine </h3>
-                                <p className='smallText'> {cuisine => cuisine} </p>
+                                <p className='smallText'> {Cuisine} </p>
                             </div>
                             <div className='containerText'>
                                 <h3> Menu </h3>
@@ -73,18 +73,16 @@ class LandingPage extends Component {
                         </div>
                         <div className='column bb pl4 pr6 pt3 pb3'>
                             <div className='containerText'>
+                                <h3> Price </h3>
+                                <p className='smallText'> {Price} </p>
+                            </div>
+                            <div className='containerText'>
                                 <h3> Location </h3>
                                 <p className='smallText'> {Area} </p>
-
                             </div>
                             <div className='containerText'>
                                 <h3> Address </h3>
                                 <p className='smallText'> {Address} </p>
-
-                            </div>
-                            <div className='containerText'>
-                                <h3> Price </h3>
-                                <p className='smallText'> {price} </p>
                             </div>
                         </div>
                     </div>

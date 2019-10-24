@@ -5,7 +5,11 @@
 }
 
 .loginFormText {
-    width: 60% !important;
+    width: 36% !important;
+}
+
+.toSignIn {
+    width: 18%;
 }
 
 #LoginButs {
