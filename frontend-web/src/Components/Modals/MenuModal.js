@@ -8,7 +8,7 @@ class MenuModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            updated: false,
+            clicked: false,
             authFailed: false,
         }
     }

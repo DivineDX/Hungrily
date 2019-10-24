@@ -45,13 +45,13 @@ class LandingPage extends Component {
                         <h1 className='f2 pageText relative'> {Name} </h1>
                     </div>
                     <div className="pt2 pl7 pr7 relative" id='BookBox'>
-                        <SearchFormRestaurants/>
+                        <SearchFormRestaurants />
                     </div>
                     <div className='row relative'>
                         <div className='column pt3 pb3'>
                             <div className='containerText'>
                                 <h3> Cuisine </h3>
-                                <p className='smallText'> {cuisine} </p>
+                                <p className='smallText'> {cuisine => cuisine} </p>
                             </div>
                             <div className='containerText'>
                                 <h3> Menu </h3>

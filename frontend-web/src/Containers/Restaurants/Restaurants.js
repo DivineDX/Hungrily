@@ -19,8 +19,11 @@ class Restaurants extends Component {
         fetch(`http://${url.fetchURL}/resData`)
         .then(resp => resp.json())
         .then(data => {
-            this.setState({ displayedData: data });
+            this.setState({ displayedData: data
         });
+    }).catch(error => {
+        console.log(error);
+    })
     }
 
     render() {
