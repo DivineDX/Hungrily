@@ -6,7 +6,7 @@ import './RestaurantCard.css';
 
 const RestaurantCard = (props) => {
     const loadedData = props.data;
-    const { Name, Area, cuisine, Opening_hours, Closing_hours, url } = loadedData;
+    const { Name, Area, cuisine, Opening_hours, Closing_hours, Price, url, Ratings } = loadedData;
 
     return (
         <Card className='ResCard'>
@@ -24,6 +24,10 @@ const RestaurantCard = (props) => {
                     </Card.Meta>
                     <Card.Meta>
                         <span>Area: {Area}</span>
+                    </Card.Meta>
+                    <Card.Meta>
+                        <span>Price: {Price}</span>
+                        <span id='Right'>Ratings: ratings {Ratings}</span>
                     </Card.Meta>
                 </div>
             </Card.Content>
