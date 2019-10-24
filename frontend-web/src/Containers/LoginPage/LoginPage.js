@@ -13,7 +13,7 @@ const LoginPage = (props) => {
                     <p className='mb2 text2'> Create your account today</p>
                 </div>
                 <div id='Register' className='pa0 pt3'> 
-                    <Button id='RegisterBut' className='button' type='submit' onClick={() => this.onRegister()}> 
+                    <Button id='RegisterBut' className='button'> 
                         Register
                     </Button>
                 </div>
