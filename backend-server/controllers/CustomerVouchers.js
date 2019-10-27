@@ -82,7 +82,7 @@ const seeOwnedVouchers = (req, res, db) => {
  * Inserts tuple into the "CustomerVouchers" table, Updates (Deducts) Points of Customers.
  */
 const buyVoucher = (req, res, db) => {
-    const {userID} = req.body;
+    const {userID, voucherName} = req.body;
     res.status(200).json('Success');
 }
 

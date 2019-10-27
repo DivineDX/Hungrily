@@ -10,6 +10,7 @@ const account = require('./controllers/account');
 const franchiseOwner = require('./controllers/FranchiseOwner');
 const customerReservations = require('./controllers/CustomerReservations');
 const customerVouchers = require('./controllers/CustomerVouchers');
+const customerReviews = require('./controllers/CustomerReviews');
 
 const urls = require('./config/urls');
 const db = require('./config/database')
@@ -48,5 +49,9 @@ app.post('/availvoucher', (req, res) => customerVouchers.availForPurchase(req, r
 app.post('/ownedVouchers', (req, res) => customerVouchers.seeOwnedVouchers(req, res, db));
 app.post('/buyVoucher', (req, res) => customerVouchers.buyVoucher(req, res, db));
 app.post('/useVoucher', (req, res) => customerVouchers.useVoucher(req, res, db));
+
+//Customer Reviews
+app.get('/review/:franchisor/:location', (req, res) => customerReviews.viewResReviews(req, res, db));
+app.post('/giveReview', (req, res) => customerReviews.postReview(req, res, db));
 
 app.listen(process.env.PORT || 3001);
