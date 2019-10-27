@@ -9,12 +9,10 @@ const retrieve = require('./controllers/Retrieve');
 const account = require('./controllers/account');
 const franchiseOwner = require('./controllers/FranchiseOwner');
 const customerReservations = require('./controllers/CustomerReservations');
+const customerVouchers = require('./controllers/CustomerVouchers');
 
 const urls = require('./config/urls');
 const db = require('./config/database')
-const queries = require('./TempData/Queries');
-const RestaurantData = require('./TempData/RestaurantData');
-
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -44,5 +42,11 @@ app.put('/editResv', (req, res) => customerReservations.editReservation(req, res
 app.delete('/cancelResv', (req, res) => customerReservations.cancelReservation(req, res, db));
 app.post('/seeMyResv', (req, res) => customerReservations.seeCustomerReservations(req, res, db));
 
+//Customer Vouchers
+app.get('/voucherlist', (req, res) => customerVouchers.listVouchers(req, res, db));
+app.post('/availvoucher', (req, res) => customerVouchers.availForPurchase(req, res, db));
+app.post('/ownedVouchers', (req, res) => customerVouchers.seeOwnedVouchers(req, res, db));
+app.post('/buyVoucher', (req, res) => customerVouchers.buyVoucher(req, res, db));
+app.post('/useVoucher', (req, res) => customerVouchers.useVoucher(req, res, db));
 
 app.listen(process.env.PORT || 3001);
