@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt-nodejs');
+
 /**
  * Register an account for a CUSTOMER only.
  * Checks if UserID already exists, if it does rejects.
@@ -12,6 +14,12 @@ const registerCustomer = (req, res, db) => {
 //Stub Function
 const registerCustomerStub = (req, res, db) => {
     const {name, userID, password} = req.body;
+    let hashedPw;
+    bcrypt.hash(password, null, null, function(err, hash) {
+        // Store hash in your password DB.
+        hashedPw = hash;
+        console.log(hashedPw);
+    });
     res.status(200).json(userID); //returns userID after registration success
 }
 
@@ -27,9 +35,16 @@ const loginUser = (req, res, db) => {
 //Stub Function
 const loginUserStub = (req, res, db) => {
     const {userID, password} = req.body;
+    let hash;
+    //Select and load hash from DB
+    bcrypt.compare(password, hash, function(err, res) {
+        // res is boolean
+        console.log('res');
+    });
+
     res.status(200).json({
         UserID: userID,
-        Name: "Fish & Co", //returns either User Name or Name of the Franchise
+        Name: "John Doe", //returns either User Name or Name of the Franchise
         FranchiseOwner: true //false if account is just a customer
     }); 
 }
