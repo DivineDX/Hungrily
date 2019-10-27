@@ -15,7 +15,7 @@ import LandingPage from './Components/RestaurantLandingPage/LandingPage';
 const particlesOptions = { 
 	"particles":{
 		"number":{
-			"value":290,
+			"value":100,
 			"density":{"enable":true,"value_area":700}
 		},
 		"color":{"value":"#c0c0c0"} ,
@@ -35,7 +35,7 @@ const particlesOptions = {
 			}
 		} , 
 		"size":{
-			"value":3,
+			"value":5,
 			"random":true,
 			"anim":{
 				"enable":true,
@@ -47,7 +47,7 @@ const particlesOptions = {
 		"line_linked":{"enable":true,"distance":150,"color":"#ffffff","opacity":0.4,"width":1}, 
 		"move":{
 			"enable":true,
-			"speed":6,
+			"speed":4,
 			"direction":"none",
 			"random":false,
 			"straight":false,
