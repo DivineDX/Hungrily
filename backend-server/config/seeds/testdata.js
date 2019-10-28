@@ -94,7 +94,7 @@ function getAccounts(){
     x=>(
       {
         userid:x,
-        password:"12345"
+        password:"$2a$10$RmRGpeXYl.to5r1zdgx4/eQf7yJYgvG8wfq1dnYywaZE6DOymW3VK"
       }
     )
   )
