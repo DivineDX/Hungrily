@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import ReservationCard from '../../Components/Cards/ReservationCard';
+import CustomerResCard from '../../Components/Cards/CustomerResCard';
 import url from '../../Config/url'
+import './CustomerRes.css'
 // import DashboardDropDown from '../../Components/Dropdowns/DashboardDropDown';
 // import Cookies from 'universal-cookie';
 // import AuthFailed from '../NonExistentPage/AuthFailed';
@@ -41,9 +42,11 @@ class CustomerRes extends Component {
                     <h1 className="tc baskerville f1 fw5">My Reservations</h1>
                 </div>
 
-                {this.state.reservations.map((data) => {
-                    return <ReservationCard data={data} />
-                })}
+                <div id='CardDisplay'>
+                    {this.state.reservations.map((data) => {
+                        return <CustomerResCard fluid centered data={data} />
+                    })}
+                </div>
             </div>
         );
     }
