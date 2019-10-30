@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 // import EmptyDashboard from '../../Components/EmptyFillers/EmptyDashboard';
 // import url from '../../Configs/url';
 
-class Reviews extends Component {
+class Reservations extends Component {
     // constructor(props) {
     //     super(props)
     //     this.state = {
@@ -50,7 +50,7 @@ class Reviews extends Component {
         return (	 //acts as a card list here
             <div>
                 <div className="w-75 pt5 center bb b--black-10">
-                    <h1 className="tc baskerville f1 fw5"> Reviews </h1>
+                    <h1 className="tc baskerville f1 fw5"> Reservations </h1>
                 </div>
 
                 {/* {this.state.displayedData.map((data) => {
@@ -70,4 +70,4 @@ class Reviews extends Component {
     }
 }
 
-export default Reviews;
+export default Reservations;

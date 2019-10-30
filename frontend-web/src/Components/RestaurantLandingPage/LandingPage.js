@@ -68,21 +68,21 @@ class LandingPage extends Component {
                             </div>
                             <div className='containerText'>
                                 <h3> Opening Hours </h3>
-                                <p className='smallText'> Mon-Sun: {Opening_hours} - {Closing_hours} </p>
+                                <p className='smallText tl'> Mon-Sun: {Opening_hours} - {Closing_hours} </p>
                             </div>
                         </div>
                         <div className='column bb pl4 pr6 pt3 pb3'>
                             <div className='containerText'>
                                 <h3> Price </h3>
-                                <p className='smallText'> {Price} </p>
+                                <p className='smallText tl'> {Price} </p>
                             </div>
                             <div className='containerText'>
                                 <h3> Location </h3>
-                                <p className='smallText'> {Area} </p>
+                                <p className='smallText tl'> {Area} </p>
                             </div>
                             <div className='containerText'>
                                 <h3> Address </h3>
-                                <p className='smallText'> {Address} </p>
+                                <p className='smallText tl'> {Address} </p>
                             </div>
                         </div>
                     </div>
