@@ -7,7 +7,7 @@ import Homepage from './Containers/Homepage';
 import NonExistentPage from './Containers/NonExistentPage';
 import NavBar from './Containers/NavBar/NavBar';
 import RestaurantsPage from './Containers/Restaurants/RestaurantsPage';
-import Reservations from './Containers/Reservations/Reservations';
+import CustomerRes from './Containers/Reservations/CustomerRes';
 import LoginPage from './Containers/LoginPage/LoginPage';
 import Register from './Containers/RegisterPage/RegisterPage';
 import LandingPage from './Components/RestaurantLandingPage/LandingPage';
@@ -122,7 +122,7 @@ class App extends Component {
 					<Switch>
 						<Route path="/" exact component={Homepage} />
 						<Route path="/restaurants" exact component={RestaurantsPage} />
-						<Route path="/reservations" exact component={Reservations} />
+						<Route path="/customer_reservations" exact component={CustomerRes} />
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
 						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} />} />

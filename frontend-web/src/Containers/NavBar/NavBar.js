@@ -38,8 +38,8 @@ class NavBar extends Component {
 
                         <Menu.Item>
                             <Button className='HeaderBut' name='Reviews' active={activeItem === 'Reviews'} onClick={this.handleItemClick}>
-                                <Link to="/reservations">
-                                    <div className="link dib dim mr0 mr1-ns" id='ReviewFS'>Reservations</div>
+                                <Link to="/customer_reservations">
+                                    <div className="link dib dim mr0 mr1-ns" id='ReviewFS'> My Reservations</div>
                                 </Link>
                             </Button>
                         </Menu.Item>
