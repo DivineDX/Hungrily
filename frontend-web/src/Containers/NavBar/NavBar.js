@@ -20,6 +20,7 @@ class NavBar extends Component {
     render() {
         const { activeItem } = this.state
         const { loginProp, isSignedIn, name } = this.props
+
         return (
             <Menu borderless id="Navbar">
                 <Link to="/" className="link no-underline flex items-center pl3">
