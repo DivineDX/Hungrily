@@ -22,12 +22,15 @@ class LandingPage extends Component {
         fetch(`${url.fetchURL}/restaurant/${name}`)
             .then(resp => resp.json())
             .then(data => {
-                this.setState({ data: data, notFound: false });
+                if (data === 'Unable to Retrieve') {
+                } else {
+                    this.setState({ data: data, notFound: false });
+                }
             });
     }
 
     render() {
-        const { Name, Address, Area, Opening_hours, Closing_hours, Cuisine, Price } = this.state.data;
+        const { store_name, location, area, opening_hours, closing_hours, Cuisine, Price } = this.state.data;
         if (this.state.notFound) {
             return (
                 <NonExistentPage />
@@ -42,7 +45,7 @@ class LandingPage extends Component {
                         onError={(e) => { e.target.onerror = null; e.target.src = food }}
                         alt="Error" />
                     <div className="pv3">
-                        <h1 className='f2 pageText relative'> {Name} </h1>
+                        <h1 className='f2 pageText relative'> {store_name} </h1>
                     </div>
                     <div className="pt2 pl7 pr7 relative" id='BookBox'>
                         <BookRestaurant/>
@@ -68,7 +71,7 @@ class LandingPage extends Component {
                             </div>
                             <div className='containerText'>
                                 <h3> Opening Hours </h3>
-                                <p className='smallText tl'> Mon-Sun: {Opening_hours} - {Closing_hours} </p>
+                                <p className='smallText tl'> Mon-Sun: {opening_hours} - {closing_hours} </p>
                             </div>
                         </div>
                         <div className='column bb pl4 pr6 pt3 pb3'>
@@ -78,11 +81,11 @@ class LandingPage extends Component {
                             </div>
                             <div className='containerText'>
                                 <h3> Location </h3>
-                                <p className='smallText tl'> {Area} </p>
+                                <p className='smallText tl'> {area} </p>
                             </div>
                             <div className='containerText'>
                                 <h3> Address </h3>
-                                <p className='smallText tl'> {Address} </p>
+                                <p className='smallText tl'> {location} </p>
                             </div>
                         </div>
                     </div>

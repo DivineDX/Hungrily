@@ -1,10 +1,21 @@
+/**
+ *  GET: Returns the data on a single restaurant
+ *  Returns an object with the keys store_name, location, area, opening_hours, closing_hours, Cuisine, Price 
+ */
 const getRestaurant = (req, res, db) => {
-    db('Restaurant').select().where({url:req.params.name}).timeout(1000)
-        .then(rest => {
-            if(!rest || !rest.length) {
+    const sql = 
+    `
+    SELECT *
+    FROM restaurant 
+    WHERE restaurant.url = '${req.params.name}'
+    `
+    db.raw(sql).timeout(1000)
+        .then(resp => {
+            const restaurantRows = resp.rows;
+            if(!restaurantRows || !restaurantRows.length || restaurantRows.length > 1) {
                 throw err;
             }
-            res.status(200).json(rest[0]);
+            res.status(200).json(restaurantRows[0]);
         }).catch(err =>  res.status(400).json('Unable to Retrieve'));
 }
 
