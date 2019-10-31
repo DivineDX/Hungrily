@@ -75,13 +75,13 @@ const loginUser = (req, res, db) => {
             //console.log('res');
             if (isCorrect) {
                 res.status(200).json({
-                    UserID: userID,
-                    Name: x.rows[0].name == null? x.rows[0].fname : x.rows[0].name,
-                    FranchiseOwner: (x.rows[0].name == null)
+                    userID: userID,
+                    name: x.rows[0].name == null? x.rows[0].fname : x.rows[0].name,
+                    franchiseOwner: (x.rows[0].name == null)
                 });
             }
             else{
-                res.status(400).json("incorrect password/username");
+                res.status(400).json("incorrect password");
             }
         });
     }).catch( err =>  res.status(400).json("Unable to Retrieve" ))

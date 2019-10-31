@@ -1,67 +1,119 @@
 import React from 'react';
-import { Button, Checkbox, Form } from 'semantic-ui-react';
-import './LoginForm.css';
+import { Button, Form, Input } from 'semantic-ui-react'
+import { Formik } from "formik";
+import * as yup from "yup";
 import { Link } from 'react-router-dom';
-// import url from '../../Configs/url';
+
+import './LoginForm.css';
+
+import InputErrorLabel from '../Label/InputErrorLabel';
+import url from '../../Config/url';
 
 class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: '',
-            password: '',
         }
     }
 
-    onNameChange = (event) => { 
-        this.setState({ userID: event.target.value });
-    }
-
-    onPasswordChange = (event) => {
-        this.setState({ password: event.target.value });
-    }
-
-    // onSignIn = () => { //modify this after database is coded
-    //     fetch(`http://${url.fetchURL}/signin`, {
-    //         method: 'post',
-    //         headers: {'Content-type': 'application/json'},
-    //         body: JSON.stringify({
-    //             id: this.state.nusID,
-    //             password: this.state.password,
-    //         })
-    //     })
-    //     .then(resp => resp.json())
-    //     .then(data => {
-    //         if(data === 'Failed login') {
-    //             throw new Error("Incorrect User/PW");
-    //         } else {
-    //             this.props.loginUser(this.state.nusID);
-    //             this.props.history.push("/");
-    //         }
-    //     }).catch(err => {
-    //         alert(err);
-    //     })
-    // }
-
-    render() {
+    render() { //isSignedIn, loginUser
         return (
-            <div>
-                <Form>
-                    <Form.Field className='loginText'>
-                        <input className='loginFormText' placeholder='UserID' onChange = {this.onNameChange}/>
-                    </Form.Field>
-                    <Form.Field className='loginText'>
-                        <input className='loginFormText' placeholder='Password' type="password" onChange = {this.onPasswordChange}/>
-                    </Form.Field>
-                    <Form.Field className='loginText'>
-                        <Checkbox label='Keep me signed in' />
-                    </Form.Field>
-                    <div id='LoginButs'>
-                        <Button className='button toSignIn' type='submit' onClick={() => this.onCSignIn()}> Customer </Button>
-                        <Button className='button toSignIn' type='submit' onClick={() => this.onFOSignIn()}> Franchise Owner </Button>
-                    </div>
-                </Form>
-            </div>
+            <Formik
+                initialValues={{
+                    userID: '',
+                    password: '',
+                }}
+
+                onSubmit={(values) => {
+                    fetch(`${url.fetchURL}/login`, {
+                        method: 'post',
+                        headers: { 'Content-type': 'application/json' },
+                        body: JSON.stringify({
+                            userID: values.userID,
+                            password: values.password
+                        })
+                    })
+                        .then(resp => resp.json())
+                        .then(data => {
+                            // console.log(data);
+                            if (data.userID && data.name) { //successful
+                                if(data.franchiseOwner) {
+
+                                } else { //customer
+                                    this.props.loginUser(data.userID, data.name);
+                                }
+                                this.props.history.push("/"); //go to main page
+                            }
+                            else if (data === 'No such user') {
+                                // console.log('Username already taken')
+                                this.setState({
+                                    result: 'Error: No Such User'
+                                })
+                            } else if (data === 'incorrect password') {
+                                // console.log('Username already taken')
+                                this.setState({
+                                    result: 'Error: Incorrect Password'
+                                })
+                            } else { //error
+                                // console.log('error');
+                                this.setState({
+                                    result: 'Error, Unable to Retrieve Login Credentials'
+                                })
+                                throw new Error();
+                            }
+                        }).catch(err => {
+                            alert(err);
+                        })
+                }}
+
+                validationSchema={yup.object().shape({
+                    userID: yup.string().required("This field is required"),
+                    password: yup.string().required("This field is required")
+                })}
+
+                render={({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => {
+                    return (
+                        <Form size='large' >
+                            <Form.Field className='flex flex-column items-center'>
+                                <Input
+                                    type='text'
+                                    placeholder='UserID'
+                                    name='userID'
+                                    className='registerFormText'
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.userID}
+                                />
+                                <InputErrorLabel touched={touched.userID} errorText={errors.userID} />
+                            </Form.Field>
+
+                            <Form.Field className='flex flex-column items-center'>
+                                <Input
+                                    type='password'
+                                    placeholder='Password'
+                                    name='password'
+                                    className='registerFormText'
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.password}
+                                />
+                                <InputErrorLabel touched={touched.password} errorText={errors.password} />
+
+                            </Form.Field>
+                            <div id='LoginButs'>
+                                <Button className='w-30' type='submit' onClick={handleSubmit}>
+                                    Login
+                                </Button>
+                            </div>
+
+                            <div className='mt3 white tc'>
+                                {this.state.result}
+                            </div>
+
+                        </Form>
+                    );
+                }}
+            />
         );
     }
 

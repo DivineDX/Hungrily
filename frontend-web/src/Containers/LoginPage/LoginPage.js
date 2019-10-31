@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import LoginForm from '../../Components/LoginForm/LoginForm'; 
 import './LoginPage.css';
 
-const LoginPage = (props) => {
+const LoginPage = (props) => { //isSignedIn, loginUser
     return (
         <div className='relative'>
             <Link to="/register">
@@ -20,7 +20,7 @@ const LoginPage = (props) => {
             </Link> 
             <div id='LoginSegment' className="w-25 mt4 pt3 flex flex-column items-center center">
                 <h1 className="tc baskerville f1 fw5 mb0">Welcome Back</h1>
-                <p> Have an account already? </p>
+                <p> Have an account already?</p>
             </div>
             <div className='mh4 mv3' id='loginContainer'>
                 <LoginForm {...props}/>  

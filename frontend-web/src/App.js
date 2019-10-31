@@ -106,15 +106,24 @@ class App extends Component {
 		});
 	}
 
+	signOutUser = () => {
+		this.setState({
+			isSignedIn: false,
+			userID: '',
+			name:''
+		})
+	}
+
 	getUserID = () => {
 		return this.state.userID;
 	}
-	
+
 	render() {
 		const isSignedIn = this.state.isSignedIn;
 		let loginProp =
 			(isSignedIn) ? this.signoutUser : this.loginUser;
 
+		// console.log(this.state);
 		return (	
 			<BrowserRouter>
 				<Particles className='particles' params={particlesOptions}/>
