@@ -1,9 +1,3 @@
-.registerText {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-
 .registerFormText {
     width: 36% !important;
 }

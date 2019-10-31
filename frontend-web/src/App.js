@@ -109,6 +109,7 @@ class App extends Component {
 	getUserID = () => {
 		return this.state.userID;
 	}
+	
 	render() {
 		const isSignedIn = this.state.isSignedIn;
 		let loginProp =
