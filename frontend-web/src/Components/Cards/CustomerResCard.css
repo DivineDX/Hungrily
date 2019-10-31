@@ -1,0 +1,18 @@
+#ResvCard { 
+    width: 450px;
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
+    margin-left: 3em !important;
+    margin-right: 1em !important;
+    transition: transform .1s;
+}
+
+.Name {
+    height: 50px !important;
+}
+
+.ResvCard:hover {
+    transform: scale(1.1);
+    z-index: 5;
+}
+
