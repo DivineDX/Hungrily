@@ -7,7 +7,7 @@ import Homepage from './Containers/Homepage';
 import NonExistentPage from './Containers/NonExistentPage';
 import NavBar from './Containers/NavBar/NavBar';
 import RestaurantsPage from './Containers/Restaurants/RestaurantsPage';
-import CustomerRes from './Containers/Reservations/CustomerRes';
+import Reservations from './Containers/Reservations/Reservations';
 import LoginPage from './Containers/LoginPage/LoginPage';
 import Register from './Containers/RegisterPage/RegisterPage';
 import LandingPage from './Components/RestaurantLandingPage/LandingPage';
@@ -89,10 +89,10 @@ class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			isSignedIn: false, //default is false (not signed in)
+			isSignedIn: true, //default is false (not signed in)
 			userID: '', 
 			name: '',
-			franchiseOwner: false
+			franchiseOwner: false,
 		}
 	}
 
@@ -133,7 +133,7 @@ class App extends Component {
 					<Switch>
 						<Route path="/" exact component={Homepage} />
 						<Route path="/restaurants" exact component={RestaurantsPage} />
-						<ProtectedRoute path="/customer_reservations" component={CustomerRes} userID={this.state.userID} isSignedIn={isSignedIn} />
+						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} franchiseOwner={this.state.franchiseOwner}/>
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
 						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} />} />
