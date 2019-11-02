@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import CustomerResCard from '../../Components/Cards/CustomerResCard';
+import FranchiseOResCard from '../../Components/Cards/FranchiseOResCard';
 import url from '../../Config/url';
 
 // import DashboardDropDown from '../../Components/Dropdowns/DashboardDropDown';
@@ -39,15 +39,11 @@ class FranchiseORes extends Component {
     render() {
         return (	 //acts as a card list here
             <div>
-                <div className="w-75 pt5 center bb b--black-10">
-                    <h1 className="tc baskerville f1 fw5">My ReservationsS</h1>
-                </div>
-
-                {/* <div id='CardDisplay'>
+                /* <div id='CardDisplay'>
                     {this.state.reservations.map((data) => {
-                        return <CustomerResCard fluid centered data={data} />
+                    return <FranchiseOResCard fluid centered data={data} />
                     })}
-                </div> */}
+                </div> */
             </div>
         );
     }

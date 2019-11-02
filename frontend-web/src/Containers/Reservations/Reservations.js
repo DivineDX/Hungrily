@@ -18,19 +18,17 @@ class Reservations extends Component {
 
     render() {
         const {franchiseOwner} = this.props;
-        let page; 
-
-        if (franchiseOwner) {
-            page = <FranchiseORes />
-        } else {
-           page = <CustomerResCard />
-        }
 
         return (
             <div className="w-75 pt5 center bb b--black-10">
                 <h1 className="tc baskerville f1 fw5">My Reservations</h1>
-                <div franchiseOwner = {franchiseOwner} /> 
-                {page}
+                <div>
+                    {
+                        franchiseOwner 
+                        ? <FranchiseORes />
+                        : <CustomerRes />
+                    }
+                </div>
             </div>
         );
     }

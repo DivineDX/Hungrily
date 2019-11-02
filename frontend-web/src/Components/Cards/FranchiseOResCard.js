@@ -6,7 +6,7 @@ import './CustomerResCard.css';
 
 const CustomerResCard = (props) => {
     const loadedData = props.data;
-    const { Name, Area, BookDate, BookTime, Pax } = loadedData;
+    // const { Name, Area, BookDate, BookTime, Pax } = loadedData;
 
     return (
         <div class="ui card" id='ResvCard'>
@@ -15,13 +15,13 @@ const CustomerResCard = (props) => {
                 src={foodImage}
                 alt="Error" className="w-100" id="cardImage"
             />
-            <div class="NameHeader"> {Name} </div>
+            {/* <div class="NameHeader"> {Name} </div> */}
             <div class="content">
-                <div class="meta"> Area: {Area} </div>
+                {/* <div class="meta"> Area: {Area} </div> */}
             </div>
             <div class="extra content">
                 <Icon name='clock' /> 
-                Booking Time: {BookTime}
+                {/* Booking Time: {BookTime} */}
             </div>
         </div>
     )
