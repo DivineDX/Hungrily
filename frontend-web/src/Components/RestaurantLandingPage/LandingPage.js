@@ -5,6 +5,7 @@ import url from '../../Config/url';
 import './LandingPage.css';
 import BookRestaurant from '../../Containers/SearchForm/BookRestaurant';
 import food from '../../Images/food.jpg'
+import RestaurantDetailBox from './RestaurantDetailBox';
 
 class LandingPage extends Component {
     constructor(props) {
@@ -30,7 +31,6 @@ class LandingPage extends Component {
     }
 
     render() {
-        const { store_name, location, area, opening_hours, closing_hours, Cuisine, Price } = this.state.data;
         if (this.state.notFound) {
             return (
                 <NonExistentPage />
@@ -44,52 +44,16 @@ class LandingPage extends Component {
                         src=""
                         onError={(e) => { e.target.onerror = null; e.target.src = food }}
                         alt="Error" />
+                        
                     <div className="pv3">
-                        <h1 className='f2 pageText relative'> {store_name} </h1>
+                        <h1 className='f2 pageText relative'> {this.state.data.store_name} </h1>
                     </div>
+
                     <div className="pt2 pl7 pr7 relative" id='BookBox'>
                         <BookRestaurant/>
                     </div>
-                    <div className='row relative'>
-                        <div className='column pt3 pb3'>
-                            <div className='containerText'>
-                                <h3> Cuisine </h3>
-                                <p className='smallText'> {Cuisine} </p>
-                            </div>
-                            <div className='containerText'>
-                                <h3> Menu </h3>
-                                <Modal trigger={<Button> Menu </Button>}>
-                                    <Modal.Content>
-                                        <p> Menu </p>
-                                    </Modal.Content>
-                                    <Modal.Actions>
-                                        <Button color='green' inverted>
-                                            <Icon name='checkmark' /> Yes
-                                    </Button>
-                                    </Modal.Actions>
-                                </Modal>
-                            </div>
-                            <div className='containerText'>
-                                <h3> Opening Hours </h3>
-                                <p className='smallText tl'> Mon-Sun: {opening_hours} - {closing_hours} </p>
-                            </div>
-                        </div>
-                        <div className='column bb pl4 pr6 pt3 pb3'>
-                            <div className='containerText'>
-                                <h3> Price </h3>
-                                <p className='smallText tl'> {Price} </p>
-                            </div>
-                            <div className='containerText'>
-                                <h3> Location </h3>
-                                <p className='smallText tl'> {area} </p>
-                            </div>
-                            <div className='containerText'>
-                                <h3> Address </h3>
-                                <p className='smallText tl'> {location} </p>
-                            </div>
-                        </div>
-                    </div>
-
+                    
+                    <RestaurantDetailBox data = {this.state.data}/>
                 </article>
             );
         }
