@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CustomerResCard from '../../Components/Cards/CustomerResCard';
+import CustomerResMenuBar from '../Reservations/CustomerResMenuBar';
 import url from '../../Config/url';
 
 import './CustomerRes.css'
@@ -15,9 +16,24 @@ class CustomerRes extends Component {
         this.state = {
             reservations: [],
             loading: true,
-            authFailed: false
+            authFailed: false,
+            category: 'current',
         }
     }
+
+    handleItemClick = (e, { name }) => {
+        const { activeItem } = this.state
+        this.setState({ activeItem: name });
+    }
+
+    // selectCategory = (arr, cat) => {
+    //     const currentDate = new Date();
+	// 	if (cat === 'current') {
+	// 		return arr.filter(a => new Date(a.date) - currentDate < 0);
+	// 	} else if (cat === 'past') {
+	// 		return arr.filter(a => new Date(a.date) - currentDate > 0);
+    //     }
+    // }
 
     componentDidMount() {
         fetch(`${url.fetchURL}/seeMyResv` , {
@@ -37,15 +53,32 @@ class CustomerRes extends Component {
             })
     }
 
+    handleCategoryClick = (cat) => { //Only for Popular and Recent (Sorting, not filtering)
+		this.setState({ visible: 3, category: cat });
+	}
+
     render() {
-        return (	 //acts as a card list here
+        const { activeItem } = this.state
+        // const displayedData = this.selectCategory(this.state.reservations, this.state.category);
+        // const current = new Date();
+        return (	 
             <div>
-                <div id='CardDisplay'>
-                    {this.state.reservations.map((data) => {
-                        return <CustomerResCard fluid centered data={data} />
-                    })}
+                <div className="w-75 pt5 center">
+					<CustomerResMenuBar
+						handleCategoryClick={this.handleCategoryClick}
+					/>
+				</div>
+
+                <div>
+                    <div id='CardDisplay'>
+                        {
+                            this.state.reservations.map((data) => {
+                            return <CustomerResCard fluid centered data={data} />
+                        })
+                        }
+                    </div>
                 </div>
-            </div>
+			</div>
         );
     }
 }

@@ -1,0 +1,28 @@
+.ui.secondary.pointing.menu.item {
+    margin-left: 0px;
+}
+
+#NotOg {
+    display: none;
+}
+
+.seeMore {
+    background-color: #41a3c4 !important;
+    color: white !important;
+}
+
+@media screen and (max-width: 555px) {
+    .ui.massive.menu {
+        font-size: 14px;
+    } 
+
+    #Og {
+        display: none;
+    }
+
+    #NotOg {
+        display: flex;
+        padding-top: 13px;
+        background-color: white; 
+    }
+}

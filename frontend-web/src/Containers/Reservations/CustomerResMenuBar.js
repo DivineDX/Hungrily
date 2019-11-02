@@ -1,0 +1,40 @@
+import React, { Component } from "react";
+import { Dropdown, Menu } from "semantic-ui-react";
+import './CustomerResMenuBar.css';
+
+export default class BulletinMenuBar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeItem: "current",
+        }
+    }
+
+    handleItemClick = (e, { name }) => {
+        this.setState({ activeItem: name });
+        this.props.handleCategoryClick(name);
+    }
+
+    render() {
+        const { activeItem } = this.state;
+
+        return (
+            <div>
+                <Menu size='massive' pointing secondary>
+                    <Menu.Item
+                        name="current"
+                        active={activeItem === "current"}
+                        onClick={this.handleItemClick}
+                    />
+                    <Menu.Item
+                        name="past"
+                        active={activeItem === "past"}
+                        onClick={this.handleItemClick}
+                        id='two'
+                    />
+                </Menu>
+            </div>
+        );
+    }
+}
+
