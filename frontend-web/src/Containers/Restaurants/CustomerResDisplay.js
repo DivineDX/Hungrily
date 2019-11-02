@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import RestaurantCard from '../../Components/Cards/RestaurantCard';
 import url from '../../Config/url'
-import FranchiseOResPage from '../Restaurants/FranchiseOResPage';
-import CustomerResDisplay from '../Restaurants/CustomerResDisplay'
+import FranchiseORes from '../Reservations/FranchiseORes';
 // import DashboardDropDown from '../../Components/Dropdowns/DashboardDropDown';
 // import Cookies from 'universal-cookie';
 // import AuthFailed from '../NonExistentPage/AuthFailed';
@@ -35,13 +34,12 @@ class RestaurantsPage extends Component {
         const { franchiseOwner } = this.props;
         return (	 //acts as a card list here
             <div>
-                <div className="pt0 mt0">
-                    {
-                        franchiseOwner
-                        ? <FranchiseOResPage />
-                        : <CustomerResDisplay />
-                    }
+                <div className="w-75 pt5 center bb b--black-10">
+                    <h1 className="tc baskerville f1 fw5"> All Restaurants</h1>
                 </div>
+                {this.state.restaurants.map((data) => {
+                    return <RestaurantCard data={data} />
+                })}
             </div>
         );
     }
