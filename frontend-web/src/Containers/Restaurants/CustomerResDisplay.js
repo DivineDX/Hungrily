@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import RestaurantCard from '../../Components/Cards/RestaurantCard';
 import url from '../../Config/url'
 import FranchiseORes from '../Reservations/FranchiseORes';
-// import DashboardDropDown from '../../Components/Dropdowns/DashboardDropDown';
-// import Cookies from 'universal-cookie';
-// import AuthFailed from '../NonExistentPage/AuthFailed';
-// import EmptyDashboard from '../../Components/EmptyFillers/EmptyDashboard';
-// import url from '../../Configs/url';
+import RestaurantDisplayBulletin from '../../Components/Bulletins/RestaurantDisplayBulletin';
+
 
 class RestaurantsPage extends Component {
     constructor(props) {
@@ -31,15 +28,20 @@ class RestaurantsPage extends Component {
     }
 
     render() {
-        const { franchiseOwner } = this.props;
-        return (	 //acts as a card list here
+        console.log(this.state.restaurants);
+        return (
             <div>
                 <div className="w-75 pt5 center bb b--black-10">
                     <h1 className="tc baskerville f1 fw5"> All Restaurants</h1>
                 </div>
-                {this.state.restaurants.map((data) => {
+                {/* {this.state.restaurants.map((data) => {
                     return <RestaurantCard data={data} />
-                })}
+                })} */}
+                <div className = 'pa4'>
+                    <RestaurantDisplayBulletin 
+                    resDisplay = {this.state.restaurants}/>
+                </div>
+                
             </div>
         );
     }

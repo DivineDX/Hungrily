@@ -47,14 +47,14 @@ const findRestaurants = (req, res, db) => {
                 console.log(result.rows)
                 res.status(200).json(result.rows.map(x=>(
                     {
-                        Name:x.store_name,
-                        Area:x.area,
+                        name:x.store_name,
+                        area:x.area,
                         cuisine:x.cuisine,
-                        Opening_hours:x.opening_hours,
-                        Closing_hours:x.closing_hours,
-                        Price:0,
+                        openingHours:x.opening_hours,
+                        closingHours:x.closing_hours,
+                        price:0,
                         url:x.url,
-                        Ratings:0
+                        ratings:0
                     }
                 )))
         }).catch(err =>res.status(400).json(err));//'Unable to Retrieve'));
@@ -104,7 +104,18 @@ const getAllRestaurants = (req, res, db) => {
     `
     db.raw(sql).timeout(1000)
     .then(restaurants => {
-        res.status(200).json(restaurants.rows);
+        res.status(200).json(restaurants.rows.map(x=>(
+            {
+                name:x.store_name,
+                area:x.area,
+                cuisine:x.cuisine,
+                openingHours:x.opening_hours,
+                closingHours:x.closing_hours,
+                price:0,
+                url:x.url,
+                ratings:0
+            }
+        )))
     }).catch(err =>  res.status(400).json('Unable to Retrieve'));
 }
 
