@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import LoginForm from '../../Components/LoginForm/LoginForm'; 
 import './LoginPage.css';

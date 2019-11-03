@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import RestaurantCard from '../../Components/Cards/RestaurantCard';
-import url from '../../Config/url'
-import FranchiseOwnedResPage from '../Restaurants/FranchiseOwnedResPage';
-import CustomerResDisplay from '../Restaurants/CustomerResDisplay'
+import FranchiseOwnedResPage from './FranchiseOwnedResPage';
+import CustomerRestaurantListPage from './CustomerRestaurantListPage';
 
 /**
  * A simple page to show the entire list of Restaurants (For Customers),
  * or the entire list of Restaurants owned by a Franchise
  */
-class RestaurantsPage extends Component {
+class RestaurantsListPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -27,7 +25,7 @@ class RestaurantsPage extends Component {
                     {
                         isFranchiseOwner
                         ? <FranchiseOwnedResPage />
-                        : <CustomerResDisplay />
+                        : <CustomerRestaurantListPage />
                     }
                 </div>
             </div>
@@ -35,4 +33,4 @@ class RestaurantsPage extends Component {
     }
 }
 
-export default RestaurantsPage;
+export default RestaurantsListPage;

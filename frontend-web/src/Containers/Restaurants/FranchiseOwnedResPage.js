@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import RestaurantCard from '../../Components/Cards/RestaurantCard';
 import url from '../../Config/url'
 import AuthFailed from '../AuthFailed'
-// import DashboardDropDown from '../../Components/Dropdowns/DashboardDropDown';
-// import Cookies from 'universal-cookie';
-// import AuthFailed from '../NonExistentPage/AuthFailed';
-// import EmptyDashboard from '../../Components/EmptyFillers/EmptyDashboard';
-// import url from '../../Configs/url';
 
-class RestaurantsPage extends Component {
+/**
+ * Page for exclusive use by FranchiseOwners to view all their owned Restaurants
+ */
+class FranchiseOwnedResPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -60,4 +58,4 @@ class RestaurantsPage extends Component {
     }
 }
 
-export default RestaurantsPage;
+export default FranchiseOwnedResPage;

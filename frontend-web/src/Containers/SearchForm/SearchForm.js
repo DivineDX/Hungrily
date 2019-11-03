@@ -10,6 +10,9 @@ import PaxOptions from '../../Data/PaxOptions';
 
 import url from '../../Config/url';
 
+/**
+ * SearchForm placed at the front page to be used for the searching of Restaurants
+ */
 class SearchForm extends Component {
     constructor() {
         super();

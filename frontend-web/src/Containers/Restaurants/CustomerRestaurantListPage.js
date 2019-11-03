@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import RestaurantCard from '../../Components/Cards/RestaurantCard';
 import url from '../../Config/url'
-import FranchiseORes from '../Reservations/FranchiseORes';
 import RestaurantDisplayBulletin from '../../Components/Bulletins/RestaurantDisplayBulletin';
 
-
-class RestaurantsPage extends Component {
+/**
+ * Rendered Page that shows the entire list of Restaurants for browsing
+ */
+class CustomerRestaurantListPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -34,17 +34,14 @@ class RestaurantsPage extends Component {
                 <div className="w-75 pt5 center bb b--black-10">
                     <h1 className="tc baskerville f1 fw5"> All Restaurants</h1>
                 </div>
-                {/* {this.state.restaurants.map((data) => {
-                    return <RestaurantCard data={data} />
-                })} */}
-                <div className = 'pa4'>
-                    <RestaurantDisplayBulletin 
-                    resDisplay = {this.state.restaurants}/>
+                <div className='pa4'>
+                    <RestaurantDisplayBulletin
+                        resDisplay={this.state.restaurants} />
                 </div>
-                
+
             </div>
         );
     }
 }
 
-export default RestaurantsPage;
+export default CustomerRestaurantListPage;

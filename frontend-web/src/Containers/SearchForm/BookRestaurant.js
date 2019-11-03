@@ -7,7 +7,10 @@ import 'flatpickr/dist/themes/light.css'
 
 import PaxOptions from '../../Data/PaxOptions';
 
-
+/**
+ * Form used for the Booking of a Reservation at a Restaurant
+ * Required Customer to state Date&Time of Booking and Number of Pax.
+ */
 const BookRestaurant = () => (
     <Formik
         initialValues={{

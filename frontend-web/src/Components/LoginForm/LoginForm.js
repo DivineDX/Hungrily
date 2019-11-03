@@ -2,12 +2,10 @@ import React from 'react';
 import { Button, Form, Input } from 'semantic-ui-react'
 import { Formik } from "formik";
 import * as yup from "yup";
-import { Link } from 'react-router-dom';
-
-import './LoginForm.css';
 
 import InputErrorLabel from '../Label/InputErrorLabel';
 import url from '../../Config/url';
+import './LoginForm.css';
 
 class LoginForm extends React.Component {
     constructor(props) {
