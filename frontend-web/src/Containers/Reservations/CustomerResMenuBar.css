@@ -11,6 +11,13 @@
     color: white !important;
 }
 
+.bulletinBar { 
+    font-weight: bold;
+    font-size: 2em;
+    padding-left: 0px;
+    margin-left: 0px;
+}
+
 @media screen and (max-width: 555px) {
     .ui.massive.menu {
         font-size: 14px;
