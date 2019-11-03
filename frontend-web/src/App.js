@@ -144,7 +144,7 @@ class App extends Component {
 					<Switch>
 						<Route path="/" exact component={Homepage} />
 						<Route path="/restaurants" exact render={(props) => <RestaurantsListPage {...props} isSignedIn={isSignedIn} isFranchiseOwner = {this.state.isFranchiseOwner}/>} />
-						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} franchiseOwner={this.state.isFranchiseOwner}/>
+						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} isFranchiseOwner={this.state.isFranchiseOwner}/>
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
 						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} isSignedIn = {isSignedIn} userID = {this.state.userID}/>} />

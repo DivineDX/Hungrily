@@ -25,12 +25,13 @@ export default class BulletinMenuBar extends Component {
                         name="current"
                         active={activeItem === "current"}
                         onClick={this.handleItemClick}
+                        className = 'bulletinBar'
                     />
                     <Menu.Item
                         name="past"
                         active={activeItem === "past"}
                         onClick={this.handleItemClick}
-                        id='two'
+                        className = 'bulletinBar'
                     />
                 </Menu>
             </div>
