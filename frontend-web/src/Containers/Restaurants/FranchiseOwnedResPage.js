@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RestaurantCard from '../../Components/Cards/RestaurantCard';
+import RestaurantDisplayBulletin from '../../Components/Bulletins/RestaurantDisplayBulletin';
 import url from '../../Config/url'
-import AuthFailed from '../AuthFailed'
 
 /**
  * Page for exclusive use by FranchiseOwners to view all their owned Restaurants
@@ -12,7 +12,6 @@ class FranchiseOwnedResPage extends Component {
         this.state = {
             restaurants: [],
             loading: true,
-            authFailed: false,
         }
     }
 
@@ -21,38 +20,27 @@ class FranchiseOwnedResPage extends Component {
             method: 'post',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
-                userID: this.state.userID,
+                franchiseOwnerID: this.props.userID
             })
         })
             .then(resp => resp.json())
             .then(data => {
-                if (data === 'Auth failed') {
-                    this.setState({ authFailed: true })
-                } else {
-                    this.setState({ 
-                        restaurants: data, 
-                        loading: false,
-                    });
-                }
+                this.setState({ restaurants: data, loading: false })
             }).catch(error => {
                 console.log(error);
             })
     }
 
     render() {
-        if (this.state.authFailed) {
-            return (
-                <AuthFailed />
-            )
-        }
-        return (	
+        return (
             <div>
                 <div className="w-75 pt5 center bb b--black-10">
-                    <h1 className="tc baskerville f1 fw5"> My Restaurants</h1>
+                    <h1 className="tc baskerville f1 fw5"> Owned Restaurants</h1>
                 </div>
-                {this.state.restaurants.map((data) => {
-                    return <RestaurantCard data={data} />
-                })}
+                <div className='pa4'>
+                    <RestaurantDisplayBulletin
+                        resDisplay={this.state.restaurants} />
+                </div>
             </div>
         );
     }

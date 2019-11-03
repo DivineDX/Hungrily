@@ -7,7 +7,6 @@
  */
 const checkAvailability = (req, res, db) => {
     const {userID, franchiseName, resName, dateTime, pax} = req.body;
-    console.log("checking availability", req.body);
     res.status(200).json('available'); 
 }
 
@@ -17,15 +16,6 @@ const checkAvailability = (req, res, db) => {
 const bookReservation = (req, res, db) => {
     const {userID, franchiseName, resName, dateTime, pax} = req.body;
     res.status(200).json('available');
-}
-
-/**
- * Attempts to edit the datetime of an existing restaurant
- * Availability already beforehand
- */
-const editReservation = (req, res, db) => {
-    const {UserID, FranchiseName, RestaurantLocation, oldDateTime, newDateTime, Table} = req.body;
-    res.status(200).json('Success'); //success if reservation is successfully edited and updated
 }
 
 /**
@@ -69,7 +59,6 @@ const seeCustomerReservations = (req, res, db) => {
 module.exports = {
     checkAvailability: checkAvailability,
     bookReservation: bookReservation,
-    editReservation: editReservation,
     cancelReservation: cancelReservation,
     seeCustomerReservations: seeCustomerReservations,
 }

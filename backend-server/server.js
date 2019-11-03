@@ -40,7 +40,6 @@ app.post('/viewRestaurantReservations', (req, res) => franchiseOwner.viewRestaur
 //Customer Reservations
 app.post('/resvAvailability', (req, res) => customerReservations.checkAvailability(req, res, db));
 app.post('/bookResv', (req, res) => customerReservations.checkAvailability(req, res, db));
-app.put('/editResv', (req, res) => customerReservations.editReservation(req, res, db));
 app.delete('/cancelResv', (req, res) => customerReservations.cancelReservation(req, res, db));
 app.post('/seeMyResv', (req, res) => customerReservations.seeCustomerReservations(req, res, db));
 

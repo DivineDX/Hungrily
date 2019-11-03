@@ -29,19 +29,19 @@ class LandingPage extends Component {
                     this.setState({ resData: data, notFound: false });
                 }
             });
-        
+
         fetch(`${url.fetchURL}/restaurantmenu/${name}`)
-        .then(resp => resp.json())
-        .then(data => {
-            if (data === 'Unable to Retrieve') {
-            } else {
-                this.setState({ menuData: data});
-            }
-        });
+            .then(resp => resp.json())
+            .then(data => {
+                if (data === 'Unable to Retrieve') {
+                } else {
+                    this.setState({ menuData: data });
+                }
+            });
     }
 
     render() {
-        const {isSignedIn, userID} = this.props;
+        const { isSignedIn, userID, isFranchiseOwner } = this.props;
         if (this.state.notFound) {
             return (
                 <NonExistentPage />
@@ -55,23 +55,24 @@ class LandingPage extends Component {
                         src=""
                         onError={(e) => { e.target.onerror = null; e.target.src = food }}
                         alt="Error" />
-                        
+
                     <div className="pv3">
                         <h1 className='f2 pageText relative'> {this.state.resData.store_name} </h1>
                     </div>
 
-                    <div className="pt2 pl7 pr7 relative" id='BookBox'>
-                        <BookRestaurant
-                            userID = {this.props.userID}
-                            resName = {this.state.resData.store_name}
-                            franchisorName = {this.state.resData.userid} //of franchisor
-                        />
-                    </div>
-                    
-                    <RestaurantDetailBox 
-                        userID = {this.props.userID}
-                        resData = {this.state.resData}
-                        menuData = {this.state.menuData}/>
+                    {!isFranchiseOwner &&
+                        <div className="pt2 pl7 pr7 relative" id='BookBox'>
+                            <BookRestaurant
+                                userID={this.props.userID}
+                                resName={this.state.resData.store_name}
+                                franchisorName={this.state.resData.userid} //of franchisor
+                            />
+                        </div>
+                    }
+                    <RestaurantDetailBox
+                        userID={this.props.userID}
+                        resData={this.state.resData}
+                        menuData={this.state.menuData} />
                 </article>
             );
         }

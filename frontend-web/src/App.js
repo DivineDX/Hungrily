@@ -85,16 +85,33 @@ const particlesOptions = {
 	"retina_detect": true
 }
 
+const initialState = {
+	isSignedIn: false,
+	userID: '',
+	name: '',
+	isFranchiseOwner: false
+}
+
+//used for testing purposes
+const loginUserState = {
+	isSignedIn: false,
+	userID: '',
+	name: '',
+	isFranchiseOwner: false
+}
+
+//used for testing purposes
+const loginFranchiseState = {
+	isSignedIn: true,
+	userID: 'FishnCoFranchisorAccount',
+	name: 'FishnCoFranchisorAccounts name',
+	isFranchiseOwner: true,
+}
 
 class App extends Component {
 	constructor() {
 		super();
-		this.state = {
-			isSignedIn: false, //default is false (not signed in)
-			userID: '', 
-			name: '',
-			isFranchiseOwner: false,
-		}
+		this.state = initialState;
 	}
 
 	isSignedIn = () => {
@@ -135,21 +152,21 @@ class App extends Component {
 		return (
 			<BrowserRouter>
 				<Particles className='particles' params={particlesOptions} />
-				<NavBar 
+				<NavBar
 					loginProp={loginProp}
 					isSignedIn={isSignedIn}
-					name={this.state.userID}
-					isFranchiseOwner = {this.state.isFranchiseOwner}
+					name={this.state.name}
+					isFranchiseOwner={this.state.isFranchiseOwner}
 				/>
 				<div className='body'>
 					<Switch>
 						<Route path="/" exact component={Homepage} />
-						<Route path="/restaurants" exact render={(props) => <RestaurantsListPage {...props} isSignedIn={isSignedIn} isFranchiseOwner = {this.state.isFranchiseOwner}/>} />
-						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} isFranchiseOwner={this.state.isFranchiseOwner}/>
+						<Route path="/restaurants" exact render={(props) => <RestaurantsListPage {...props} isSignedIn={isSignedIn} userID={this.state.userID} isFranchiseOwner={this.state.isFranchiseOwner} />} />
+						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} isFranchiseOwner={this.state.isFranchiseOwner} />
 						<Route path="/voucherlist" exact render={(props) => <Voucherlist {...props} />} />
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
-						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} isSignedIn = {isSignedIn} userID = {this.state.userID}/>} />
+						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} isSignedIn={isSignedIn} userID={this.state.userID} isFranchiseOwner = {this.state.isFranchiseOwner}/>} />
 						<Route path="*" component={NonExistentPage} />
 					</Switch>
 				</div>
