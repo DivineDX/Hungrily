@@ -42,7 +42,7 @@ class BookRestaurant extends React.Component {
                     pax: '',
                 }}
 
-                onSubmit={(values) => {
+                onSubmit={(values) => { 
                     this.setState({ loading: true });
                     fetch(`${url.fetchURL}/resvAvailability`, {
                         method: 'post',
@@ -60,7 +60,7 @@ class BookRestaurant extends React.Component {
                             console.log(data);
                             this.setState({ submitted: true, loading: false });
                             switch (data) {
-                                case 'available':
+                                case 'available': //todo: After check availability, if available, will do another POST to insert into DB
                                     this.setState({ available: true })
                                     break;
                                 case 'noSeats':
@@ -127,6 +127,7 @@ class BookRestaurant extends React.Component {
                                     noDouble={this.state.noDouble}
                                     available={this.state.available}
                                     loading={this.state.loading}
+                                    reset = {this.resetState}
                                 />
                             </Form.Group>
                         </Form>
