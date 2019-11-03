@@ -50,7 +50,7 @@
 	transform: scale(1.1); 
 } 
 
-#RestaurantFS, #ReviewFS {
+#RestaurantFS, #ReviewFS, #VoucherFS {
 	font-size: 18px;
 	color: #421805;
 }
@@ -89,7 +89,7 @@
 		display: flex;
 	}
 
-	#RestaurantFS, #ReviewFS {
+	#RestaurantFS, #ReviewFS, #VoucherFS {
 		font-size: 18px;
 	}
 
@@ -140,7 +140,7 @@
 		transform: scale(1.1); 
 	}  */
 	
-	#RestaurantFS, #ReviewFS {
+	#RestaurantFS, #ReviewFS, #VoucherFS {
 		font-size: 16px;
 		color: black;
 		font-weight: normal !important;

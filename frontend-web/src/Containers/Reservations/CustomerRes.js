@@ -18,7 +18,7 @@ class CustomerRes extends Component {
             filteredReservation: [], //contains only 'current' or 'past' reservations
             loading: true,
             authFailed: false,
-            isCurrent: true, //will be true to show past resv
+            isCurrent: false, //will be true to show past resv
         }
     }
 
