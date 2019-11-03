@@ -89,8 +89,8 @@ class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			isSignedIn: true, //default is false (not signed in)
-			userID: 'admin', 
+			isSignedIn: false, //default is false (not signed in)
+			userID: '', 
 			name: '',
 			isFranchiseOwner: false,
 		}
@@ -100,11 +100,17 @@ class App extends Component {
 		return this.state.isSignedIn;
 	}
 
+	//for users not franchiseOwners
 	loginUser = (userID, name) => {
+		this.loginUser(userID, name, false)
+	}
+
+	loginUser = (userID, name, isFranchiseOwner) => {
 		this.setState({
 			isSignedIn: true,
 			userID: userID,
 			name: name,
+			isFranchiseOwner: isFranchiseOwner
 		});
 	}
 
@@ -128,7 +134,12 @@ class App extends Component {
 		return (
 			<BrowserRouter>
 				<Particles className='particles' params={particlesOptions} />
-				<NavBar loginProp={loginProp} isSignedIn={isSignedIn} name={this.state.name} />
+				<NavBar 
+					loginProp={loginProp}
+					isSignedIn={isSignedIn}
+					name={this.state.userID}
+					isFranchiseOwner = {this.state.isFranchiseOwner}
+				/>
 				<div className='body'>
 					<Switch>
 						<Route path="/" exact component={Homepage} />

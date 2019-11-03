@@ -35,11 +35,7 @@ class LoginForm extends React.Component {
                         .then(data => {
                             // console.log(data);
                             if (data.userID && data.name) { //successful
-                                if(data.franchiseOwner) {
-
-                                } else { //customer
-                                    this.props.loginUser(data.userID, data.name);
-                                }
+                                this.props.loginUser(data.userID, data.name, data.franchiseOwner);
                                 this.props.history.push("/"); //go to main page
                             }
                             else if (data === 'No such user') {
