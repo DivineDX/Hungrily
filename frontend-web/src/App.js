@@ -90,7 +90,7 @@ class App extends Component {
 		super();
 		this.state = {
 			isSignedIn: true, //default is false (not signed in)
-			userID: '', 
+			userID: 'admin', 
 			name: '',
 			isFranchiseOwner: false,
 		}
@@ -136,7 +136,7 @@ class App extends Component {
 						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} franchiseOwner={this.state.isFranchiseOwner}/>
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
-						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} />} />
+						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} isSignedIn = {isSignedIn} userID = {this.state.userID}/>} />
 						<Route path="*" component={NonExistentPage} />
 					</Switch>
 				</div>

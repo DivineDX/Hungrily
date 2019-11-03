@@ -1,18 +1,22 @@
 /**
  * Check availablity of restaurant in that specific datetime
- * Returns false if already taken
+ * will return 3 results: 
+ * 1) available: Literal meaning
+ * 2) noSeats: No seats at that specific timing
+ * 3) noDouble: Customer already has a reservation at another 
  */
 const checkAvailability = (req, res, db) => {
-    const {UserID, FranchiseName, RestaurantLocation, DateTime, Pax} = req.body;
-    res.status(200).json('Success');
+    const {userID, franchiseName, resName, dateTime, pax} = req.body;
+    console.log("checking availability", req.body);
+    res.status(200).json('available'); 
 }
 
 /**
  * Books a Reservation. Assumed to have checked availability beforehand
  */
 const bookReservation = (req, res, db) => {
-    const {UserID, FranchiseName, RestaurantLocation, DateTime, Pax} = req.body;
-    res.status(200).json('Success');
+    const {userID, franchiseName, resName, dateTime, pax} = req.body;
+    res.status(200).json('available');
 }
 
 /**

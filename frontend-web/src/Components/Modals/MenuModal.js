@@ -7,7 +7,6 @@ import FoodCard from '../Cards/FoodCard';
  * menuData is an array of objects, each representing a food item.
  */
 const MenuModal = ({menuData}) => {
-    console.log("MenuData:", menuData)
     return (
         <Modal trigger={<Button>Menu</Button>} dimmer = {'inverted'}>
             <Modal.Header>Menu</Modal.Header>
@@ -16,7 +15,9 @@ const MenuModal = ({menuData}) => {
                     {
                         menuData.map(data => {
                             return (
-                                <FoodCard foodData = {data}/>
+                                <FoodCard 
+                                    key = {data.name}
+                                    foodData = {data}/>
                             );
                         })
                     }

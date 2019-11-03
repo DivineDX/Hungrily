@@ -12,7 +12,7 @@ class LandingPage extends Component {
         this.state = {
             notFound: true,
             name: '',
-            resData: [],
+            resData: {}, //Array of objs, Select * from Restaurants
             menuData: [],
         }
     }
@@ -41,6 +41,7 @@ class LandingPage extends Component {
     }
 
     render() {
+        const {isSignedIn, userID} = this.props;
         if (this.state.notFound) {
             return (
                 <NonExistentPage />
@@ -60,10 +61,15 @@ class LandingPage extends Component {
                     </div>
 
                     <div className="pt2 pl7 pr7 relative" id='BookBox'>
-                        <BookRestaurant/>
+                        <BookRestaurant
+                            userID = {this.props.userID}
+                            resName = {this.state.resData.store_name}
+                            franchisorName = {this.state.resData.userid} //of franchisor
+                        />
                     </div>
                     
                     <RestaurantDetailBox 
+                        userID = {this.props.userID}
                         resData = {this.state.resData}
                         menuData = {this.state.menuData}/>
                 </article>

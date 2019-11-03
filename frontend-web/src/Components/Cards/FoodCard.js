@@ -7,7 +7,6 @@ import { Header, Segment } from 'semantic-ui-react'
  */
 const FoodCard = ({ foodData }) => {
     const { name, cuisine, type, price } = foodData;
-    console.log("fooddata:", foodData);
     return (
         <div className=''>
             <Header as='h2' attached='top'>

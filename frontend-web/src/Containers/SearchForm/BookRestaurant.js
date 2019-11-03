@@ -1,79 +1,140 @@
 import React from 'react';
-import { Button, Form, Modal, Icon } from 'semantic-ui-react'
+import { Form } from 'semantic-ui-react'
 import { Formik } from "formik";
 import * as yup from "yup";
 import Flatpickr from 'react-flatpickr'
-import 'flatpickr/dist/themes/light.css'
 
 import PaxOptions from '../../Data/PaxOptions';
+import ConfirmBookingModal from '../../Components/Modals/ConfirmBookingModal';
+import InputErrorLabel from '../../Components/Label/InputErrorLabel';
+import url from '../../Config/url';
+import 'flatpickr/dist/themes/light.css'
 
 /**
  * Form used for the Booking of a Reservation at a Restaurant
  * Required Customer to state Date&Time of Booking and Number of Pax.
  */
-const BookRestaurant = () => (
-    <Formik
-        initialValues={{
-            date: '',
-            startTime: '',
-            pax: '',
-        }}
 
-        onSubmit={(values) => {
-            console.log(values);
-        }}
+const initialState = {
+    available: false,
+    noSeats: false,
+    noDouble: false,
+    loading: false,
+    submitted: false,
+}
 
-        validationSchema={yup.object().shape({
-            date: yup.date("Invalid Date")
-                .min(new Date(), "Your cannot state a past date"),
-            startTime: yup.string(),
-            pax: yup.number().min(1).max(20)
-        })}
+class BookRestaurant extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = initialState;
+    }
 
-        render={({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => {
-            const handleDropdownChange = (e, { name, value }) => {
-                setFieldValue(name, value);
-            };
+    resetState = () => {
+        this.setState(initialState);
+    }
 
-            return (
-                <Form size='medium' className='ba b--light-silver pt3 pl3 pr2 appColor'>
-                    <Form.Group widths='equal'>
-                        <Form.Field>
-                            <Flatpickr
-                                data-enable-time
-                                options={{ minDate: 'today', maxDate: new Date().fp_incr(30) }}
-                                placeholder="Reservation Date & Time"
-                                onChange={e => setFieldValue('date', e[0])}
-                                onBlur={handleBlur}
-                                value={values.date}
-                                name="date"
-                            />
-                        </Form.Field>
-                        <Form.Select //Dropdown
-                            placeholder='Pax'
-                            name="pax"
-                            options={PaxOptions}
-                            value={values.pax}
-                            onChange={handleDropdownChange}
-                        />
-                        <Modal trigger={<Button> Book </Button>}>
-                                <Modal.Content>
-                                    <p> Confirm this booking? </p>
-                                </Modal.Content>
-                                <Modal.Actions>
-                                    <Button color='red' inverted>
-                                        <Icon name='remove' /> No
-                                    </Button>
-                                    <Button color='green' inverted>
-                                        <Icon name='checkmark' /> Yes
-                                </Button>
-                                </Modal.Actions>
-                        </Modal>
-                    </Form.Group>
-                </Form>
-            );
-        }}
-    />
-);
+    render() {
+        const { userID, resName, franchisorName } = this.props;
+        return (
+            <Formik
+                initialValues={{
+                    date: '',
+                    pax: '',
+                }}
+
+                onSubmit={(values) => {
+                    this.setState({ loading: true });
+                    fetch(`${url.fetchURL}/resvAvailability`, {
+                        method: 'post',
+                        headers: { 'Content-type': 'application/json' },
+                        body: JSON.stringify({
+                            userID: userID,
+                            franchiseName: franchisorName,
+                            resName: resName,
+                            dateTime: values.date,
+                            pax: values.pax
+                        })
+                    })
+                        .then(resp => resp.json())
+                        .then(data => {
+                            console.log(data);
+                            this.setState({ submitted: true, loading: false });
+                            switch (data) {
+                                case 'available':
+                                    this.setState({ available: true })
+                                    break;
+                                case 'noSeats':
+                                    this.setState({ noSeats: true })
+                                    break;
+                                case 'noDouble':
+                                    this.setState({ noDouble: true })
+                                    break;
+                                default: //some error s
+                                    break;
+                            }
+
+                        }).catch(err => {
+                            alert(err);
+                        })
+                }}
+
+                validationSchema={yup.object().shape({
+                    date: yup.date("Invalid Date")
+                        .min(new Date(), "Your cannot state a past date")
+                        .required("You must state a date"),
+                    pax: yup.number().min(1).max(10).required("You must state the number of diners")
+                })}
+
+                render={({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => {
+                    const handleDropdownChange = (e, { name, value }) => {
+                        setFieldValue(name, value);
+                    };
+
+                    return (
+                        <Form size='medium' className='ba b--light-silver pt3 pl3 pr2 appColor'>
+                            <Form.Group widths='equal'>
+                                <Form.Field>
+                                    <Flatpickr
+                                        data-enable-time
+                                        options={{ minDate: 'today', maxDate: new Date().fp_incr(30) }}
+                                        placeholder="Reservation Date & Time"
+                                        onChange={e => setFieldValue('date', e[0])}
+                                        onBlur={handleBlur}
+                                        value={values.date}
+                                        name="date"
+                                    />
+                                    <InputErrorLabel touched={touched.date} errorText={errors.date} />
+                                </Form.Field>
+
+                                <Form.Field>
+                                    <Form.Select //Dropdown
+                                        placeholder='Pax'
+                                        name="pax"
+                                        options={PaxOptions}
+                                        value={values.pax}
+                                        onChange={handleDropdownChange}
+                                    />
+                                    <InputErrorLabel touched={touched.pax} errorText={errors.pax} />
+                                </Form.Field>
+
+
+                                <ConfirmBookingModal
+                                    errors={errors}
+                                    submit={handleSubmit}
+                                    values={values}
+                                    submitted={this.state.submitted}
+                                    noSeats={this.state.noSeats}
+                                    noDouble={this.state.noDouble}
+                                    available={this.state.available}
+                                    loading={this.state.loading}
+                                />
+                            </Form.Group>
+                        </Form>
+                    );
+                }}
+            />
+        );
+    }
+}
 
 export default BookRestaurant;
