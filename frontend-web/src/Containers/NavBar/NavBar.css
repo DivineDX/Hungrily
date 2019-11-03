@@ -75,10 +75,6 @@
     color: white !important;
 }
 
-.LogInText {
-	color: white !important;
-}
-
 @media screen and (max-width: 700px) {
 	#Logo {
 		margin-left: 3px;

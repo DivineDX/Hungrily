@@ -9,8 +9,8 @@ const LoginPage = (props) => { //isSignedIn, loginUser
         <div className='relative'>
             <Link to="/register">
                 <div id='RegisterText'>
-                    <p className='mb2 text1'> Not registered as a member? </p>
-                    <p className='mb2 text2'> Create your account today</p>
+                    <p className='mb2 text1 tc'> Not registered as a member? </p>
+                    <p className='mb2 text2 tc'> Create your account today</p>
                 </div>
                 <div id='Register' className='pa0 pt3'> 
                     <Button id='RegisterBut' className='button'> 
