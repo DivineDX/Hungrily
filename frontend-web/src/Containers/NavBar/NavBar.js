@@ -53,6 +53,19 @@ class NavBar extends Component {
                                 </Link>
                             </Button>
                         </Menu.Item>
+
+                        <Menu.Item>
+                            <Button className='HeaderBut' name='Voucherlist' active={this.state.activeItem === 'Voucherlist'} onClick={this.handleItemClick}>
+                                <Link to="/voucherlist">
+                                    <div className="link dib dim mr0 mr1-ns" id='VoucherFS'>
+                                        {isFranchiseOwner
+                                            ? null
+                                            : "List of Vouchers"
+                                        }
+                                    </div>
+                                </Link>
+                            </Button>
+                        </Menu.Item>
                     </Menu>
 
                     <Menu.Menu>

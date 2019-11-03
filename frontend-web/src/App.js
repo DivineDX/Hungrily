@@ -90,7 +90,7 @@ class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			isSignedIn: false, //default is false (not signed in)
+			isSignedIn: true, //default is false (not signed in)
 			userID: '', 
 			name: '',
 			isFranchiseOwner: false,
