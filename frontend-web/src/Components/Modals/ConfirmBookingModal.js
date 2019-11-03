@@ -4,9 +4,12 @@ import { Button, Modal, Icon, Dimmer, Loader } from 'semantic-ui-react'
 /**
  * ConfirmBookingModal Component that is used on the BookRestaurantForm
  */
-const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, available, loading }) => {
+const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, available, loading, reset }) => {
     return (
-        <Modal trigger={<Button>Book</Button>} dimmer={'inverted'}>
+        <Modal
+            trigger={<Button>Book</Button>}
+            dimmer={'inverted'}
+            onClose={() => reset()}>
             <Modal.Header>Booking Confirmation</Modal.Header>
 
             {loading &&
@@ -19,8 +22,8 @@ const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, ava
                 {
                     !submitted &&
                     <div>
-                        <Modal.Description className = 'f3 lh-copy mb4 underline'>
-                            Please confirm your reservation details: 
+                        <Modal.Description className='f3 lh-copy mb4 underline'>
+                            Please confirm your reservation details:
                         </Modal.Description>
                         <Modal.Description className='f4'>
                             <b>Reservation Date&Time: </b> {values.date.toString()}
@@ -34,31 +37,31 @@ const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, ava
 
                 {available &&
                     <Modal.Description>
-                        Congratulations! Your Resevation is Confirmed on <b>{values.date.toString()}</b>
+                        Congratulations! Your Reservation is Confirmed on <b>{values.date.toString()}</b>
                     </Modal.Description>
                 }
 
                 {noSeats &&
                     <Modal.Description className='red'>
-                        Unfortunately, there are no seats left at the timeslot that you wanted to book
+                        Unfortunately, there are no seats left at the timeslot that you wanted to book<br />
+                        Please try another timing
                     </Modal.Description>
                 }
 
                 {noDouble &&
                     <Modal.Description className='red'>
-                        Sorry, you already have another reservation at that timing
+                        Sorry, you already have booked another reservation at that timing.<br/>
                     </Modal.Description>
                 }
 
             </Modal.Content>
-            <Modal.Actions>
-                <Button color='red' inverted>
-                    <Icon name='remove' /> No
+            {!submitted &&
+                <Modal.Actions>
+                    <Button onClick={() => submit()} color='green' inverted>
+                        <Icon name='checkmark' /> Confirm
                 </Button>
-                <Button onClick={() => submit()} color='green' inverted>
-                    <Icon name='checkmark' /> Yes
-                </Button>
-            </Modal.Actions>
+                </Modal.Actions>
+            }
         </Modal>
     );
 }
