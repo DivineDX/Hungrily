@@ -19,6 +19,34 @@ const getRestaurant = (req, res, db) => {
         }).catch(err =>  res.status(400).json('Unable to Retrieve'));
 }
 
+/**
+ * GET: Similar to the getRestaurant query above, but now returns the menu (all food items) of that specific restaurant
+ * Returns an array of objects with keys name, cuisine, type and price
+ */
+const getRestaurantMenu = (req, res, db) => {
+    res.json([
+        {
+            name: "BigBurger",
+            cuisine: "Western",
+            type: "Fast Food",
+            price:  "5"
+        },
+        {
+            name: "French Fries",
+            cuisine: "Western",
+            type: "Fast Food",
+            price:  "2"
+        },
+        {
+            name: "Big Coke",
+            cuisine: "Drinks",
+            type: "Fast Food",
+            price:  "1"
+        },
+
+])
+
+}
 const findRestaurants = (req, res, db) => {
     //return type = const { Name, Area, cuisine, Opening_hours, Closing_hours, Price, url, Ratings }
     const {date, pax, cuisine, area, franchise} = req.body; //ignore data and pax for now
@@ -121,8 +149,9 @@ const getAllRestaurants = (req, res, db) => {
 
 module.exports = {
     getRestaurant: getRestaurant,
+    getRestaurantMenu: getRestaurantMenu,
     findRestaurant: findRestaurants,
-    getAllCuisines: getAllCuisines,
+    getAllCuisines: getAllCuisines, 
     getAllAreas: getAllAreas,
     getAllFranchise: getAllFranchise,
     getAllRestaurants:getAllRestaurants

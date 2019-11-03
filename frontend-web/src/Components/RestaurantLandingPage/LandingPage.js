@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Modal, Button, Icon } from 'semantic-ui-react'
 import NonExistentPage from '../../Containers/NonExistentPage';
 import url from '../../Config/url';
 import './LandingPage.css';
@@ -13,21 +12,32 @@ class LandingPage extends Component {
         this.state = {
             notFound: true,
             name: '',
-            data: [],
+            resData: [],
+            menuData: [],
         }
     }
 
     componentDidMount() {
         const name = this.props.match.params.name;
         this.setState({ name: name });
+
         fetch(`${url.fetchURL}/restaurant/${name}`)
             .then(resp => resp.json())
             .then(data => {
                 if (data === 'Unable to Retrieve') {
                 } else {
-                    this.setState({ data: data, notFound: false });
+                    this.setState({ resData: data, notFound: false });
                 }
             });
+        
+        fetch(`${url.fetchURL}/restaurantmenu/${name}`)
+        .then(resp => resp.json())
+        .then(data => {
+            if (data === 'Unable to Retrieve') {
+            } else {
+                this.setState({ menuData: data});
+            }
+        });
     }
 
     render() {
@@ -46,14 +56,16 @@ class LandingPage extends Component {
                         alt="Error" />
                         
                     <div className="pv3">
-                        <h1 className='f2 pageText relative'> {this.state.data.store_name} </h1>
+                        <h1 className='f2 pageText relative'> {this.state.resData.store_name} </h1>
                     </div>
 
                     <div className="pt2 pl7 pr7 relative" id='BookBox'>
                         <BookRestaurant/>
                     </div>
                     
-                    <RestaurantDetailBox data = {this.state.data}/>
+                    <RestaurantDetailBox 
+                        resData = {this.state.resData}
+                        menuData = {this.state.menuData}/>
                 </article>
             );
         }
