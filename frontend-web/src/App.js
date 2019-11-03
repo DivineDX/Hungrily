@@ -12,6 +12,7 @@ import LoginPage from './Containers/LoginPage/LoginPage';
 import Register from './Containers/RegisterPage/RegisterPage';
 import LandingPage from './Components/RestaurantLandingPage/LandingPage';
 import ProtectedRoute from './Common/ProtectedRoute';
+import Voucherlist from './Containers/VoucherList/VoucherList';
 
 const particlesOptions = {
 	"particles": {
@@ -134,6 +135,7 @@ class App extends Component {
 						<Route path="/" exact component={Homepage} />
 						<Route path="/restaurants" exact render={(props) => <RestaurantsListPage {...props} isSignedIn={isSignedIn} isFranchiseOwner = {this.state.isFranchiseOwner}/>} />
 						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} isFranchiseOwner={this.state.isFranchiseOwner}/>
+						<Route path="/voucherlist" exact render={(props) => <Voucherlist {...props} />} />
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
 						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} isSignedIn = {isSignedIn} userID = {this.state.userID}/>} />
