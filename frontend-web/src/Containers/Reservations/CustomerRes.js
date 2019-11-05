@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CustomerResCard from '../../Components/Cards/CustomerResCard';
-import CustomerResMenuBar from '../Reservations/CustomerResMenuBar';
+import BulletinMenuBar from '../../Components/MenuBar/BulletinMenuBar';
 import url from '../../Config/url';
 
 import './CustomerRes.css'
@@ -33,7 +33,7 @@ class CustomerRes extends Component {
             .then(data => { //data is an Array
                 const resvData = data.map(x => {
                     const dateObj = {
-                            dateTime: new Date(x.dateTime),
+                        dateTime: new Date(x.dateTime),
                     };
                     return Object.assign(x, dateObj)
                 });
@@ -41,7 +41,7 @@ class CustomerRes extends Component {
                     reservations: resvData,
                     loading: false,
                 });
-                this.state.isCurrent 
+                this.state.isCurrent
                     ? this.handleCategoryClick('current')
                     : this.handleCategoryClick('past');
             }).catch(error => {
@@ -52,27 +52,27 @@ class CustomerRes extends Component {
     handleCategoryClick = (cat) => {
         if (cat === 'current') { //select current
             const filteredData = this.state.reservations.filter(x => x.dateTime >= new Date()); //future date
-            this.setState({ 
+            this.setState({
                 filteredReservations: filteredData,
-                isCurrent: true 
+                isCurrent: true
             });
         } else { //select past
             const filteredData = this.state.reservations.filter(x => x.dateTime < new Date());
-            this.setState({ 
+            this.setState({
                 filteredReservations: filteredData,
-                isCurrent: false });
+                isCurrent: false
+            });
         }
     }
 
     render() {
-        const {userID} = this.props; 
+        const { userID } = this.props;
         return (
             <div>
-                <div className="w-75 pl4 ml3">
-                    <CustomerResMenuBar
-                        handleCategoryClick={this.handleCategoryClick.bind(this)}
-                    />
-                </div>
+                <BulletinMenuBar
+                    handleCategoryClick={this.handleCategoryClick.bind(this)}
+                    options={["current", "past"]}
+                />
 
                 <div>
                     <div id='CardDisplay'>
@@ -83,8 +83,8 @@ class CustomerRes extends Component {
                                     centered
                                     data={data}
                                     isCurrent={this.state.isCurrent}
-                                    userID = {userID}
-                                    fetchReservations = {this.fetchReservations.bind(this)}
+                                    userID={userID}
+                                    fetchReservations={this.fetchReservations.bind(this)}
                                 />
                             })
                         }
