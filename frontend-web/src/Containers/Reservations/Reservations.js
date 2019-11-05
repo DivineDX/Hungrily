@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CustomerRes from '../Reservations/CustomerRes';
-import FranchiseORes from '../Reservations/FranchiseORes';
+import FOwnerRes from './FOwnerRes';
 
 import './CustomerRes.css'
 
@@ -16,7 +16,7 @@ class Reservations extends Component {
                 <div className="pt0 mt0">
                     {
                         isFranchiseOwner 
-                        ? <FranchiseORes userID = {userID}/>
+                        ? <FOwnerRes userID = {userID}/>
                         : <CustomerRes userID = {userID}/>
                     }
                 </div>
