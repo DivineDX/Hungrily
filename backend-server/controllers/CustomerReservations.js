@@ -27,32 +27,38 @@ const cancelReservation = (req, res, db) => {
 }
 
 /**
+ * POST: See all the Reservations that a Customer has booked
+ * Returns Restaurant.resName (currently store_name) in DB, Rstaurant.url, Reservation.dateTime, 
  * See all reservations that is booked by a Customer
  */
 const seeCustomerReservations = (req, res, db) => {
     const {UserID} = req.body; 
     res.status(200).json(
         [{
-            FranchisorName: "Fish & Co.", 
-            Location: "AMK Hub",
-            DateTime: "20th October 2018, 0900", //warning: Currently of string type
-            Table: 3,
-            Pax: 2,
+            resName: 'Major 99', 
+            resUrl: 'major-99',
+            dateTime: "20th October 2018, 0900", //warning: Currently of string type
+            table: 3,
+            pax: 2,
+            rating: null, //rating may be a null value
         }, 
         {
-            FranchisorName: "Fish & Co.", 
-            Location: "AMK Hub",
-            DateTime: "25th October 2018, 0900", //warning: Currently of string type
-            Table: 5,
-            Pax: 4,
+            resName: 'Fish & Co. (AMK Hub)',
+            resUrl: 'fish-co-amk-hub',
+            dateTime: "25th October 2018, 0900", //warning: Currently of string type
+            table: 5,
+            pax: 4,
+            rating: '3', //rating may be a null value
         },
         {
-            FranchisorName: "4Fingers Crispy Chicken", 
-            Location: "Changi Airport T3",
-            DateTime: "22th October 2018, 0900", //warning: Currently of string type
-            Table: 3,
-            Pax: 2,
-        }]);
+            resName: '4Fingers Crispy Chicken (Changi Airport T3)',
+            resUrl: '4fingers-crispy-chicken-changi-airport-t3',
+            dateTime: "22th October 2018, 0900", //warning: Currently of string type
+            table: 3,
+            pax: 2,
+            rating: '5', //rating may be a null value
+        },
+    ]);
 }
 
 

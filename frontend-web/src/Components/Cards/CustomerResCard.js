@@ -1,56 +1,54 @@
-import React, { Component } from 'react';
-import { Icon, Image } from 'semantic-ui-react';
+import React from 'react';
+import { Icon, Image, Card } from 'semantic-ui-react';
+import { Link } from 'react-router-dom'
+
 import foodImage from '../../Images/food.jpg';
+
 import RateModal from '../Modals/RateModal'
 import DeleteModal from '../Modals/DeleteModal'
 import './CustomerResCard.css';
 
-class CustomerResCard extends Component{
-    constructor() {
-        super();
-        this.state = {
-            clicked: false,
-            authFailed: false,
-        }
-    }
+const CustomerResCard = ({ data, isCurrent }) => {
+    const { resName, resUrl, dateTime, table, pax, rating } = data;
 
-    render() {
+    return (
+        <Card className="ui card" id='ResvCard'>
+            <Image
+                fluid
+                src={foodImage}
+                alt="Error" className="w-100" id="cardImage"
+            />
 
-        const {data, isCurrent} = this.props;
-        const { Name, Area, DateTime , Pax } = data;
+            <Card.Content>
+                <Card.Header className='NameHeader'>
+                    <Link to={`/restaurants/${resUrl}`}>
+                        {resName}
+                    </Link>
+                </Card.Header>
 
-        // const currentDate = new Date(); 
-        
-        // if (currentDate.getTime > new Date(DateTime).getTime) {
-        //     this.setState({isPast: true});
-        // } else {
-        //     this.setState({isPast: false});
-        // }
-        // console.log(isPast)
+                <div>
+                    <Card.Meta>
+                        <Icon name='clock' />
+                        <span className='ml1'>{dateTime}</span>
+                    </Card.Meta>
+                    <Card.Meta>
+                        <Icon name='table' />
+                        <span className='ml1'>{table}</span>
+                    </Card.Meta>
+                    <Card.Meta>
+                        <Icon name='user' />
+                        <span className='ml1'>{pax}</span>
+                    </Card.Meta>
 
-        return (
-            <div class="ui card" id='ResvCard'>
-                <Image
-                    fluid
-                    src={foodImage}
-                    alt="Error" className="w-100" id="cardImage"
-                />
-                <div class="NameHeader"> {Name} </div>
-                <div class="content">
-                    <div class="meta"> Area: {Area} </div>
-                </div>                           
-                <div class="extra content">
-                    <Icon name='clock' /> 
-                    
-                    {/* Date and time of the booking */}
-                </div> 
-                { isCurrent
-                        ? <DeleteModal /> 
-                        : <RateModal />
-                }
-            </div>
-        )
-    }
+                </div>
+            </Card.Content>
+            {isCurrent
+                ? <DeleteModal />
+                : <RateModal />
+            }
+        </Card>
+    )
 }
+
 
 export default CustomerResCard;

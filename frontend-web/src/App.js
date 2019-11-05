@@ -19,7 +19,7 @@ import LoginState from './Data/LoginState';
 class App extends Component {
 	constructor() {
 		super();
-		this.state = LoginState.franchiseOwner;
+		this.state = LoginState.customer;
 	}
 
 	isSignedIn = () => {
@@ -41,11 +41,7 @@ class App extends Component {
 	}
 
 	signOutUser = () => {
-		this.setState({
-			isSignedIn: false,
-			userID: '',
-			name: ''
-		})
+		this.setState(LoginState.logout);
 	}
 
 	getUserID = () => {
