@@ -5,22 +5,22 @@
 const listVouchers = (req, res, db) => {
     res.status(200).json([
         {
-            Name: "HungriLOR",
-            Cost: 7, //points
-            Discount: 10, //percentage
-            Description: "Ready to be back for more!"
+            name: "HungriLOR",
+            cost: 7, //points
+            discount: 10, //percentage
+            description: "Ready to be back for more!"
         },
         {
-            Name: "HungriSIA",
-            Cost: 10, //points
-            Discount: 20, //percentage
-            Description: "Specially for those with a bottomless appetite"
+            name: "HungriSIA",
+            cost: 10, //points
+            discount: 20, //percentage
+            description: "Specially for those with a bottomless appetite"
         },
         {
-            Name: "HungriLEH",
-            Cost: 15, //points
-            Discount: 30, //percentage
-            Description: "For our most loyal and always perma-hungri users!"
+            name: "HungriLEH",
+            cost: 15, //points
+            discount: 30, //percentage
+            description: "For our most loyal and always perma-hungri users!"
         }
     ])
 }

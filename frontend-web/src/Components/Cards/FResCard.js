@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Image, Card } from 'semantic-ui-react';
+import { Icon, Card } from 'semantic-ui-react';
 
 import dateParser from '../../Common/ParserUtil';
 
