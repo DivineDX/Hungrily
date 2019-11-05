@@ -39,7 +39,7 @@ const seeCustomerReservations = (req, res, db) => {
             resName: 'Major 99', 
             location: '4190 Ang Mo Kio Ave 6 #02-02 Broadway Plaza Singapore (569841)',
             resUrl: 'major-99',
-            dateTime: "20th October 2018, 0900", //warning: Currently of string type
+            dateTime: new Date('2019-12-17T15:25:00'), //SG Time
             table: 3,
             pax: 2,
             rating: null, //rating may be a null value
@@ -48,7 +48,7 @@ const seeCustomerReservations = (req, res, db) => {
             resName: 'Fish & Co. (AMK Hub)',
             location: '53 Ang Mo Kio Avenue 3 #02-03 AMK Hub Singapore (569933)',
             resUrl: 'fish-co-amk-hub',
-            dateTime: "25th October 2018, 0900", //warning: Currently of string type
+            dateTime: new Date('2019-10-11T12:30:00'), //SG Time
             table: 5,
             pax: 4,
             rating: '3', //rating may be a null value
@@ -57,7 +57,7 @@ const seeCustomerReservations = (req, res, db) => {
             resName: '4Fingers Crispy Chicken (Changi Airport T3)',
             location: '65 Airport Boulevard #B2-02 Changi Airport Terminal 3 Singapore (819663)',
             resUrl: '4fingers-crispy-chicken-changi-airport-t3',
-            dateTime: "22th October 2018, 0900", //warning: Currently of string type
+            dateTime: new Date('2019-11-05T18:00:00'), //SG Time
             table: 3,
             pax: 2,
             rating: '5', //rating may be a null value

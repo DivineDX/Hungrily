@@ -20,18 +20,18 @@ export default class BulletinMenuBar extends Component {
 
         return (
             <div>
-                <Menu size='massive' pointing secondary>
+                <Menu size='massive' pointing secondary inverted>
                     <Menu.Item
                         name="current"
                         active={activeItem === "current"}
                         onClick={this.handleItemClick}
-                        className = 'bulletinBar'
+                        className = 'bulletinBar white'
                     />
                     <Menu.Item
                         name="past"
                         active={activeItem === "past"}
                         onClick={this.handleItemClick}
-                        className = 'bulletinBar'
+                        className = 'bulletinBar white'
                     />
                 </Menu>
             </div>

@@ -6,6 +6,7 @@ import foodImage from '../../Images/food.jpg';
 
 import RateModal from '../Modals/RateModal'
 import DeleteModal from '../Modals/DeleteModal'
+import dateParser from '../../Common/ParserUtil';
 import './CustomerResCard.css';
 
 const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
@@ -29,7 +30,7 @@ const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
                 <div>
                     <Card.Meta>
                         <Icon name='clock' />
-                        <span className='ml1'>{dateTime}</span>
+                        <span className='ml1'>{dateParser(dateTime)}</span>
                     </Card.Meta>
                     <Card.Meta>
                         <Icon name='table' />

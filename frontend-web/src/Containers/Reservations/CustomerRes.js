@@ -30,9 +30,15 @@ class CustomerRes extends Component {
             })
         })
             .then(resp => resp.json())
-            .then(data => {
+            .then(data => { //data is an Array
+                const resvData = data.map(x => {
+                    const dateObj = {
+                            dateTime: new Date(x.dateTime),
+                    };
+                    return Object.assign(x, dateObj)
+                });
                 this.setState({
-                    reservations: data,
+                    reservations: resvData,
                     loading: false,
                 });
             }).catch(error => {
@@ -54,7 +60,7 @@ class CustomerRes extends Component {
             <div>
                 <div className="w-75 pt5 pl4 ml3">
                     <CustomerResMenuBar
-                        handleCategoryClick={this.handleCategoryClick}
+                        handleCategoryClick={this.handleCategoryClick.bind(this)}
                     />
                 </div>
 
