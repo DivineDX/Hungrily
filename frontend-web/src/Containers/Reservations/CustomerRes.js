@@ -68,7 +68,7 @@ class CustomerRes extends Component {
         const {userID} = this.props; 
         return (
             <div>
-                <div className="w-75 pt5 pl4 ml3">
+                <div className="w-75 pl4 ml3">
                     <CustomerResMenuBar
                         handleCategoryClick={this.handleCategoryClick.bind(this)}
                     />

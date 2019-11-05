@@ -1,9 +1,11 @@
 import React from 'react';
-import { Accordion, Icon } from 'semantic-ui-react';
+import { Accordion, Icon, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import FResCard from '../Cards/FResCard';
 
 /**
- * Contains tbhe data of all reservations in this restaurant
+ * Contains the data of all reservations for a speicfic restaurant
+ * Restaurants that are 
  */
 const RestaurantAccordion = ({ index, activeIndex, handleClick, reservData }) => {
     const { resName, resUrl, reservations } = reservData; //reservations is an array of objects
@@ -20,11 +22,13 @@ const RestaurantAccordion = ({ index, activeIndex, handleClick, reservData }) =>
                 </Link>
             </Accordion.Title>
             <Accordion.Content active={activeIndex === index}>
-                <p>
-                    A dog is a type of domesticated animal. Known for its loyalty and
-                    faithfulness, it can be found as a welcome guest in many households
-                    across the world.
-                </p>
+                <Grid columns={4}>
+                    {reservations.map(reserv => {
+                        return <Grid.Column>
+                            <FResCard data={reserv}/>
+                        </Grid.Column>
+                    })}
+                </Grid>
             </Accordion.Content>
         </div>
     )

@@ -12,7 +12,7 @@ class Reservations extends Component {
         const {isFranchiseOwner, userID} = this.props;
         return (
             <div className="w-75 pt5 pb0 mb0 center bb b--black-10">
-                <h1 className="tc baskerville f1 fw5 pb0 mb0">My Reservations</h1>
+                <h1 className="tc baskerville f1 fw5 relative">My Reservations</h1>
                 <div className="pt0 mt0">
                     {
                         isFranchiseOwner 
