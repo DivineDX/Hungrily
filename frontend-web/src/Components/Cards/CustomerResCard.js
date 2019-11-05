@@ -8,7 +8,7 @@ import RateModal from '../Modals/RateModal'
 import DeleteModal from '../Modals/DeleteModal'
 import './CustomerResCard.css';
 
-const CustomerResCard = ({ data, isCurrent }) => {
+const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
     const { resName, resUrl, dateTime, table, pax, rating } = data;
 
     return (
@@ -43,8 +43,8 @@ const CustomerResCard = ({ data, isCurrent }) => {
                 </div>
             </Card.Content>
             {isCurrent
-                ? <DeleteModal />
-                : <RateModal />
+                ? <DeleteModal data = {data} userID = {userID} fetchReservations = {fetchReservations}/>
+                : <RateModal data = {data} userID = {userID} fetchReservations = {fetchReservations}/>
             }
         </Card>
     )

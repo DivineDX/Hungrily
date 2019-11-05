@@ -18,8 +18,11 @@ class CustomerRes extends Component {
             isCurrent: true, //default true, else false: shows past
         }
     }
-
     componentDidMount() {
+        this.fetchReservations();
+    }
+
+    fetchReservations() {
         fetch(`${url.fetchURL}/seeMyResv`, {
             method: 'post',
             body: JSON.stringify({
@@ -28,7 +31,6 @@ class CustomerRes extends Component {
         })
             .then(resp => resp.json())
             .then(data => {
-                console.log(data);
                 this.setState({
                     reservations: data,
                     loading: false,
@@ -46,18 +48,8 @@ class CustomerRes extends Component {
         }
     }
 
-    // selectCategory = (arr, cat) => {
-    //     const currentDate = new Date();
-    // 	if (cat === 'current') {
-    // 		return arr.filter(a => new Date(a.date) - currentDate < 0);
-    // 	} else if (cat === 'past') {
-    // 		return arr.filter(a => new Date(a.date) - currentDate > 0);
-    //     }
-    // }
-
     render() {
-        // const displayedData = this.selectCategory(this.state.reservations, this.state.category);
-        // const current = new Date();
+        const {userID} = this.props; 
         return (
             <div>
                 <div className="w-75 pt5 pl4 ml3">
@@ -75,7 +67,8 @@ class CustomerRes extends Component {
                                     centered
                                     data={data}
                                     isCurrent={this.state.isCurrent}
-                                    category={this.state.category}
+                                    userID = {userID}
+                                    fetchReservations = {this.fetchReservations.bind(this)}
                                 />
                             })
                         }

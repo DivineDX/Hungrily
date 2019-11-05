@@ -19,23 +19,27 @@ const bookReservation = (req, res, db) => {
 }
 
 /**
- * Cancels an existing reservation
+ * DELETE: Cancels an existing reservation
  */
 const cancelReservation = (req, res, db) => {
-    const {UserID, FranchiseName, RestaurantLocation, DateTime, Table} = req.body;
+    const {userID, location, resName, dateTime, table} = req.body;
     res.status(200).json('Success'); //success if successfully cancelled
 }
 
 /**
  * POST: See all the Reservations that a Customer has booked
- * Returns Restaurant.resName (currently store_name) in DB, Rstaurant.url, Reservation.dateTime, 
+ * Returns Restaurant.resName (currently store_name), Restaurant.location, Rstaurant.url, Reservation.dateTime, 
+ * Reservation.table, Reservation.pax, Ratings.rating
  * See all reservations that is booked by a Customer
  */
 const seeCustomerReservations = (req, res, db) => {
-    const {UserID} = req.body; 
+    const {userID} = req.body; 
+    console.log("UserID: ", userID);
+    
     res.status(200).json(
         [{
             resName: 'Major 99', 
+            location: '4190 Ang Mo Kio Ave 6 #02-02 Broadway Plaza Singapore (569841)',
             resUrl: 'major-99',
             dateTime: "20th October 2018, 0900", //warning: Currently of string type
             table: 3,
@@ -44,6 +48,7 @@ const seeCustomerReservations = (req, res, db) => {
         }, 
         {
             resName: 'Fish & Co. (AMK Hub)',
+            location: '53 Ang Mo Kio Avenue 3 #02-03 AMK Hub Singapore (569933)',
             resUrl: 'fish-co-amk-hub',
             dateTime: "25th October 2018, 0900", //warning: Currently of string type
             table: 5,
@@ -52,6 +57,7 @@ const seeCustomerReservations = (req, res, db) => {
         },
         {
             resName: '4Fingers Crispy Chicken (Changi Airport T3)',
+            location: '65 Airport Boulevard #B2-02 Changi Airport Terminal 3 Singapore (819663)',
             resUrl: '4fingers-crispy-chicken-changi-airport-t3',
             dateTime: "22th October 2018, 0900", //warning: Currently of string type
             table: 3,

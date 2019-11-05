@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Button, Modal } from 'semantic-ui-react'
 import url from '../../Config/url'
 
@@ -12,25 +12,27 @@ class DeleteModal extends Component {
         super();
         this.state = {
             clicked: false,
-            authFailed: false,
         }
     }
 
     clickDelete = () => {
-        fetch(`http://${url.fetchURL}/cancelResv`, {
+        const {data, userID} = this.props;
+        const { resName, location, dateTime, table } = data;
+        fetch(`${url.fetchURL}/cancelResv`, {
             method: 'delete',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
-                id: Number(this.props.id),
+                userID: userID,
+                location: location,
+                resName: resName,
+                dateTime: dateTime,
+                table: table,
             })
         })
             .then(resp => resp.json())
             .then(data => {
                 if (data === 'Success') {
-                    this.setState({clicked: true});
-                    this.props.refresh();
-                } else if (data === 'Auth failed') {
-                    this.setState({authFailed: true})
+                    this.setState({ clicked: true });
                 }
             })
     }
@@ -38,22 +40,21 @@ class DeleteModal extends Component {
     render() {
 
         return (
-            <Modal trigger={<Button> Cancel Reservation </Button>}>
-            <Modal.Header className='tc'> Cancel Reservation </Modal.Header>
-            <Modal.Content>
-                <span> Are you sure you want to cancel your reservation? This action is irreversible.</span>
-                <div className='pb3'></div>
-                <Button negative onClick={() => this.clickDelete()} content='End' />
-                {this.state.clicked 
-                    ? <h3>Your reservation has been cancelled. Click out of this modal to exit</h3>
-                    : <div></div>
-                }
-                {this.state.authFailed 
-                    ? <h3 className = 'red'>User Authentication failed</h3>
-                    : <div></div>
-                }
-            </Modal.Content>
-        </Modal>
+            <Modal
+                trigger={<Button> Cancel Reservation </Button>}
+                onClose={() => this.props.fetchReservations()}
+            >
+                <Modal.Header className='tc'> Cancel Reservation </Modal.Header>
+                <Modal.Content>
+                    {this.state.clicked
+                        ? <h3 className='black'>Your reservation has been cancelled. Click out of this modal to exit</h3>
+                        : <div>
+                            <div className='mb3'> Are you sure you want to cancel your reservation? This action is irreversible.</div>
+                            <Button negative onClick={() => this.clickDelete()} content='Cancel Reservation' />
+                        </div>
+                    }
+                </Modal.Content>
+            </Modal>
         );
     }
 }

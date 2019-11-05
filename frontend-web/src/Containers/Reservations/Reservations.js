@@ -10,7 +10,6 @@ import './CustomerRes.css'
 class Reservations extends Component {
     render() {
         const {isFranchiseOwner, userID} = this.props;
-
         return (
             <div className="w-75 pt5 pb0 mb0 center bb b--black-10">
                 <h1 className="tc baskerville f1 fw5 pb0 mb0">My Reservations</h1>

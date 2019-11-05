@@ -72,7 +72,6 @@ const findRestaurants = (req, res, db) => {
             `)
             .timeout(1000).then(
             result => {
-                console.log(result.rows)
                 res.status(200).json(result.rows.map(x=>(
                     {
                         name:x.store_name,
