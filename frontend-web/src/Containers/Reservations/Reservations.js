@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
 import CustomerRes from '../Reservations/CustomerRes';
 import FranchiseORes from '../Reservations/FranchiseORes';
-import url from '../../Config/url';
 
 import './CustomerRes.css'
-import CustomerResCard from '../../Components/Cards/CustomerResCard';
-// import DashboardDropDown from '../../Components/Dropdowns/DashboardDropDown';
-// import Cookies from 'universal-cookie';
-// import AuthFailed from '../NonExistentPage/AuthFailed';
-// import EmptyDashboard from '../../Components/EmptyFillers/EmptyDashboard';
-// import url from '../../Configs/url';
 
+/**
+ * Container that renders Reservations Pages depending on the type of user logged in
+ */
 class Reservations extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         const {franchiseOwner} = this.props;
 

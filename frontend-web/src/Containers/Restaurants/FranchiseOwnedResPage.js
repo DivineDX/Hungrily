@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import RestaurantCard from '../../Components/Cards/RestaurantCard';
 import RestaurantDisplayBulletin from '../../Components/Bulletins/RestaurantDisplayBulletin';
 import url from '../../Config/url'
 

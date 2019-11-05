@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dropdown, Menu } from "semantic-ui-react";
+import { Menu } from "semantic-ui-react";
 import './CustomerResMenuBar.css';
 
 export default class BulletinMenuBar extends Component {

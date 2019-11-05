@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import NonExistentPage from '../../Containers/NonExistentPage';
+import NonExistentPage from '../NonExistentPage';
 import url from '../../Config/url';
 import './LandingPage.css';
-import BookRestaurant from '../../Containers/SearchForm/BookRestaurant';
+import BookRestaurant from '../SearchForm/BookRestaurant';
 import food from '../../Images/food.jpg'
 import RestaurantDetailBox from './RestaurantDetailBox';
 
@@ -60,17 +60,17 @@ class LandingPage extends Component {
                         <h1 className='f2 pageText relative'> {this.state.resData.store_name} </h1>
                     </div>
 
-                    {!isFranchiseOwner &&
+                    {(!isFranchiseOwner && isSignedIn) &&
                         <div className="pt2 pl7 pr7 relative" id='BookBox'>
                             <BookRestaurant
-                                userID={this.props.userID}
+                                userID={userID}
                                 resName={this.state.resData.store_name}
                                 franchisorName={this.state.resData.userid} //of franchisor
                             />
                         </div>
                     }
                     <RestaurantDetailBox
-                        userID={this.props.userID}
+                        userID={userID}
                         resData={this.state.resData}
                         menuData={this.state.menuData} />
                 </article>

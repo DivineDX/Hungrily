@@ -7,19 +7,16 @@ import CustomerRestaurantListPage from './CustomerRestaurantListPage';
  * or the entire list of Restaurants owned by a Franchise
  */
 class RestaurantsListPage extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
-        const { isSignedIn, isFranchiseOwner } = this.props;
-        return (	 //acts as a card list here
+        const { userID, isFranchiseOwner } = this.props;
+        return (
             <div>
                 <div className="pt0 mt0">
                     {
                         isFranchiseOwner
-                        ? <FranchiseOwnedResPage userID = {this.props.userID}/>
-                        : <CustomerRestaurantListPage />
+                            ? <FranchiseOwnedResPage userID={userID} />
+                            : <CustomerRestaurantListPage />
                     }
                 </div>
             </div>

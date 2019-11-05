@@ -1,5 +1,5 @@
 import React from 'react';
-import MenuModal from '../Modals/MenuModal';
+import MenuModal from '../../Components/Modals/MenuModal';
 import './RestaurantDetailBox.css';
 
 const RestaurantDetailBox = (props) => {

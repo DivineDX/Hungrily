@@ -10,108 +10,16 @@ import RestaurantsListPage from './Containers/Restaurants/RestaurantsListPage';
 import Reservations from './Containers/Reservations/Reservations';
 import LoginPage from './Containers/LoginPage/LoginPage';
 import Register from './Containers/RegisterPage/RegisterPage';
-import LandingPage from './Components/RestaurantLandingPage/LandingPage';
+import LandingPage from './Containers/RestaurantLandingPage/LandingPage';
 import ProtectedRoute from './Common/ProtectedRoute';
 import Voucherlist from './Containers/VoucherList/VoucherList';
-
-const particlesOptions = {
-	"particles": {
-		"number": {
-			"value": 100,
-			"density": { "enable": true, "value_area": 700 }
-		},
-		"color": { "value": "#c0c0c0" },
-		"shape": {
-			"type": "circle",
-			"stroke": { "width": 0, "color": "#000000" },
-			polygon: { nb_sides: 5 },
-		},
-		opacity: {
-			"value": 0.5,
-			"random": false,
-			"anim": {
-				"enable": false,
-				"speed": 1,
-				"opacity_min": 0.1,
-				"sync": false
-			}
-		},
-		"size": {
-			"value": 5,
-			"random": true,
-			"anim": {
-				"enable": true,
-				"speed": 40,
-				"size_min": 1,
-				"sync": false
-			}
-		},
-		"line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
-		"move": {
-			"enable": true,
-			"speed": 4,
-			"direction": "none",
-			"random": false,
-			"straight": false,
-			"out_mode": "out",
-			"bounce": false,
-			"attract": {
-				"enable": false,
-				"rotateX": 600,
-				"rotateY": 1200
-			}
-		}
-	},
-	"interactivity": {
-		"detect_on": "canvas",
-		"events": {
-			"onhover": {
-				"enable": true, "mode": "repulse"
-			},
-			"onclick": { "enable": true, "mode": "push" },
-			"resize": true
-		},
-		"modes": {
-			"grab": {
-				"distance": 400,
-				"line_linked": { "opacity": 1 }
-			},
-			"bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 },
-			"repulse": { "distance": 200, "duration": 0.4 },
-			"push": { "particles_nb": 4 },
-			"remove": { "particles_nb": 2 }
-		}
-	},
-	"retina_detect": true
-}
-
-const initialState = {
-	isSignedIn: false,
-	userID: '',
-	name: '',
-	isFranchiseOwner: false
-}
-
-//used for testing purposes
-const loginUserState = {
-	isSignedIn: false,
-	userID: '',
-	name: '',
-	isFranchiseOwner: false
-}
-
-//used for testing purposes
-const loginFranchiseState = {
-	isSignedIn: true,
-	userID: 'FishnCoFranchisorAccount',
-	name: 'FishnCoFranchisorAccounts name',
-	isFranchiseOwner: true,
-}
+import ParticlesOptions from './Data/ParticlesOptions';
+import LoginState from './Data/LoginState';
 
 class App extends Component {
 	constructor() {
 		super();
-		this.state = initialState;
+		this.state = LoginState.franchiseOwner;
 	}
 
 	isSignedIn = () => {
@@ -151,7 +59,7 @@ class App extends Component {
 		// console.log(this.state);
 		return (
 			<BrowserRouter>
-				<Particles className='particles' params={particlesOptions} />
+				<Particles className='particles' params={ParticlesOptions} />
 				<NavBar
 					loginProp={loginProp}
 					isSignedIn={isSignedIn}
