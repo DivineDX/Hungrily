@@ -23,15 +23,15 @@ const viewResReviews = (req, res, db) => {
 }
 
 /**
- * POST: Reviews and give a rating for a given Reservation
+ * POST: Customer posts for a rating for a past Reservation
  */
-const postReview = (req, res, db) => {
-    const {userID, franchisor, location, datetime, rating} = req.body; //datetime is from Reservation, used to identify resv it is associating the rating with
+const postRating = (req, res, db) => {
+    const {userID, location, resName, dateTime, table, rating} = req.body;
     res.status(200).json('Success');
 }
 
 module.exports = {
     viewResReviews: viewResReviews,
-    postReview: postReview
+    postReview: postRating
     // customerReviews: customerReviews
 }

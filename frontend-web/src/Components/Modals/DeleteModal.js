@@ -3,8 +3,7 @@ import { Button, Modal } from 'semantic-ui-react'
 import url from '../../Config/url'
 
 /**
- * MenuModal Component that is used on the RestaurantPage
- * menuData is an array of objects, each representing a food item.
+ * Modal that is used for Cancellation of Reservation
  */
 class DeleteModal extends Component {
 
@@ -43,6 +42,7 @@ class DeleteModal extends Component {
             <Modal
                 trigger={<Button> Cancel Reservation </Button>}
                 onClose={() => this.props.fetchReservations()}
+                size = {'small'}
             >
                 <Modal.Header className='tc'> Cancel Reservation </Modal.Header>
                 <Modal.Content>

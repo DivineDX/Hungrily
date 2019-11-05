@@ -9,7 +9,7 @@ import DeleteModal from '../Modals/DeleteModal'
 import './CustomerResCard.css';
 
 const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
-    const { resName, resUrl, dateTime, table, pax, rating } = data;
+    const { resName, resUrl, dateTime, table, pax } = data;
 
     return (
         <Card className="ui card" id='ResvCard'>

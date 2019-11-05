@@ -33,9 +33,7 @@ const cancelReservation = (req, res, db) => {
  * See all reservations that is booked by a Customer
  */
 const seeCustomerReservations = (req, res, db) => {
-    const {userID} = req.body; 
-    console.log("UserID: ", userID);
-    
+    const {userID} = req.body;     
     res.status(200).json(
         [{
             resName: 'Major 99', 
