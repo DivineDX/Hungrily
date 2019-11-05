@@ -13,13 +13,13 @@ class CustomerRes extends Component {
         super(props)
         this.state = {
             reservations: [], //contains all reservations from database
-            filteredReservation: [], //Filtered shown list of reservations
+            filteredReservations: [], //Filtered shown list of reservations
             loading: true,
             isCurrent: true, //default true, else false: shows past
         }
     }
     componentDidMount() {
-        this.fetchReservations();
+        setTimeout(this.fetchReservations(), 3000);
     }
 
     fetchReservations() {
@@ -41,6 +41,9 @@ class CustomerRes extends Component {
                     reservations: resvData,
                     loading: false,
                 });
+                this.state.isCurrent 
+                    ? this.handleCategoryClick('current')
+                    : this.handleCategoryClick('past');
             }).catch(error => {
                 console.log(error);
             })
@@ -48,9 +51,16 @@ class CustomerRes extends Component {
 
     handleCategoryClick = (cat) => {
         if (cat === 'current') { //select current
-            this.setState({ isCurrent: true });
+            const filteredData = this.state.reservations.filter(x => x.dateTime >= new Date()); //future date
+            this.setState({ 
+                filteredReservations: filteredData,
+                isCurrent: true 
+            });
         } else { //select past
-            this.setState({ isCurrent: false });
+            const filteredData = this.state.reservations.filter(x => x.dateTime < new Date());
+            this.setState({ 
+                filteredReservations: filteredData,
+                isCurrent: false });
         }
     }
 
@@ -67,7 +77,7 @@ class CustomerRes extends Component {
                 <div>
                     <div id='CardDisplay'>
                         {
-                            this.state.reservations.map((data) => {
+                            this.state.filteredReservations.map((data) => {
                                 return <CustomerResCard
                                     fluid
                                     centered
