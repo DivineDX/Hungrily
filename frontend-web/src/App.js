@@ -15,6 +15,7 @@ import ProtectedRoute from './Common/ProtectedRoute';
 import Voucherlist from './Containers/VoucherList/VoucherList';
 import ParticlesOptions from './Data/ParticlesOptions';
 import LoginState from './Data/LoginState';
+import ProtectedCustomerRoute from './Common/ProtectedCustomerRoute';
 
 class App extends Component {
 	constructor() {
@@ -42,6 +43,8 @@ class App extends Component {
 
 	render() {
 		const isSignedIn = this.state.isSignedIn;
+		const isCustomer = isSignedIn && !this.state.isFranchiseOwner;
+
 		let loginProp =
 			(isSignedIn) ? this.signOutUser : this.loginUser;
 		// console.log(this.state);
@@ -59,10 +62,10 @@ class App extends Component {
 						<Route path="/" exact component={Homepage} />
 						<Route path="/restaurants" exact render={(props) => <RestaurantsListPage {...props} isSignedIn={isSignedIn} userID={this.state.userID} isFranchiseOwner={this.state.isFranchiseOwner} />} />
 						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} isFranchiseOwner={this.state.isFranchiseOwner} />
-						<Route path="/voucherlist" exact render={(props) => <Voucherlist {...props} userID = {this.state.userID}/>} />
+						<ProtectedCustomerRoute path="/voucherlist" component={Voucherlist} userID={this.state.userID} isCustomer={isCustomer} />
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
-						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} isSignedIn={isSignedIn} userID={this.state.userID} isFranchiseOwner = {this.state.isFranchiseOwner}/>} />
+						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} isSignedIn={isSignedIn} userID={this.state.userID} isFranchiseOwner={this.state.isFranchiseOwner} />} />
 						<Route path="*" component={NonExistentPage} />
 					</Switch>
 				</div>
