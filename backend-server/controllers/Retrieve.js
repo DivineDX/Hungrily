@@ -3,20 +3,51 @@
  *  Returns an object with the keys store_name, location, area, opening_hours, closing_hours, Cuisine, Price 
  */
 const getRestaurant = (req, res, db) => {
-    const sql = 
-    `
-    SELECT *
-    FROM restaurant 
-    WHERE restaurant.url = '${req.params.name}'
-    `
-    db.raw(sql).timeout(1000)
-        .then(resp => {
-            const restaurantRows = resp.rows;
-            if(!restaurantRows || !restaurantRows.length || restaurantRows.length > 1) {
-                throw err;
-            }
-            res.status(200).json(restaurantRows[0]);
-        }).catch(err =>  res.status(400).json('Unable to Retrieve'));
+    db.raw(`
+            SELECT distinct Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours,
+            FranchiseOwner.FNAME AS FranchisorName,
+            Restaurant.url, 
+                (
+                SELECT string_agg(Food.Cuisine,', ') AS c
+                FROM Food
+                WHERE Food.Location = Restaurant.Location
+                AND Food.UserID = Restaurant.UserID
+                ) AS cuisine,
+                (
+                SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS p
+                FROM Food
+                WHERE Food.Location = Restaurant.Location
+                AND Food.UserID = Restaurant.UserID
+                ) AS price
+            FROM Restaurant INNER JOIN Food
+            ON Food.Location = Restaurant.Location
+            AND Food.UserID = Restaurant.UserID
+            INNER JOIN FranchiseOwner
+            ON FranchiseOwner.UserID = Restaurant.UserID
+            WHERE restaurant.url = '${req.params.name}'
+            GROUP BY Restaurant.UserID,Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours, FranchiseOwner.FNAME, Restaurant.url
+            LIMIT 1
+            `)
+            .timeout(1000).then(
+            result => {
+                const restaurantRows = result.rows.map(x=>(
+                    {
+                        //{ location, area, opening_hours, closing_hours, cuisine, price }
+                        location:x.location,
+                        area:x.area,
+                        opening_hours:x.opening_hours,
+                        closing_hours:x.closing_hours,
+                        cuisine:x.cuisine,
+                        price:'~$'+x.price
+                    }));
+                if(!restaurantRows || !restaurantRows.length || restaurantRows.length > 1) {
+                    res.status(400).json('Unable to Retrieve')
+                }
+                res.status(200).json(restaurantRows[0])
+        }).catch(
+            err =>{
+            res.status(400).json(err)});//'Unable to Retrieve'));
+
 }
 
 /**
@@ -24,27 +55,29 @@ const getRestaurant = (req, res, db) => {
  * Returns an array of objects with keys name, cuisine, type and price
  */
 const getRestaurantMenu = (req, res, db) => {
-    res.json([
-        {
-            name: "BigBurger",
-            cuisine: "Western",
-            type: "Fast Food",
-            price:  "5"
-        },
-        {
-            name: "French Fries",
-            cuisine: "Western",
-            type: "Fast Food",
-            price:  "2"
-        },
-        {
-            name: "Big Coke",
-            cuisine: "Drinks",
-            type: "Fast Food",
-            price:  "1"
-        },
-
-])
+    db.raw(`
+            SELECT Food.name, Food.cuisine, Food.type, Food.price
+            FROM Restaurant INNER JOIN Food
+            ON Food.Location = Restaurant.Location
+            AND Food.UserID = Restaurant.UserID
+            INNER JOIN FranchiseOwner
+            ON FranchiseOwner.UserID = Restaurant.UserID
+            WHERE restaurant.url = '${req.params.name}'
+            `)
+            .timeout(1000).then(
+            result => {
+                const restaurantRows = result.rows.map(x=>(
+                    {
+                        //name, cuisine, type and price
+                        name:x.name,
+                        cuisine:x.cuisine,
+                        type:x.type,
+                        price:x.price
+                    }));
+                res.status(200).json(restaurantRows)
+        }).catch(
+            err =>{
+            res.status(400).json(err)});//'Unable to Retrieve'));
 
 }
 const findRestaurants = (req, res, db) => {
@@ -59,7 +92,13 @@ const findRestaurants = (req, res, db) => {
                 FROM Food
                 WHERE Food.Location = Restaurant.Location
                 AND Food.UserID = Restaurant.UserID
-                ) AS cuisine
+                ) AS cuisine,
+                (
+                    SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS p
+                    FROM Food
+                    WHERE Food.Location = Restaurant.Location
+                    AND Food.UserID = Restaurant.UserID
+                    ) AS price
             FROM Restaurant INNER JOIN Food
             ON Food.Location = Restaurant.Location
             AND Food.UserID = Restaurant.UserID
@@ -79,7 +118,7 @@ const findRestaurants = (req, res, db) => {
                         cuisine:x.cuisine,
                         openingHours:x.opening_hours,
                         closingHours:x.closing_hours,
-                        price:0,
+                        price:'~$'+x.price,
                         url:x.url,
                         ratings:0
                     }
@@ -126,8 +165,27 @@ const getAllFranchise = (req, res, db) => {
 const getAllRestaurants = (req, res, db) => {
     const sql =
     `
-    SELECT *
-    FROM Restaurant
+    SELECT distinct Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours,
+    FranchiseOwner.FNAME AS FranchisorName,
+    Restaurant.url, 
+        (
+        SELECT string_agg(Food.Cuisine,', ') AS c
+        FROM Food
+        WHERE Food.Location = Restaurant.Location
+        AND Food.UserID = Restaurant.UserID
+        ) AS cuisine,
+        (
+            SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS p
+            FROM Food
+            WHERE Food.Location = Restaurant.Location
+            AND Food.UserID = Restaurant.UserID
+            ) AS price
+    FROM Restaurant INNER JOIN Food
+    ON Food.Location = Restaurant.Location
+    AND Food.UserID = Restaurant.UserID
+    INNER JOIN FranchiseOwner
+    ON FranchiseOwner.UserID = Restaurant.UserID
+    GROUP BY Restaurant.UserID,Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours, FranchiseOwner.FNAME, Restaurant.url
     `
     db.raw(sql).timeout(1000)
     .then(restaurants => {
@@ -138,7 +196,7 @@ const getAllRestaurants = (req, res, db) => {
                 cuisine:x.cuisine,
                 openingHours:x.opening_hours,
                 closingHours:x.closing_hours,
-                price:0,
+                price:'~$'+x.price,
                 url:x.url,
                 ratings:0
             }

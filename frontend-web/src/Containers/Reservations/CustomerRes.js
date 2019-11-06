@@ -67,6 +67,7 @@ class CustomerRes extends Component {
 
     render() {
         const { userID } = this.props;
+        
         return (
             <div>
                 <BulletinMenuBar
@@ -78,6 +79,7 @@ class CustomerRes extends Component {
                     <div id='CardDisplay'>
                         {
                             this.state.filteredReservations.map((data) => {
+                                console.log(data)
                                 return <CustomerResCard
                                     fluid
                                     centered
