@@ -31,7 +31,7 @@ CREATE TABLE Restaurant (
     Area varchar(100) NOT NULL,
     Opening_hours time NOT NULL default '09:00:00', 
     Closing_hours time NOT NULL default '21:00:00', 
-    url varchar(300),
+    url varchar(300) UNIQUE NOT NULL ,
     PRIMARY KEY (Location, UserID),
     FOREIGN KEY (UserID) REFERENCES FranchiseOwner ON DELETE CASCADE
 );
@@ -63,7 +63,9 @@ CREATE TABLE Special_Operating_Hrs (
     Opening_hours time NOT NULL,
     Closing_hours time NOT NULL, 
     PRIMARY KEY (Day_of_week, Location, UserID),
-    FOREIGN KEY (Location, UserID) REFERENCES Restaurant ON DELETE CASCADE
+    FOREIGN KEY (Location, UserID) REFERENCES Restaurant ON DELETE CASCADE,
+    CHECK (Day_of_week >= 0 and Day_of_week <= 6), 
+    CHECK (Opening_hours < Closing_hours )
 );
 
 CREATE TABLE Customer ( 
@@ -92,15 +94,26 @@ CREATE TABLE Reservation (
     Location varchar(100),
     Restaurant_UserID varchar(100), 
     Pax integer NOT NULL,
-    DateTime time NOT NULL,
-    PRIMARY KEY (Customer_UserID, Restaurant_UserID, TableNum, Location),
-    FOREIGN KEY (TableNum, Location, Restaurant_UserID) REFERENCES Tables
+    DateTime timestamp NOT NULL,
+    Rating integer,
+    PRIMARY KEY (Customer_UserID, Restaurant_UserID, TableNum, Location, DateTime),
+    FOREIGN KEY (TableNum, Location, Restaurant_UserID) REFERENCES Tables,
+    CHECK ((Rating >= 0 and Rating <= 5) or Rating IS NULL)
 );
 
-CREATE TABLE Ratings (
-    Rating integer PRIMARY KEY,
-    CHECK (Rating >= 0 and Rating <= 5)
-);
+
+
+CREATE OR REPLACE FUNCTION test(x timestamp) RETURNS void AS $test$
+    DECLARE
+        dayofweek integer := EXTRACT(DOW FROM x);
+        dateofbooking timestamp := date_trunc('day', x);
+        sometime time := make_time(1, 0, 0);
+    BEGIN
+        RAISE NOTICE 'DAy: (%)', dayofweek;
+        RAISE NOTICE 'test called(%)', dateofbooking;
+        RAISE NOTICE 'test called(%)', (dateofbooking+sometime);
+    END;
+$test$ LANGUAGE plpgsql;
 
 `
 const downSQL =
@@ -116,6 +129,8 @@ DROP TABLE IF EXISTS Special_Operating_Hrs Cascade;
 DROP TABLE IF EXISTS Customer_voucher Cascade; 
 DROP TABLE IF EXISTS Possible_voucher Cascade;
 DROP TABLE IF EXISTS Ratings Cascade; 
+DROP FUNCTION IF EXISTS test;
+DROP FUNCTION IF EXISTS attemptReserve;
 `
 exports.up = function(knex) {
     return knex.schema
