@@ -2,3 +2,7 @@
     margin-top: .5rem;
     margin-bottom: .5rem;
 }
+
+.detailBoxColumn {
+    flex-basis: 300px;
+}

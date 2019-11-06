@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 57%;
+    width: 60%;
     padding-top: 85px;
     margin-left: 20%;
 }
@@ -50,7 +50,6 @@ h3 {
     color: white;
 }
 
-/* Mobile Screens */
-@media screen and (max-width: 700px) {
-   
+.restaurantDetails {
+    margin-top: 100px;
 }
