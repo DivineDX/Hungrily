@@ -9,7 +9,8 @@ const loginCustomerState = {
 	isSignedIn: true,
 	userID: 'HungrilyFan',
 	name: 'Person',
-	isFranchiseOwner: false
+	isFranchiseOwner: false,
+	points: 5
 }
 
 const loginFranchiseState = {

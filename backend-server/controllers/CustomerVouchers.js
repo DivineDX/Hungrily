@@ -1,89 +1,66 @@
+const getPoints = (req, res, db) => {
+    const { userID } = req.body;
+
+    const sql =
+        `
+    SELECT Customer.points
+    FROM Customer 
+    WHERE Customer.userid = '${userID}'
+    LIMIT 1
+    `
+    db.raw(sql).timeout(1000)
+        .then(resp => {
+            const customerPoints = resp.rows[0].points;
+            if (isNaN(customerPoints)) {
+                res.status(400).json('fail');
+            } else {
+                res.status(200).json(customerPoints);
+            }
+        }).catch(err => res.status(400).json('Unable to Retrieve'));
+}
+
+
 /**
- * GET: See the list of all possible vouchers.
- * Vouchers are inserted into DB upon initialization 
+ * POST: Return a list of all vouchers, together with a boolean that indicates whether the Customer can buy
+ * based on the number of points that he possess
  */
-const listVouchers = (req, res, db) => {
+const voucherList = (req, res, db) => {
+    const { userID } = req.body;
     res.status(200).json([
         {
-            name: "HungriLOR",
+            voucherName: "HungriLOR",
             cost: 7, //points
             discount: 10, //percentage
-            description: "Ready to be back for more!"
+            description: "Ready to be back for more!",
+            owned: 2,
+            canBuy: true
         },
         {
-            name: "HungriSIA",
+            voucherName: "HungriSIA",
             cost: 10, //points
             discount: 20, //percentage
-            description: "Specially for those with a bottomless appetite"
+            description: "Specially for those with a bottomless appetite",
+            owned: 3,
+            canBuy: false
         },
         {
-            name: "HungriLEH",
+            voucherName: "HungriLEH",
             cost: 15, //points
             discount: 30, //percentage
-            description: "For our most loyal and always perma-hungri users!"
-        }
-    ])
-}
-
-/**
- * POST: Return list of vouchers that a customer is eligible to purchase using points
- */
-const availForPurchase = (req, res, db) => {
-    const {userID} = req.body;
-    //Stub: DB checks for points that a customer has, then filters and returns the voucher list but with a boolean
-    const userPoints = "8"; 
-    res.status(200).json([
-        {
-            Name: "HungriLOR",
-            Cost: 7, //points
-            Discount: 10, //percentage
-            Description: "Ready to be back for more!",
-            available: true
-        },
-        {
-            Name: "HungriSIA",
-            Cost: 10, //points
-            Discount: 20, //percentage
-            Description: "Specially for those with a bottomless appetite",
-            available: false
-        },
-        {
-            Name: "HungriLEH",
-            Cost: 15, //points
-            Discount: 30, //percentage
-            Description: "For our most loyal and always perma-hungri users!",
+            description: "For our most loyal and always perma-hungri users!",
+            owned: 0,
             available: false
         }
     ])
 }
-/**
- * Returns list of specific Customer's owned vouchers
- * Checks through the "CustomerVouchers" Table joined with Vouchers Table
- */
-const seeOwnedVouchers = (req, res, db) => {
-    const {userID} = req.body;
-    res.status(200).json([
-        {
-            Name: "HungriLOR",
-            VoucherSerial: 003,
-            Discount: 10, //percentage
-        },
-        {
-            Name: "HungriLEH",
-            VoucherSerial: 010,
-            Discount: 30, //percentage
-        }
-    ])
-}
-
 
 /**
  * POST: Customer spends points to buy a voucher that he can spend/apply 
  * Inserts tuple into the "CustomerVouchers" table, Updates (Deducts) Points of Customers.
  */
 const buyVoucher = (req, res, db) => {
-    const {userID, voucherName} = req.body;
-    res.status(200).json('Success');
+    const { userID, voucherName } = req.body;
+    res.status(200).json('success'); //return failed if otherwise
 }
 
 /**
@@ -91,14 +68,13 @@ const buyVoucher = (req, res, db) => {
  * Updates boolean isUsed of Voucher in CustomerVouchers table to true
  */
 const useVoucher = (req, res, db) => {
-    const {userID, voucherID} = req.body
+    const { userID, voucherID } = req.body
     res.status(200).json('Success');
 }
 
 module.exports = {
-    listVouchers: listVouchers,
-    availForPurchase: availForPurchase,
-    seeOwnedVouchers: seeOwnedVouchers,
+    getPoints: getPoints,
+    voucherList: voucherList,
     buyVoucher: buyVoucher,
     useVoucher: useVoucher
 }
