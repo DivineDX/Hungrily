@@ -6,8 +6,8 @@ const RestaurantDetailBox = (props) => {
     const { location, area, opening_hours, closing_hours, cuisine, price } = props.resData;
 
     return (
-        <div id='resDetailsBox' className='relative flex flex-row justify-center'>
-            <div className='flex flex-column pr6'>
+        <div id='resDetailsBox' className='relative flex flex-row justify-center mt4'>
+            <div className='flex flex-column pr6 detailBoxColumn'>
                 <div className='containerText fl'>
                     <h3 className='b f3'> Cuisine </h3>
                     <p className=''> {cuisine} </p>
@@ -35,7 +35,7 @@ const RestaurantDetailBox = (props) => {
                     <h3 className='b f3'> Location </h3>
                     <p className=''> {area} </p>
                 </div>
-                <div className='containerText mw5'>
+                <div className='containerText mw5 addressField'>
                     <h3 className='b f3'> Address </h3>
                     <p className=''> {location} </p>
                 </div>

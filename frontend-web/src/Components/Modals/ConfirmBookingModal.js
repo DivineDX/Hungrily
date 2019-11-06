@@ -31,7 +31,9 @@ const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, ava
                         <Modal.Description className='f4'>
                             <b>Number of Pax: </b>{values.pax}
                         </Modal.Description>
-
+                        <Modal.Description className='f4'>
+                            <b>Voucher: </b>{values.voucher}
+                        </Modal.Description>
                     </div>
                 }
 

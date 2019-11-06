@@ -72,7 +72,9 @@ class LandingPage extends Component {
                     <RestaurantDetailBox
                         userID={userID}
                         resData={this.state.resData}
-                        menuData={this.state.menuData} />
+                        menuData={this.state.menuData} 
+                        className = 'restaurantDetails'
+                        />
                 </article>
             );
         }

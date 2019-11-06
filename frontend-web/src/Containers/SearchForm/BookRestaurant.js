@@ -9,6 +9,7 @@ import ConfirmBookingModal from '../../Components/Modals/ConfirmBookingModal';
 import InputErrorLabel from '../../Components/Label/InputErrorLabel';
 import url from '../../Config/url';
 import 'flatpickr/dist/themes/light.css'
+import VoucherOptions from '../../Data/VoucherOptions';
 
 /**
  * Form used for the Booking of a Reservation at a Restaurant
@@ -21,6 +22,9 @@ const initialState = {
     noDouble: false,
     loading: false,
     submitted: false,
+    usingLoad: false,
+    useSuccess: false,
+    error: false,
 }
 
 class BookRestaurant extends React.Component {
@@ -33,13 +37,36 @@ class BookRestaurant extends React.Component {
         this.setState(initialState);
     }
 
+    useVoucher() {
+        this.setState({ buyingLoad: true });
+        fetch(`${url.fetchURL}/useVoucher`, {
+            method: 'post',
+            body: JSON.stringify({
+                userID: this.props.userID,
+                voucherName: this.props.data.voucherName
+            })
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            if (data === 'success') { 
+                this.setState({ usingLoad: false, useSuccess: true, owned: this.state.owned - 1, })
+            } else { //do not have enough voucher
+                this.setState({ usingLoad: false, error: true })
+            }
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
     render() {
-        const { userID, resName, franchisorName } = this.props;
+        const { userID, resName, franchisorName, voucherName, owned } = this.props;
+
         return (
             <Formik
                 initialValues={{
                     date: '',
                     pax: '',
+                    voucher: '',
                 }}
 
                 onSubmit={(values) => { 
@@ -82,7 +109,8 @@ class BookRestaurant extends React.Component {
                     date: yup.date("Invalid Date")
                         .min(new Date(), "Your cannot state a past date")
                         .required("You must state a date"),
-                    pax: yup.number().min(1).max(10).required("You must state the number of diners")
+                    pax: yup.number().min(1).max(10).required("You must state the number of diners"),
+                    voucher: yup.string().required("You must select an option")
                 })}
 
                 render={({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => {
@@ -112,6 +140,17 @@ class BookRestaurant extends React.Component {
                                         name="pax"
                                         options={PaxOptions}
                                         value={values.pax}
+                                        onChange={handleDropdownChange}
+                                    />
+                                    <InputErrorLabel touched={touched.pax} errorText={errors.pax} />
+                                </Form.Field>
+
+                                <Form.Field>
+                                    <Form.Select //Dropdown
+                                        placeholder='Voucher Code'
+                                        name="voucher"
+                                        options={VoucherOptions}
+                                        value={values.voucher}
                                         onChange={handleDropdownChange}
                                     />
                                     <InputErrorLabel touched={touched.pax} errorText={errors.pax} />
