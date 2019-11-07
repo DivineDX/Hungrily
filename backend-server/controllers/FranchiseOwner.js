@@ -12,13 +12,13 @@ const ownedRestaurants = (req, res, db) => {
             FranchiseOwner.FNAME AS FranchisorName,
             Restaurant.url, 
                 (
-                SELECT string_agg(Food.Cuisine,', ') AS c
+                SELECT string_agg( DISTINCT Food.Cuisine,', ') AS c
                 FROM Food
                 WHERE Food.Location = Restaurant.Location
                 AND Food.UserID = Restaurant.UserID
                 ) AS cuisine,
                 (
-                    SELECT AVG(Food.Price) AS c
+                    SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS c
                     FROM Food
                     WHERE Food.Location = Restaurant.Location
                     AND Food.UserID = Restaurant.UserID
@@ -40,7 +40,7 @@ const ownedRestaurants = (req, res, db) => {
                 cuisine: x.cuisine,
                 openingHours: x.opening_hours,
                 closingHours: x.closing_hours,
-                price: x.price,
+                price: '~$'+x.price,
                 url: x.url,
                 ratings: 0
             })));

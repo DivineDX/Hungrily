@@ -41,6 +41,7 @@ const getRestaurant = (req, res, db) => {
                         price:'~$'+x.price
                     }));
                 if(!restaurantRows || !restaurantRows.length || restaurantRows.length > 1) {
+
                     res.status(400).json('Unable to Retrieve')
                 }
                 res.status(200).json(restaurantRows[0])
@@ -86,19 +87,19 @@ const findRestaurants = (req, res, db) => {
     db.raw(`
             SELECT distinct Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours,
             FranchiseOwner.FNAME AS FranchisorName,
-            Restaurant.url, 
-                (
-                SELECT string_agg(DISTINCT Food.Cuisine,', ') AS c,
-                FROM Food
-                WHERE Food.Location = Restaurant.Location
-                AND Food.UserID = Restaurant.UserID
-                ) AS cuisine,
-                (
-                    SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS p
-                    FROM Food
-                    WHERE Food.Location = Restaurant.Location
-                    AND Food.UserID = Restaurant.UserID
-                    ) AS price
+            Restaurant.url,
+            (
+            SELECT string_agg( DISTINCT Food.Cuisine,', ') AS c
+            FROM Food
+            WHERE Food.Location = Restaurant.Location
+            AND Food.UserID = Restaurant.UserID
+            ) AS cuisine,
+            (
+            SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS p
+            FROM Food
+            WHERE Food.Location = Restaurant.Location
+            AND Food.UserID = Restaurant.UserID
+            ) AS price
             FROM Restaurant INNER JOIN Food
             ON Food.Location = Restaurant.Location
             AND Food.UserID = Restaurant.UserID
@@ -123,7 +124,7 @@ const findRestaurants = (req, res, db) => {
                         ratings:0
                     }
                 )))
-        }).catch(err =>res.status(400).json(err));//'Unable to Retrieve'));
+        }).catch(err =>{console.log(err);res.status(400).json(err)});//'Unable to Retrieve'));
 }
 
 const getAllCuisines = (req, res, db) => {

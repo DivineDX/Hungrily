@@ -167,6 +167,14 @@ def generateRestaurants():
 
     pass
 
+reservations={}
+customerswhoreserved={}
+numberofreservingCustomers = 30
+maxreservationspercustomer = 10
+def generateReservations():
+    def innergenerateReservations():
+        
+        
 
 
 def generateSQL():
