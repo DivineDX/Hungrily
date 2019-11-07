@@ -37,27 +37,6 @@ class BookRestaurant extends React.Component {
         this.setState(initialState);
     }
 
-    useVoucher() {
-        this.setState({ buyingLoad: true });
-        fetch(`${url.fetchURL}/useVoucher`, {
-            method: 'post',
-            body: JSON.stringify({
-                userID: this.props.userID,
-                voucherName: this.props.data.voucherName
-            })
-        })
-        .then(resp => resp.json())
-        .then(data => {
-            if (data === 'success') { 
-                this.setState({ usingLoad: false, useSuccess: true, owned: this.state.owned - 1, })
-            } else { //do not have enough voucher
-                this.setState({ usingLoad: false, error: true })
-            }
-        }).catch(error => {
-            console.log(error);
-        })
-    }
-
     render() {
         const { userID, resName, franchisorName, voucherName, owned } = this.props;
 
@@ -102,6 +81,26 @@ class BookRestaurant extends React.Component {
 
                         }).catch(err => {
                             alert(err);
+                        })
+                
+                    this.setState({ usingLoad: true });
+                    fetch(`${url.fetchURL}/useVoucher`, {
+                            method: 'post',
+                            body: JSON.stringify({
+                                userID: this.props.userID,
+                                voucher: this.props.voucherName,
+                                owned: this.props.owned,
+                        })
+                    })
+                        .then(resp => resp.json())
+                        .then(data => {
+                            if (data === 'success') { 
+                                this.setState({ usingLoad: false, useSuccess: true, owned: this.state.owned - 1, })
+                            } else { //do not have enough voucher
+                                this.setState({ usingLoad: false, error: true })
+                            }
+                        }).catch(error => {
+                            console.log(error);
                         })
                 }}
 
@@ -153,7 +152,7 @@ class BookRestaurant extends React.Component {
                                         value={values.voucher}
                                         onChange={handleDropdownChange}
                                     />
-                                    <InputErrorLabel touched={touched.pax} errorText={errors.pax} />
+                                    <InputErrorLabel touched={touched.voucher} errorText={errors.voucher} />
                                 </Form.Field>
 
 
