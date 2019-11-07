@@ -8,7 +8,7 @@ const getRestaurant = (req, res, db) => {
             FranchiseOwner.FNAME AS FranchisorName,
             Restaurant.url, 
                 (
-                SELECT string_agg(Food.Cuisine,', ') AS c
+                SELECT string_agg( DISTINCT Food.Cuisine,', ') AS c
                 FROM Food
                 WHERE Food.Location = Restaurant.Location
                 AND Food.UserID = Restaurant.UserID
@@ -88,7 +88,7 @@ const findRestaurants = (req, res, db) => {
             FranchiseOwner.FNAME AS FranchisorName,
             Restaurant.url, 
                 (
-                SELECT string_agg(Food.Cuisine,', ') AS c
+                SELECT string_agg(DISTINCT Food.Cuisine,', ') AS c,
                 FROM Food
                 WHERE Food.Location = Restaurant.Location
                 AND Food.UserID = Restaurant.UserID
@@ -169,7 +169,7 @@ const getAllRestaurants = (req, res, db) => {
     FranchiseOwner.FNAME AS FranchisorName,
     Restaurant.url, 
         (
-        SELECT string_agg(Food.Cuisine,', ') AS c
+        SELECT string_agg(DISTINCT Food.Cuisine,', ') AS c
         FROM Food
         WHERE Food.Location = Restaurant.Location
         AND Food.UserID = Restaurant.UserID
