@@ -44,7 +44,7 @@ const viewResReviews = (req, res, db) => {
  */
 const postRating = (req, res, db) => {
     //PRIMARY KEY (Customer_UserID, Restaurant_UserID, TableNum, Location, DateTime),
-    const {userID, location, resName, dateTime, table, rating} = req.body;
+    const {userID, location, resName, dateTime, table, rating,resUrl} = req.body;
     const sql = 
     `
     UPDATE
@@ -53,10 +53,11 @@ const postRating = (req, res, db) => {
     Reservation.rating = '${rating}'
     WHERE 
     Reservation.Customer_UserID = '${userID}'
-    AND Reservation.location ='${location}'
-    AND Reservation.location ='${location}'
+    AND Reservation.location ='${resUrl}'
+    AND Reservation.url ='${location}'
     `
     console.log(req.body)
+    
     res.status(200).json('Success');
 }
 

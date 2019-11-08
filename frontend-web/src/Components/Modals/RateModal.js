@@ -24,7 +24,7 @@ class RateModal extends Component {
 
     postRating = () => {
         const { data, userID } = this.props;
-        const { resName, location, dateTime, table } = data;
+        const { resName, location, dateTime, table, resUrl } = data;
         console.log(data)
         fetch(`${url.fetchURL}/giveReview`, {
             method: 'post',
@@ -35,7 +35,8 @@ class RateModal extends Component {
                 resName: resName,
                 dateTime: dateTime,
                 table: table,
-                rating: this.state.rating
+                rating: this.state.rating,
+                url: url
             })
         })
             .then(resp => resp.json())
