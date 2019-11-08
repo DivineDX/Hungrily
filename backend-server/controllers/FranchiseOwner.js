@@ -67,7 +67,7 @@ const viewAllReservations = (req, res, db) => {
     Reservation.pax AS pax,
     Reservation.dateTime AS dateTime,
     Reservation.Location AS location,
-    Reservation.Restaurant_UserID AS restaurant_userid,
+    Reservation.Restaurant_UserID AS restaurant_userid
     FROM
     Restaurant INNER JOIN Reservation
     ON Reservation.location = Restaurant.location

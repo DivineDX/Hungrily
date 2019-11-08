@@ -98,6 +98,7 @@ const seeCustomerReservations = (req, res, db) => {
     ORDER BY
     Reservation.dateTime
     `
+    //(Customer_UserID, Restaurant_UserID, TableNum, Location, DateTime),
     db.raw(sql).timeout(1000)
     .then(restaurants => {
         //console.log(restaurants.rows)
