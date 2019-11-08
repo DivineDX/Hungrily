@@ -5,21 +5,38 @@
 const viewResReviews = (req, res, db) => {
     const franchisor = req.params.franchisor;
     const location = req.params.location;
-
-    res.status(200).json([
-        {
-            Reviewer: "John Doe", //Customer.name
-            Rating: 5, //max 5
-        },
-        {
-            Reviewer: "Jane Doe", //Customer.name
-            Rating: 3, //max 5
-        },
-        {
-            Reviewer: "James Bond", //Customer.name
-            Rating: 2, //max 5
-        },
-    ])
+    const sql = 
+    `
+    SELECT
+    Customer.Name AS reviewer,
+    Reservation.Rating AS rating
+    Reservation INNER JOIN Customer
+    ON Reservation.Customer_UserID = Customer.UserID
+    WHERE Reservation.Restaurant_UserID = '${franchisor}'
+    AND Reservation.location ='${location}'
+    `
+    db.raw(sql)
+    .timeout(1000)
+    .then(result => {
+        res.status(200).json(result.rows.map(x => ({ //should rename some tables for easier reference
+            Reviewer: x.reviewer, 
+            Rating: x.rating
+        })));
+    }).catch(err => res.status(400).json('Unable to Retrieve'));
+    // res.status(200).json([
+    //     {
+    //         Reviewer: "John Doe", //Customer.name
+    //         Rating: 5, //max 5
+    //     },
+    //     {
+    //         Reviewer: "Jane Doe", //Customer.name
+    //         Rating: 3, //max 5
+    //     },
+    //     {
+    //         Reviewer: "James Bond", //Customer.name
+    //         Rating: 2, //max 5
+    //     },
+    // ])
 }
 
 /**
@@ -27,6 +44,17 @@ const viewResReviews = (req, res, db) => {
  */
 const postRating = (req, res, db) => {
     const {userID, location, resName, dateTime, table, rating} = req.body;
+    const sql = 
+    `
+    UPDATE
+    Reservation
+    SET
+    Reservation.rating = '${rating}'
+    WHERE 
+    Reservation.Customer_UserID = '${userID}'
+    AND Reservation.location ='${location}'
+    AND Reservation.location ='${location}'
+    `
     res.status(200).json('Success');
 }
 

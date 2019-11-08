@@ -28,7 +28,7 @@ class CustomerRestaurantListPage extends Component {
     }
 
     render() {
-        console.log(this.state.restaurants);
+        //console.log(this.state.restaurants);
         return (
             <div>
                 <div className="w-75 pt5 center bb b--black-10">

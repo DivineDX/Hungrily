@@ -131,6 +131,7 @@ function getFoods(){
   return Foods
 }
 function getRestaurants(){
+  var y = 0;
   return testrestaurants.map(
     x=>({
       store_name:x["store_name"],
@@ -140,7 +141,7 @@ function getRestaurants(){
       area: x["area"],
       opening_hours:x["opening_hours"],
       closing_hours: x["closing_hours"],
-      url: x["url"],
+      url: x["url"] + y++,
     })
   )
 }

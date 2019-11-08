@@ -41,13 +41,16 @@ class LandingPage extends Component {
     }
 
     render() {
+       
         const { isSignedIn, userID, isFranchiseOwner } = this.props;
         if (this.state.notFound) {
             return (
                 <NonExistentPage />
             )
         } else {
+            //console.log(this.state.resData)
             return (
+                
                 <article id='landingPage'>
                     <img
                         className="mt3 pt4 relative"
