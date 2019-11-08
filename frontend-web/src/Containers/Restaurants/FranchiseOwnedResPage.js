@@ -11,6 +11,7 @@ class FranchiseOwnedResPage extends Component {
         this.state = {
             restaurants: [],
             loading: true,
+            visible: 8
         }
     }
 
@@ -30,15 +31,27 @@ class FranchiseOwnedResPage extends Component {
             })
     }
 
+    loadMore = () => {
+        this.setState({
+            visible: (this.state.visible) + 8,
+        })
+    }
+
     render() {
         return (
             <div>
                 <div className="w-75 pt5 center bb b--black-10">
                     <h1 className="tc baskerville f1 fw5"> Owned Restaurants</h1>
                 </div>
+
                 <div className='pa4'>
                     <RestaurantDisplayBulletin
-                        resDisplay={this.state.restaurants} />
+                        loading={this.state.loading}
+                        resDisplay={this.state.restaurants}
+                        visibleItemsNum={this.state.visible}
+                        totalLength={this.state.restaurants.length}
+                        loadMore={this.loadMore}
+                    />
                 </div>
             </div>
         );

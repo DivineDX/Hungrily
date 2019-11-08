@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import LoadMoreButton from '../Components/Button/LoadMoreButton';
 import SearchForm from './SearchForm/SearchForm';
 import RestaurantDisplayBulletin from '../Components/Bulletins/RestaurantDisplayBulletin';
 
@@ -16,7 +15,7 @@ class Homepage extends Component {
 		super();
 		this.state = {
 			displayResults: false,
-			loading: true,
+			loading: false,
 			restaurants: [],
 			filteredResults: [],
 			visible: defaultVisibleItems
@@ -24,12 +23,13 @@ class Homepage extends Component {
 	}
 
 	loadMore = () => {
-        this.setState({
-            visible: (this.state.visible) + 3,
-        })
-    }
+		this.setState({
+			visible: (this.state.visible) + 3,
+		})
+	}
 
 	displayResults = (filters) => {
+		this.setState({ loading: true })
 		fetch(`${url.fetchURL}/search`, {
 			method: 'post',
 			headers: { 'Content-type': 'application/json' },
@@ -38,6 +38,7 @@ class Homepage extends Component {
 			.then(resp => resp.json())
 			.then(data => {
 				this.setState({
+					loading: false,
 					displayResults: true,
 					filteredResults: data,
 					visible: defaultVisibleItems
@@ -46,24 +47,18 @@ class Homepage extends Component {
 	}
 
 	render() {
-		console.log(this.state.restaurants);
 		return (
-			<div className="pa7">
+			<div className="pl7 pr7 pt7">
 				<SearchForm triggerDisplay={this.displayResults} />
-				{
-					this.state.displayResults &&
-					<div>
-						<RestaurantDisplayBulletin 
-							resDisplay={this.state.filteredResults}
-							visibleItems={this.state.visible}
-						/>
-						{this.state.visible < this.state.filteredResults.length &&
-							<LoadMoreButton loadMore={this.loadMore} />
-						}
-					</div>
-
+				{this.state.displayResults &&
+					<RestaurantDisplayBulletin
+						loading={this.state.loading}
+						resDisplay={this.state.filteredResults}
+						visibleItemsNum={this.state.visible}
+						totalLength={this.state.filteredResults.length}
+						loadMore={this.loadMore}
+					/>
 				}
-
 			</div>
 		);
 	}

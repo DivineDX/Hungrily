@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import url from '../../Config/url'
 import RestaurantDisplayBulletin from '../../Components/Bulletins/RestaurantDisplayBulletin';
-import LoadMoreButton from '../../Components/Button/LoadMoreButton';
 
 /**
  * Rendered Page that shows the entire list of Restaurants for browsing
@@ -13,7 +12,7 @@ class CustomerRestaurantListPage extends Component {
         this.state = {
             restaurants: [],
             loading: true,
-            visible: 16,
+            visible: 12,
         }
     }
 
@@ -32,7 +31,7 @@ class CustomerRestaurantListPage extends Component {
 
     loadMore = () => {
         this.setState({
-            visible: (this.state.visible) + 16,
+            visible: (this.state.visible) + 12,
         })
     }
 
@@ -43,16 +42,16 @@ class CustomerRestaurantListPage extends Component {
                 <div className="w-75 pt5 center bb b--black-10 relative">
                     <h1 className="tc baskerville f1 fw5"> All Restaurants</h1>
                 </div>
+
                 <div className='pa4'>
                     <RestaurantDisplayBulletin
+                        loading={this.state.loading}
                         resDisplay={this.state.restaurants}
-                        visibleItems={this.state.visible}
+                        visibleItemsNum={this.state.visible}
+                        totalLength={this.state.restaurants.length}
+                        loadMore={this.loadMore}
                     />
                 </div>
-
-                {this.state.visible < this.state.restaurants.length &&
-                    <LoadMoreButton loadMore={this.loadMore} />
-                }
 
             </div>
         );
