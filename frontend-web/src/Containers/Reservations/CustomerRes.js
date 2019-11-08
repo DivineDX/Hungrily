@@ -23,20 +23,24 @@ class CustomerRes extends Component {
     }
 
     fetchReservations() {
+
         fetch(`${url.fetchURL}/seeMyResv`, {
             method: 'post',
+            headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
                 userID: this.props.userID,
             })
         })
             .then(resp => resp.json())
             .then(data => { //data is an Array
+
                 const resvData = data.map(x => {
                     const dateObj = {
                         dateTime: new Date(x.dateTime),
                     };
                     return Object.assign(x, dateObj)
                 });
+                console.log(resvData)
                 this.setState({
                     reservations: resvData,
                     loading: false,
@@ -67,6 +71,7 @@ class CustomerRes extends Component {
 
     render() {
         const { userID } = this.props;
+        
         return (
             <div>
                 <BulletinMenuBar

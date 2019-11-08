@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 
+import LoadMoreButton from '../Components/Button/LoadMoreButton';
 import SearchForm from './SearchForm/SearchForm';
 import RestaurantDisplayBulletin from '../Components/Bulletins/RestaurantDisplayBulletin';
+
 import url from '../Config/url';
+
 import '../Components/Cards/RestaurantCard.css';
 import '../App.css'
+
+const defaultVisibleItems = 6;
 
 class Homepage extends Component {
 	constructor() {
@@ -13,9 +18,16 @@ class Homepage extends Component {
 			displayResults: false,
 			loading: true,
 			restaurants: [],
-			filteredResults: []
+			filteredResults: [],
+			visible: defaultVisibleItems
 		}
 	}
+
+	loadMore = () => {
+        this.setState({
+            visible: (this.state.visible) + 3,
+        })
+    }
 
 	displayResults = (filters) => {
 		fetch(`${url.fetchURL}/search`, {
@@ -27,7 +39,8 @@ class Homepage extends Component {
 			.then(data => {
 				this.setState({
 					displayResults: true,
-					filteredResults: data
+					filteredResults: data,
+					visible: defaultVisibleItems
 				})
 			});
 	}
@@ -39,8 +52,18 @@ class Homepage extends Component {
 				<SearchForm triggerDisplay={this.displayResults} />
 				{
 					this.state.displayResults &&
-					<RestaurantDisplayBulletin resDisplay={this.state.filteredResults} />
+					<div>
+						<RestaurantDisplayBulletin 
+							resDisplay={this.state.filteredResults}
+							visibleItems={this.state.visible}
+						/>
+						{this.state.visible < this.state.filteredResults.length &&
+							<LoadMoreButton loadMore={this.loadMore} />
+						}
+					</div>
+
 				}
+
 			</div>
 		);
 	}

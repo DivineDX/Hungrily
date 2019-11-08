@@ -93,7 +93,7 @@ class BookRestaurant extends React.Component {
                     })
                         .then(resp => resp.json())
                         .then(data => {
-                            console.log(data);
+                            //console.log(data);
                             this.setState({ submitted: true, loading: false });
                             switch (data) {
                                 case 'available': //todo: After check availability, if available, will do another POST to insert into DB
