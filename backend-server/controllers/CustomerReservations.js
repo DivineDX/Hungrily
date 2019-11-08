@@ -6,23 +6,23 @@
  * 3) noDouble: Customer already has a reservation at another 
  */ // just use this for book reservations
 const checkAvailability = (req, res, db) => {
-    const {userID, franchiseName, resName, dateTime, pax} = req.body;
+    const {userID, location,franchisorId, resUrl, dateTime, pax} = req.body;
+    console.log(req.body)
     const sql =
     `
     INSERT INTO Reservation
     (Customer_UserID,TableNum,Location,Restaurant_UserID,Pax,DateTime,Rating)
     VALUES
-    ('${userID}',0,'${userID}','${userID}','${userID}','${userID}')
-    WHERE Reservation.location = Restaurant.location
-    AND Reservation.Restaurant_UserID = Restaurant.UserID
-    AND Reservation.Customer_UserID = '${userID}'
-    AND Reservation.location = '${location}'
-    AND Restaurant.url = '${resUrl}'
-    AND Reservation.dateTime = '${dateTime}'
-    AND Reservation.table = '${table}'
+    ('${userID}',NULL,'${location}','${franchisorId}',${pax},'${dateTime}',NULL)
     `
-    // console.log(dateTime)
-    res.status(200).json('available'); 
+    
+    db.raw(sql).timeout(1000)
+    .then(results => {
+        res.status(200).json('available');
+    }).catch(err => { 
+        console.log(err)
+        res.status(400).json('err')
+    });
 }
 
 /**

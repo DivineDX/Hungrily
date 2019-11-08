@@ -43,6 +43,7 @@ const viewResReviews = (req, res, db) => {
  * POST: Customer posts for a rating for a past Reservation
  */
 const postRating = (req, res, db) => {
+    //PRIMARY KEY (Customer_UserID, Restaurant_UserID, TableNum, Location, DateTime),
     const {userID, location, resName, dateTime, table, rating} = req.body;
     const sql = 
     `
@@ -55,6 +56,7 @@ const postRating = (req, res, db) => {
     AND Reservation.location ='${location}'
     AND Reservation.location ='${location}'
     `
+    console.log(req.body)
     res.status(200).json('Success');
 }
 

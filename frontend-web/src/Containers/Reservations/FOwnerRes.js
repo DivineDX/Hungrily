@@ -25,6 +25,7 @@ class FOwnerRes extends Component {
     componentDidMount() {
         fetch(`${url.fetchURL}/viewAllReservations`, {
             method: 'post',
+            headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
                 franchiseUserID: this.props.userID,
             })

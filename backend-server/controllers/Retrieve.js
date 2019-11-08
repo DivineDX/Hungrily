@@ -6,6 +6,7 @@ const getRestaurant = (req, res, db) => {
     db.raw(`
             SELECT distinct Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours,
             FranchiseOwner.FNAME AS FranchisorName,
+            FranchiseOwner.userid AS franchisorid,
             Restaurant.url, 
                 (
                 SELECT string_agg( DISTINCT Food.Cuisine,', ') AS c
@@ -25,7 +26,7 @@ const getRestaurant = (req, res, db) => {
             INNER JOIN FranchiseOwner
             ON FranchiseOwner.UserID = Restaurant.UserID
             WHERE restaurant.url = '${req.params.name}'
-            GROUP BY Restaurant.UserID,Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours, FranchiseOwner.FNAME, Restaurant.url
+            GROUP BY Restaurant.UserID,Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours, FranchiseOwner.FNAME, Restaurant.url,FranchiseOwner.userid
             LIMIT 1
             `)
             .timeout(1000).then(
@@ -33,7 +34,9 @@ const getRestaurant = (req, res, db) => {
                 const restaurantRows = result.rows.map(x=>(
                     {
                         //{ location, area, opening_hours, closing_hours, cuisine, price }
-                        store_name:x.store_name,
+                        store_name: x.store_name,
+                        userid:x.franchisorid,
+                        resUrl:x.url,
                         location:x.location,
                         area:x.area,
                         opening_hours:x.opening_hours,

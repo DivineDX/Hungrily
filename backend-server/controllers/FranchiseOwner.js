@@ -56,6 +56,7 @@ const ownedRestaurants = (req, res, db) => {
 
 const viewAllReservations = (req, res, db) => {
     const { franchiseUserID } = req.body;
+    console.log(req.body)
     const sql = 
     `
     SELECT
@@ -64,26 +65,65 @@ const viewAllReservations = (req, res, db) => {
     Reservation.Customer_UserID AS customer_userid,
     Reservation.TableNum AS tablenum,
     Reservation.pax AS pax,
-    Reservation.dateTime AS dateTime
+    Reservation.dateTime AS dateTime,
+    Reservation.Location AS location,
+    Reservation.Restaurant_UserID AS restaurant_userid,
     FROM
     Restaurant INNER JOIN Reservation
     ON Reservation.location = Restaurant.location
     AND Reservation.Restaurant_UserID = Restaurant.UserID
     WHERE Reservation.Restaurant_UserID = '${franchiseUserID}'
     `
+
+    // { store_name: 'Deandre Subsistence doughtnut shop',
+    // url: 'Deandre-Subsistence-doughtnut-shop4143',
+    // customer_userid: 'EllaMathieson27',
+    // tablenum: 2,
+    // pax: 2,
+    // datetime: 2019-11-23T09:00:00.000Z },
+
+    // resName: x.store_name,
+    // resUrl: x.area,
+    // reservations: {
+    //     userID: x.customer_userid, 
+    //     table: x.tablenum,
+    //     pax: x.pax,
+    //     dateTime: x.dateTime
+    // }
+
     db.raw(sql)
     .timeout(1000)
     .then(result => {
-        res.status(200).json(result.rows.map(x => ({ //should rename some tables for easier reference
-            resName: x.store_name,
-            resUrl: x.area,
-            reservations: {
-                userID: x.customer_userid, 
-                table: x.tablenum,
-                pax: x.pax,
-                dateTime: x.dateTime
+        dict = {}
+        console.log(result.rows)
+        const a = result.rows.map(x =>{
+            if (x.url in dict){
+                dict[x.url].reservations.push({
+                    userID: x.customer_userid, 
+                    table: x.tablenum,
+                    pax: x.pax,
+                    dateTime: x.datetime,
+                    location:x.location,
+                    Restaurant_UserID:x.restaurant_userid
+                })
             }
-        })));
+            else{
+                dict[x.url] = {
+                    resName: x.store_name,
+                    resUrl: x.url,
+                    reservations: [{
+                        userID: x.customer_userid, 
+                        table: x.tablenum,
+                        pax: x.pax,
+                        dateTime: x.datetime,
+                        location:x.location,
+                        Restaurant_UserID:x.restaurant_userid
+                    }]
+                }
+            }
+        })
+        console.log(Object.values(dict));
+        res.status(200).json(Object.values(dict));
     }).catch(err => {console.log(err);res.status(400).json('Unable to Retrieve')});
     // res.status(200).json(
     //     [{

@@ -119,6 +119,120 @@ CREATE OR REPLACE FUNCTION test(x timestamp) RETURNS void AS $test$
     END;
 $test$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION ReservationConstraints() RETURNS TRIGGER AS $ReservationConstraints$
+    DECLARE
+    dayofweek integer := EXTRACT(DOW FROM NEW.datetime);
+    dateofbooking timestamp with time zone := date_trunc('day', NEW.datetime);
+    bookingtimestart timestamp with time zone := date_trunc('minute', NEW.datetime);
+    bookingtimeend timestamp with time zone := date_trunc('minute', NEW.datetime) + interval '2 hour';
+    autotable integer := (
+        With Y(tablenum,capacity) AS (
+            SELECT Tables.tablenum,Tables.capacity  FROM 
+            Tables 
+            WHERE Tables.userid = NEW.Restaurant_UserID
+            AND Tables.location = NEW.location
+            AND Tables.capacity >= NEW.pax
+            EXCEPT
+            SELECT Tables.tablenum,Tables.capacity FROM 
+            Tables INNER JOIN Reservation
+            ON
+            Tables.tablenum = Reservation.tablenum
+            AND Tables.location = Reservation.location
+            AND Tables.userid = Reservation.Restaurant_UserID
+            WHERE
+            (bookingtimestart, bookingtimeend) OVERLAPS (Reservation.datetime, Reservation.datetime + interval '2 hours')
+            AND Tables.userid = NEW.Restaurant_UserID
+            AND Tables.location = NEW.location
+            ORDER BY
+            Tablenum
+        )
+        SELECT tablenum 
+        from Y
+        ORDER BY
+        capacity
+        LIMIT 1
+
+    );
+    BEGIN
+
+    IF NEW.tablenum IS NULL
+    THEN
+    NEW.tablenum = autotable;
+    END IF;
+
+    IF NEW.tablenum IS NULL
+    THEN
+    RAISE EXCEPTION 'no available tables' USING HINT = 'no available tables';
+    END IF;
+
+    --checking if special opening time violated
+    IF EXISTS(
+        SELECT 1 FROM
+        Special_Operating_Hrs
+        WHERE
+        NEW.Restaurant_UserID = Special_Operating_Hrs.UserID
+        AND NEW.Location = Special_Operating_Hrs.Location
+        AND dayofweek = Special_Operating_Hrs.Day_of_week
+        AND 
+        (
+            bookingtimestart < (dateofbooking + Special_Operating_Hrs.Opening_hours)
+            OR
+            bookingtimeend > (dateofbooking + Special_Operating_Hrs.Closing_hours)
+        )
+    )
+    THEN
+    RAISE EXCEPTION 'Shop not open Special' USING HINT = 'Shop not open Special';
+
+    --checking if normal opening time violated
+    ELSIF EXISTS(
+        SELECT 1 FROM
+        Restaurant
+        WHERE
+        NEW.Restaurant_UserID = Restaurant.UserID
+        AND NEW.Location = Restaurant.Location
+        AND 
+        (
+            bookingtimestart < (dateofbooking + Restaurant.Opening_hours)
+            OR
+            bookingtimeend > (dateofbooking + Restaurant.Closing_hours)
+        )
+    )
+    THEN
+    RAISE EXCEPTION 'Shop not open Normal' USING HINT = 'Shop not open Normal';
+
+    --checking if double book violated
+    ELSIF EXISTS(
+        SELECT 1 FROM
+        Reservation
+        WHERE
+        NEW.Customer_UserID = Reservation.Customer_UserID
+        AND (bookingtimestart, bookingtimeend) OVERLAPS (Reservation.datetime, Reservation.datetime + interval '2 hours')
+    )
+    THEN
+    RAISE EXCEPTION 'Doublebooked' USING HINT = 'Doublebooked';
+
+    --checking if seat is available
+    ELSIF EXISTS(
+        SELECT 1 FROM
+        Reservation
+        WHERE
+        NEW.TableNum = Reservation.TableNum
+        AND  NEW.Restaurant_UserID = Reservation.Restaurant_UserID
+        AND NEW.Location = Reservation.Location
+        AND (bookingtimestart, bookingtimeend) OVERLAPS (Reservation.datetime, Reservation.datetime + interval '2 hours')
+    )
+    THEN
+    RAISE EXCEPTION 'SorrySeatTaken' USING HINT = 'SorrySeatTaken';
+    END IF;
+
+    RETURN NEW;
+    END;
+$ReservationConstraints$ LANGUAGE plpgsql;
+
+CREATE TRIGGER ReservationConstraintsTrigger
+BEFORE INSERT ON Reservation
+    FOR EACH ROW EXECUTE FUNCTION ReservationConstraints();
+
 `
 const downSQL =
 `
@@ -135,6 +249,8 @@ DROP TABLE IF EXISTS Possible_voucher Cascade;
 DROP TABLE IF EXISTS Ratings Cascade; 
 DROP FUNCTION IF EXISTS test;
 DROP FUNCTION IF EXISTS attemptReserve;
+DROP TRIGGER IF EXISTS ReservationConstraintsTrigger on Reservation;
+DROP FUNCTION IF EXISTS ReservationConstraints;
 `
 exports.up = function(knex) {
     return knex.schema
@@ -153,3 +269,88 @@ exports.down = function(knex) {
     return knex.schema
     .raw(downSQL);
 };
+
+const lol =
+`
+
+CREATE OR REPLACE FUNCTION test(x integer) RETURNS void AS $test$
+    DECLARE
+    _temp_cur1 refcursor = 'unique_name_of_temp_cursor_1';
+    xpax integer :=x;
+    xRestaurant_UserID varchar (100):='DeandreSubsistenceaccount';
+    xlocation varchar (200):='35 Paya Lebar Rise #46-516 Singapore083184';
+    bookingtimestart timestamp with time zone := date_trunc('minute', TIMESTAMP WITH TIME ZONE  '2019-11-20 13:00:00+08');
+    bookingtimeend timestamp with time zone := date_trunc('minute', TIMESTAMP WITH TIME ZONE '2019-11-20 13:00:00+08') + interval '2 hour';
+    autotable integer := (
+        With Y(tablenum,capacity) AS (
+            SELECT Tables.tablenum,Tables.capacity  FROM 
+            Tables 
+            WHERE Tables.userid = xRestaurant_UserID
+            AND Tables.location = xlocation
+        EXCEPT
+            SELECT Tables.tablenum,Tables.capacity FROM 
+            Tables INNER JOIN Reservation
+            ON
+            Tables.tablenum = Reservation.tablenum
+            AND Tables.location = Reservation.location
+            AND Tables.userid = Reservation.Restaurant_UserID
+            WHERE
+            Reservation.Restaurant_UserID = xRestaurant_UserID
+            AND Tables.location = xlocation
+            ORDER BY
+            Tablenum
+        )
+        SELECT tablenum 
+        from Y
+        ORDER BY
+        capacity
+        LIMIT 1
+        offset 1
+    );
+    BEGIN
+    RAISE NOTICE 'start: (%) FOUND', bookingtimestart;
+    RAISE NOTICE 'end: (%) FOUND', bookingtimeend;
+    RAISE NOTICE 'end: (%) FOUND', bookingtimestart NOT BETWEEN bookingtimestart AND bookingtimeend;
+    IF autotable IS NOT NULL THEN
+        RAISE NOTICE 'DAy: (%) FOUND', autotable;
+    ELSIF autotable IS NULL THEN
+        RAISE NOTICE 'NOT FOUND';
+    END IF;
+    END;
+$test$ LANGUAGE plpgsql;
+
+
+--soecial
+INSERT INTO Reservation
+VALUES
+('PeterLoth96',0,'45 Nanyang View #21-253 Singapore993602','PappanCookingaccount',1,'2004-10-18 2:30:00+08')
+
+
+--normal
+INSERT INTO Reservation
+VALUES
+('PeterLoth96',0,'45 Nanyang View #21-253 Singapore993602','PappanCookingaccount',1,'2004-10-19 2:30:00+08')
+
+--dobule
+INSERT INTO Reservation
+VALUES
+('PeterLoth96',0,'45 Nanyang View #21-253 Singapore993602','PappanCookingaccount',1,'2004-10-19 10:30:00+08')
+INSERT INTO Reservation
+VALUES
+('PeterLoth96',0,'97 Gul Close #91-476 Singapore060377','PappanCookingaccount',1,'2004-10-19 11:30:00+08')
+
+
+SELECT * from reservation limit 1;
+select * from tables where tables.location = '35 Paya Lebar Rise #46-516 Singapore083184';
+select * from reservation where reservation.location = '35 Paya Lebar Rise #46-516 Singapore083184';
+
+--no available tables
+INSERT INTO Reservation
+VALUES
+('PeterLoth96',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
+INSERT INTO Reservation
+VALUES
+('RudolphNordin88',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
+
+
+`
