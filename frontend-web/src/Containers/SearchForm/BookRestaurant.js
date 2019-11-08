@@ -28,12 +28,12 @@ class BookRestaurant extends React.Component {
         super(props);
         this.state = {
             initialState,
-            'vouchers': [],
+            'voucherUseList': [],
         }
     }
 
     componentDidMount() {
-        this.createDropdown('voucherlist');
+        this.createDropdown('voucherUseList');
     }
 
     createDropdown = (route) => {        
@@ -49,13 +49,18 @@ class BookRestaurant extends React.Component {
                 data.filter(x => data.owned > 0).map(x => data.voucherName)
                 const dropdownOptions = [];
                 dropdownOptions.push({key: '0', text: 'None', value: ''});
-                data.forEach(data => {
-                    const obj = {key: data, text: data, value: data}
+                let key = 1;
+                data.forEach((data, index) => {
+                    const obj = {
+                        key: index, 
+                        text: data.voucher_code + "(" +  data.count + ")", 
+                        value: data.voucher_code}
                     dropdownOptions.push(obj);
                 })
                 const obj = {};
                 obj[route] = dropdownOptions;
                 this.setState(obj);
+                console.log(obj);
 			}).catch(error => {
 				console.log(error);
 			})
@@ -157,13 +162,12 @@ class BookRestaurant extends React.Component {
                                     <Form.Select //Dropdown
                                         placeholder='Voucher Code'
                                         name="vouchers"
-                                        options={this.state.vouchers}
+                                        options={this.state.voucherUseList}
                                         value={values.vouchers}
                                         onChange={handleDropdownChange}
                                     />
                                     <InputErrorLabel touched={touched.vouchers} errorText={errors.vouchers} />
                                 </Form.Field>
-
 
                                 <ConfirmBookingModal
                                     errors={errors}

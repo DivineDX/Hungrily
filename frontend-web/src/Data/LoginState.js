@@ -7,8 +7,8 @@ const initialState = {
 
 const loginCustomerState = {
 	isSignedIn: true,
-	userID: 'AdahFeth91',
-	name: 'Adah Feth',
+	userID: 'AdahArpin48',
+	name: 'Adah Arpin',
 	isFranchiseOwner: false,
 	points: 500
 }

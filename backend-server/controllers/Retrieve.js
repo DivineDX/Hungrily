@@ -33,6 +33,7 @@ const getRestaurant = (req, res, db) => {
                 const restaurantRows = result.rows.map(x=>(
                     {
                         //{ location, area, opening_hours, closing_hours, cuisine, price }
+                        store_name:x.store_name,
                         location:x.location,
                         area:x.area,
                         opening_hours:x.opening_hours,
@@ -44,6 +45,7 @@ const getRestaurant = (req, res, db) => {
 
                     res.status(400).json('Unable to Retrieve')
                 }
+                // console.log(restaurantRows[0]);
                 res.status(200).json(restaurantRows[0])
         }).catch(
             err =>{
