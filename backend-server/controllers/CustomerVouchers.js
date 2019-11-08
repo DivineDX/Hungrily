@@ -100,7 +100,43 @@ const voucherList = (req, res, db) => {
  */
 const buyVoucher = (req, res, db) => {
     const { userID, voucherName } = req.body;
-    res.status(200).json('success'); //return failed if otherwise
+    console.log( [userID, voucherName])
+    const sql =
+    `
+    BEGIN;
+    INSERT INTO Customer_voucher
+    VALUES (
+        '${voucherName}',
+        '${userID}',
+        false
+    );
+
+    UPDATE Customer
+    SET Points = Points-(
+        SELECT Possible_voucher.cost
+        FROM Possible_voucher
+        WHERE Possible_voucher.Voucher_code = '${voucherName}'
+        LIMIT 1
+    )
+    WHERE Customer.UserID = '${userID}';
+    COMMIT;
+     `
+    db.raw(sql).timeout(1000)
+    .then(resp => {
+        res.status(200).json('success');
+    }).catch(err => {
+        console.log(err);
+        db.raw(`ROLLBACK;`).timeout(1000)
+        .then(rollback => {
+            console.log("rollback sucess");
+            res.status(400).json('Failed');
+        }).catch(
+            rollbackerr => {
+                console.log(rollbackerr);
+                res.status(400).json('Failed');
+            }
+        )
+    });
 }
 
 /**

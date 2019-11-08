@@ -72,6 +72,7 @@ CREATE TABLE Customer (
     UserID varchar(100) PRIMARY KEY REFERENCES Account ON DELETE CASCADE,
     Name varchar(100) NOT NULL, -- the name does not have to be primary key anymore right? 
     Points integer NOT NULL DEFAULT 0
+    CHECK (Points >=0 )
 );
 
 CREATE TABLE Possible_voucher (
@@ -104,6 +105,7 @@ CREATE TABLE Reservation (
 );
 
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE OR REPLACE FUNCTION test(x timestamp) RETURNS void AS $test$
     DECLARE
