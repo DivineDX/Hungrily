@@ -8357,6 +8357,14 @@ react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.1, react-is
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
 
+react-loader-spinner@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/react-loader-spinner/-/react-loader-spinner-3.1.4.tgz#03ef24252f6802d6e85443c23b32c2e66973fe4d"
+  integrity sha512-pl7cvc1eZFwOoUW33BJnuR9TBcAS25SD15RFYecY9ikb8Kv+yFFmaITU6xg001Aw8HsNreAUsrIHozf2fNmIqQ==
+  dependencies:
+    babel-runtime "^6.26.0"
+    prop-types "^15.6.2"
+
 react-particles-js@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/react-particles-js/-/react-particles-js-2.7.0.tgz#1b13a85d948e63016cb2b400f734758b0a985727"

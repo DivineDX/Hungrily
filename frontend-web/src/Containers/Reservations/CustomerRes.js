@@ -4,6 +4,8 @@ import BulletinMenuBar from '../../Components/MenuBar/BulletinMenuBar';
 import url from '../../Config/url';
 
 import './CustomerRes.css'
+import Loading from '../../Components/Loaders/Loading';
+import LoadMoreButton from '../../Components/Button/LoadMoreButton';
 
 /**
  * Page that shows the list of Reservations that a customer has made
@@ -16,6 +18,7 @@ class CustomerRes extends Component {
             filteredReservations: [], //Filtered shown list of reservations
             loading: true,
             isCurrent: true, //default true, else false: shows past
+            visible: 8,
         }
     }
     componentDidMount() {
@@ -23,7 +26,6 @@ class CustomerRes extends Component {
     }
 
     fetchReservations() {
-
         fetch(`${url.fetchURL}/seeMyResv`, {
             method: 'post',
             headers: { 'Content-type': 'application/json' },
@@ -40,7 +42,6 @@ class CustomerRes extends Component {
                     };
                     return Object.assign(x, dateObj)
                 });
-                console.log(resvData)
                 this.setState({
                     reservations: resvData,
                     loading: false,
@@ -51,6 +52,12 @@ class CustomerRes extends Component {
             }).catch(error => {
                 console.log(error);
             })
+    }
+
+    loadMore = () => {
+        this.setState({
+            visible: (this.state.visible) + 8,
+        })
     }
 
     handleCategoryClick = (cat) => {
@@ -71,7 +78,7 @@ class CustomerRes extends Component {
 
     render() {
         const { userID } = this.props;
-        
+
         return (
             <div>
                 <BulletinMenuBar
@@ -79,10 +86,11 @@ class CustomerRes extends Component {
                     options={["current", "past"]}
                 />
 
-                <div>
-                    <div id='CardDisplay'>
-                        {
-                            this.state.filteredReservations.map((data) => {
+                {this.state.loading
+                    ? <Loading />
+                    : <div>
+                        <div id='CardDisplay'>
+                            {this.state.filteredReservations.slice(0, this.state.visible).map((data) => {
                                 return <CustomerResCard
                                     fluid
                                     centered
@@ -92,9 +100,13 @@ class CustomerRes extends Component {
                                     fetchReservations={this.fetchReservations.bind(this)}
                                 />
                             })
+                            }
+                        </div>
+                        {this.state.visible < this.state.filteredReservations.length 
+                            && <LoadMoreButton loadMore={this.loadMore} />
                         }
                     </div>
-                </div>
+                }
             </div>
         );
     }

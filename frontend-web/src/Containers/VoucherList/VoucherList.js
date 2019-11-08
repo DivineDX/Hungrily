@@ -4,7 +4,6 @@ import { Grid } from 'semantic-ui-react';
 import url from '../../Config/url';
 import VoucherCard from '../../Components/Cards/VoucherCard';
 // import BulletinMenuBar from '../../Components/MenuBar/BulletinMenuBar';
-import "./VoucherList.css";
 
 class Voucherlist extends Component {
     constructor(props) {

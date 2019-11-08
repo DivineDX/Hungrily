@@ -9,7 +9,6 @@ import ConfirmBookingModal from '../../Components/Modals/ConfirmBookingModal';
 import InputErrorLabel from '../../Components/Label/InputErrorLabel';
 import url from '../../Config/url';
 import 'flatpickr/dist/themes/light.css'
-import VoucherOptions from '../../Data/VoucherOptions';
 
 /**
  * Form used for the Booking of a Reservation at a Restaurant
@@ -22,54 +21,69 @@ const initialState = {
     noDouble: false,
     loading: false,
     submitted: false,
-    usingLoad: false,
-    useSuccess: false,
-    error: false,
 }
 
 class BookRestaurant extends React.Component {
     constructor(props) {
         super(props);
-        this.state = initialState;
+        this.state = {
+            initialState,
+            'voucherUseList': [],
+        }
     }
+
+    componentDidMount() {
+        this.createDropdown('voucherUseList');
+    }
+
+    createDropdown = (route) => {        
+        fetch(`${url.fetchURL}/${route}`, {
+            method: 'post',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                userID: this.props.userID,
+            })
+        })
+			.then(resp => resp.json())
+			.then(data => {
+                data.filter(x => data.owned > 0).map(x => data.voucherName)
+                const dropdownOptions = [];
+                dropdownOptions.push({key: '0', text: 'None', value: ''});
+                let key = 1;
+                data.forEach((data, index) => {
+                    const obj = {
+                        key: index, 
+                        text: data.voucher_code + "(" +  data.count + ")", 
+                        value: data.voucher_code}
+                    dropdownOptions.push(obj);
+                })
+                const obj = {};
+                obj[route] = dropdownOptions;
+                this.setState(obj);
+                console.log(obj);
+			}).catch(error => {
+				console.log(error);
+			})
+    }
+
 
     resetState = () => {
         this.setState(initialState);
     }
 
-    useVoucher() {
-        this.setState({ buyingLoad: true });
-        fetch(`${url.fetchURL}/useVoucher`, {
-            method: 'post',
-            body: JSON.stringify({
-                userID: this.props.userID,
-                voucherName: this.props.data.voucherName
-            })
-        })
-        .then(resp => resp.json())
-        .then(data => {
-            if (data === 'success') { 
-                this.setState({ usingLoad: false, useSuccess: true, owned: this.state.owned - 1, })
-            } else { //do not have enough voucher
-                this.setState({ usingLoad: false, error: true })
-            }
-        }).catch(error => {
-            console.log(error);
-        })
-    }
-
     render() {
         const { userID, resUrl, franchisorId,location, voucherName, owned } = this.props;
-        console.log(this.props)
+
         return (
             <Formik
                 initialValues={{
                     date: '',
                     pax: '',
-                    voucher: '',
+                    vouchers: '',
                 }}
 
                 onSubmit={(values) => { 
+                    this.props.triggerDisplay(values);
                     this.setState({ loading: true });
                     fetch(`${url.fetchURL}/resvAvailability`, {
                         method: 'post',
@@ -85,7 +99,6 @@ class BookRestaurant extends React.Component {
                     })
                         .then(resp => resp.json())
                         .then(data => {
-                            //console.log(data);
                             this.setState({ submitted: true, loading: false });
                             switch (data) {
                                 case 'available': //todo: After check availability, if available, will do another POST to insert into DB
@@ -111,7 +124,7 @@ class BookRestaurant extends React.Component {
                         .min(new Date(), "Your cannot state a past date")
                         .required("You must state a date"),
                     pax: yup.number().min(1).max(10).required("You must state the number of diners"),
-                    voucher: yup.string().required("You must select an option")
+                    vouchers: yup.string().required("You must select an option")
                 })}
 
                 render={({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => {
@@ -149,14 +162,13 @@ class BookRestaurant extends React.Component {
                                 <Form.Field>
                                     <Form.Select //Dropdown
                                         placeholder='Voucher Code'
-                                        name="voucher"
-                                        options={VoucherOptions}
-                                        value={values.voucher}
+                                        name="vouchers"
+                                        options={this.state.voucherUseList}
+                                        value={values.vouchers}
                                         onChange={handleDropdownChange}
                                     />
-                                    <InputErrorLabel touched={touched.pax} errorText={errors.pax} />
+                                    <InputErrorLabel touched={touched.vouchers} errorText={errors.vouchers} />
                                 </Form.Field>
-
 
                                 <ConfirmBookingModal
                                     errors={errors}
@@ -166,6 +178,7 @@ class BookRestaurant extends React.Component {
                                     noSeats={this.state.noSeats}
                                     noDouble={this.state.noDouble}
                                     available={this.state.available}
+                                    vouchers={this.state.vouchers}
                                     loading={this.state.loading}
                                     reset = {this.resetState}
                                 />

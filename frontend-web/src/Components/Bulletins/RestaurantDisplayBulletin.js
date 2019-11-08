@@ -1,13 +1,24 @@
 import React from 'react';
+import LoadMoreButton from '../Button/LoadMoreButton';
 import RestaurantCard from '../Cards/RestaurantCard';
 import './RestaurantDisplayBulletin.css';
+import Loading from '../Loaders/Loading';
 
-const RestaurantDisplayBulletin = ({ resDisplay }) => {
-    return (
-        <div id='RDB'>
-            {resDisplay.map((data) => {
-                return <RestaurantCard data={data} key={data.Name}/>
-            })}
+const RestaurantDisplayBulletin = ({ loading, resDisplay, visibleItemsNum, totalLength, loadMore }) => {
+    return (loading
+        ? <Loading />
+        : <div>
+            <div id='RDB'>
+                {resDisplay.slice(0, visibleItemsNum).map((data) => {
+                    return <RestaurantCard
+                        data={data}
+                        key={data.Name} />
+                })}
+            </div>
+
+            {visibleItemsNum < totalLength &&
+                <LoadMoreButton loadMore={loadMore} />
+            }
         </div>
     );
 };

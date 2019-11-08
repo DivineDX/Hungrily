@@ -48,10 +48,7 @@ class LandingPage extends Component {
                 <NonExistentPage />
             )
         } else {
-            console.log("meepok")
-            console.log(this.state.resData)
             return (
-                
                 <article id='landingPage'>
                     <img
                         className="mt3 pt4 relative"

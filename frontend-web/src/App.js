@@ -47,7 +47,6 @@ class App extends Component {
 
 		let loginProp =
 			(isSignedIn) ? this.signOutUser : this.loginUser;
-		// console.log(this.state);
 		return (
 			<BrowserRouter>
 				<Particles className='particles' params={ParticlesOptions} />

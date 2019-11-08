@@ -15,6 +15,7 @@ const checkAvailability = (req, res, db) => {
     VALUES
     ('${userID}',NULL,'${location}','${franchisorId}',${pax},'${dateTime}',NULL)
     `
+    
     db.raw(sql).timeout(1000)
     .then(results => {
         res.status(200).json('available');
@@ -29,7 +30,7 @@ const checkAvailability = (req, res, db) => {
  */
 const bookReservation = (req, res, db) => {
     const {userID, franchiseName, resName, dateTime, pax} = req.body;
-    console.log("hello")
+    // console.log("hello")
     res.status(200).json('available');
 }
 
@@ -39,7 +40,7 @@ const bookReservation = (req, res, db) => {
 const cancelReservation = (req, res, db) => {
     const {userID, location, resName, dateTime, table, resUrl} = req.body;
     const parsedDAte =new Date(dateTime)
-    console.log(parsedDAte)
+    // console.log(parsedDAte)
     const sql =
     `
     DELETE FROM Reservation
@@ -62,10 +63,10 @@ const cancelReservation = (req, res, db) => {
     // AND Reservation.dateTime = '${dateTime}'
     // AND Reservation.TableNum = '${table}'
     // `
-    console.log([userID, location, resName, dateTime, table, resUrl])
+    // console.log([userID, location, resName, dateTime, table, resUrl])
     db.raw(sql).timeout(1000)
     .then(results => {
-        console.log(results)
+        // console.log(results)
         res.status(200).json('Success'); //success if successfully cancelled
     }).catch(err => { console.log(err);res.status(400).json('Unable to Retrieve')});
     
