@@ -17,7 +17,6 @@ class DeleteModal extends Component {
     clickDelete = () => {
         const {data, userID} = this.props;
         const { resName, location, dateTime, table, resUrl } = data;
-        console.log(data)
         fetch(`${url.fetchURL}/cancelResv`, {
             method: 'delete',
             headers: { 'Content-type': 'application/json' },

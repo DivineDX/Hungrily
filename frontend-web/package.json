@@ -9,6 +9,7 @@
     "react-dom": "^16.9.0",
     "react-flatpickr": "^3.9.1",
     "react-instantsearch-dom": "^5.7.0",
+    "react-loader-spinner": "^3.1.4",
     "react-particles-js": "^2.7.0",
     "react-router-dom": "^5.1.0",
     "react-scripts": "3.1.2",
