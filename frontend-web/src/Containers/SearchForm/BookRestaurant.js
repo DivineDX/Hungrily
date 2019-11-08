@@ -59,8 +59,8 @@ class BookRestaurant extends React.Component {
     }
 
     render() {
-        const { userID, resName, franchisorName, voucherName, owned } = this.props;
-
+        const { userID, resUrl, franchisorId,location, voucherName, owned } = this.props;
+        console.log(this.props)
         return (
             <Formik
                 initialValues={{
@@ -76,8 +76,9 @@ class BookRestaurant extends React.Component {
                         headers: { 'Content-type': 'application/json' },
                         body: JSON.stringify({
                             userID: userID,
-                            franchiseName: franchisorName,
-                            resName: resName,
+                            franchisorId: franchisorId,
+                            location:location,
+                            resUrl: resUrl,
                             dateTime: values.date,
                             pax: values.pax
                         })

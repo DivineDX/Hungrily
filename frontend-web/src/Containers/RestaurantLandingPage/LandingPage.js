@@ -20,7 +20,7 @@ class LandingPage extends Component {
     componentDidMount() {
         const name = this.props.match.params.name;
         this.setState({ name: name });
-
+        
         fetch(`${url.fetchURL}/restaurant/${name}`)
             .then(resp => resp.json())
             .then(data => {
@@ -48,7 +48,8 @@ class LandingPage extends Component {
                 <NonExistentPage />
             )
         } else {
-            //console.log(this.state.resData)
+            console.log("meepok")
+            console.log(this.state.resData)
             return (
                 
                 <article id='landingPage'>
@@ -67,8 +68,9 @@ class LandingPage extends Component {
                         <div className="pt2 pl7 pr7 relative" id='BookBox'>
                             <BookRestaurant
                                 userID={userID}
-                                resName={this.state.resData.store_name}
-                                franchisorName={this.state.resData.userid} //of franchisor
+                                resUrl={this.state.resData.resUrl}
+                                location = {this.state.resData.location}
+                                franchisorId={this.state.resData.userid} //of franchisor
                             />
                         </div>
                     }
