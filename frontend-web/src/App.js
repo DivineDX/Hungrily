@@ -20,7 +20,7 @@ import ProtectedCustomerRoute from './Common/ProtectedCustomerRoute';
 class App extends Component {
 	constructor() {
 		super();
-		this.state = LoginState.franchiseOwner;
+		this.state = LoginState.customer;
 	}
 
 	//for Customers
@@ -47,7 +47,6 @@ class App extends Component {
 
 		let loginProp =
 			(isSignedIn) ? this.signOutUser : this.loginUser;
-		// console.log(this.state);
 		return (
 			<BrowserRouter>
 				<Particles className='particles' params={ParticlesOptions} />

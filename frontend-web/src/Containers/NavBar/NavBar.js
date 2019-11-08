@@ -14,7 +14,7 @@ class NavBar extends Component {
     }
 
     onSearchChange(event) {
-        console.log(event);
+        // console.log(event);
     }
 
     render() {

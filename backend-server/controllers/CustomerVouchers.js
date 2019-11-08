@@ -1,6 +1,6 @@
 const getPoints = (req, res, db) => {
     const { userID } = req.body;
-    console.log(userID)
+    // console.log(userID)
     const sql =
         `
     SELECT Customer.points
@@ -10,7 +10,7 @@ const getPoints = (req, res, db) => {
     `
     db.raw(sql).timeout(1000)
         .then(resp => {
-            console.log(resp)
+            // console.log(resp)
             const customerPoints = resp.rows[0].points;
             
             if (isNaN(customerPoints)) {
@@ -100,7 +100,7 @@ const voucherList = (req, res, db) => {
  */
 const buyVoucher = (req, res, db) => {
     const { userID, voucherName } = req.body;
-    console.log( [userID, voucherName])
+    // console.log( [userID, voucherName])
     const sql =
     `
     BEGIN;
@@ -128,11 +128,11 @@ const buyVoucher = (req, res, db) => {
         console.log(err);
         db.raw(`ROLLBACK;`).timeout(1000)
         .then(rollback => {
-            console.log("rollback sucess");
+            // console.log("rollback sucess");
             res.status(400).json('Failed');
         }).catch(
             rollbackerr => {
-                console.log(rollbackerr);
+                // console.log(rollbackerr);
                 res.status(400).json('Failed');
             }
         )

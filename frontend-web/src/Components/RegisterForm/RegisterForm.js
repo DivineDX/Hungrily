@@ -26,7 +26,6 @@ class RegisterForm extends React.Component {
                 }}
 
                 onSubmit={(values) => {
-                    console.log(values);
                     fetch(`${url.fetchURL}/register`, {
                         method: 'post',
                         headers: { 'Content-type': 'application/json' },
@@ -38,7 +37,6 @@ class RegisterForm extends React.Component {
                     })
                         .then(resp => resp.json())
                         .then(data => {
-                            console.log(data);
                             if (data === values.userID) { //successful
                                 // console.log('successful registration')
                                 this.setState({

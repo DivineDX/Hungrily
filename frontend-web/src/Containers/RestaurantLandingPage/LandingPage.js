@@ -48,7 +48,6 @@ class LandingPage extends Component {
                 <NonExistentPage />
             )
         } else {
-            //console.log(this.state.resData)
             return (
                 
                 <article id='landingPage'>

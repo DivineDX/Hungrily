@@ -42,7 +42,6 @@ class CustomerRes extends Component {
                     };
                     return Object.assign(x, dateObj)
                 });
-                console.log(resvData)
                 this.setState({
                     reservations: resvData,
                     loading: false,
