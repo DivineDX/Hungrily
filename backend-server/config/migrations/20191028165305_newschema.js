@@ -71,20 +71,22 @@ CREATE TABLE Special_Operating_Hrs (
 CREATE TABLE Customer ( 
     UserID varchar(100) PRIMARY KEY REFERENCES Account ON DELETE CASCADE,
     Name varchar(100) NOT NULL, -- the name does not have to be primary key anymore right? 
-    Points integer 
+    Points integer NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Possible_voucher (
     Voucher_code varchar(30) PRIMARY KEY,
+    Discount int,
     Description Character(1000),
-    Cost real NOT NULL
+    Cost int NOT NULL
+    CHECK(Discount > 0 AND Discount <=100)
 );
 
 CREATE TABLE Customer_voucher (
     Voucher_code varchar(30) REFERENCES Possible_voucher ON DELETE CASCADE, 
     UserID varchar(100) REFERENCES Customer ON DELETE CASCADE,
-    SerialNum uuid, --to handle multiple instances of the same voucher
     Is_used boolean DEFAULT FALSE,
+    SerialNum uuid DEFAULT uuid_generate_v1(), --to handle multiple instances of the same voucher
     PRIMARY KEY (Voucher_code, UserID, SerialNum) -- Help check cos it has 2 owning entity
 );
 
@@ -94,7 +96,7 @@ CREATE TABLE Reservation (
     Location varchar(100),
     Restaurant_UserID varchar(100), 
     Pax integer NOT NULL,
-    DateTime timestamp NOT NULL,
+    DateTime timestamp with time zone NOT NULL,
     Rating integer,
     PRIMARY KEY (Customer_UserID, Restaurant_UserID, TableNum, Location, DateTime),
     FOREIGN KEY (TableNum, Location, Restaurant_UserID) REFERENCES Tables,

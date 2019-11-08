@@ -11,7 +11,7 @@ import './CustomerResCard.css';
 
 const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
     const { resName, resUrl, dateTime, table, pax } = data;
-
+    console.log(data)
     return (
         <Card className="ui card" id='ResvCard'>
             <Image

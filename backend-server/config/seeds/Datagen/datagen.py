@@ -1,5 +1,7 @@
 import random,json
 import os
+from datetime import datetime,time
+from datetime import timedelta
 
 def generateInsertString( tablename, values):
     s = "INSERT INTO " + tablename + " VALUES (" 
@@ -129,6 +131,7 @@ def generateRestaurants():
                 }
             if random.randint(0,10) == 10: 
                 for item in specialops:
+                    #print((item[2], Location, UserID))
                     SpecialOperatingHrsTable[(item[2], Location, UserID)] = {
                         'Location':stringifystring(item[0]),
                         'UserID': stringifystring(item[1]),
@@ -136,6 +139,7 @@ def generateRestaurants():
                         'Opening_hours': stringifystring(item[3]),
                         'Closing_hours': stringifystring(item[4])
                     }
+                    #print( SpecialOperatingHrsTable[(item[2], Location, UserID)])
             return 1
         return 0
 
@@ -172,10 +176,116 @@ customerswhoreserved={}
 numberofreservingCustomers = 30
 maxreservationspercustomer = 10
 def generateReservations():
-    def innergenerateReservations():
+    def innergenerateReservations(cuid,tnum,loc,ruid,pax,attemptedtime):
+        #datetime.isoformat(sep='T')
+        attemptedtime = stringifystring(attemptedtime.isoformat(sep='T'))
+        rating =['NULL','1','2','3','4','5']
+        reservations[(cuid,ruid,tnum,loc,attemptedtime)] = {
+            'Customer_UserID':cuid,
+            'TableNum': tnum,
+            'Location': loc,
+            'Restaurant_UserID': ruid,
+            'Pax': str(pax),
+            'DateTime': attemptedtime,
+            'Rating': random.choice(rating)
+        }
+        customerswhoreserved[cuid] += 1
         
-        
+    while len(customerswhoreserved.keys()) < numberofreservingCustomers:
+        attemptedcustomerkey = random.choice(list(useraccounts.keys()))
+        attemptedcustomer = useraccounts[attemptedcustomerkey]
+        numberofresestotry = random.randint(1,maxreservationspercustomer)
+        customerswhoreserved[attemptedcustomer['UserID']] = 0
+        while (customerswhoreserved[attemptedcustomer['UserID']] < numberofresestotry):
+            attemptedtime=datetime.today() + timedelta(days = random.randint(0,31),hours=random.randint(0,24),minutes=random.randint(0,12)*5)
+            attemptedtime= attemptedtime.replace(minute=0,second =0,microsecond=0)
+            dayofweek = attemptedtime.weekday()
+            attempteddate = datetime(attemptedtime.year,attemptedtime.month,attemptedtime.day)
+            attemptedrestaurantkey = random.choice(list(restaurants.keys()))
+            attemptedrestaurant = restaurants[attemptedrestaurantkey]
+            normalopen = time.fromisoformat(attemptedrestaurant['Opening_hours'].strip("'"))
+            normalclose =time.fromisoformat(attemptedrestaurant['Closing_hours'].strip("'"))
+            normalopen = attempteddate + timedelta(hours=normalopen.hour,minutes=normalopen.minute)
+            normalclose = attempteddate + timedelta(hours=normalclose.hour,minutes=normalclose.minute)
+            pax = random.randint(1,5)
 
+            if ( (dayofweek,attemptedrestaurantkey[0],attemptedrestaurantkey[1]) in SpecialOperatingHrsTable):
+                spechrs = SpecialOperatingHrsTable[(dayofweek,attemptedrestaurantkey[0],attemptedrestaurantkey[1])]
+                specopen =  time.fromisoformat(spechrs['Opening_hours'].strip("'"))
+                specopen = attempteddate + timedelta(hours=specopen.hour,minutes=specopen.minute)
+                specclose = time.fromisoformat(spechrs['Closing_hours'].strip("'"))
+                specclose = attempteddate + timedelta(hours=specclose.hour,minutes=specclose.minute)
+
+                if attemptedtime < specopen or attemptedtime + timedelta(hours=2)> specclose:
+                    continue
+            elif attemptedtime < normalopen or attemptedtime + timedelta(hours=2)> normalclose:
+                    continue
+            # print(attemptedcustomer['UserID'])
+            ff0 = lambda x:  x['Customer_UserID'] == attemptedcustomer['UserID'] and ( attemptedtime - datetime.fromisoformat(x['DateTime'].strip("'")) < timedelta(hours=2) ) and ( attemptedtime - datetime.fromisoformat(x['DateTime'].strip("'")) > timedelta(hours=-2) ) 
+            if list(filter(ff0,reservations.values())):
+                continue
+            def ff(x):
+                return x['Location'] == attemptedrestaurant['Location'] and x['UserID'] == attemptedrestaurant['UserID'] and int(x['Capacity']) >= pax
+            possibleseats = list(filter(ff ,Tablestable.values()))
+
+            if not possibleseats:
+                continue
+            possibleseats.sort(key=lambda x: int(x['Capacity']))
+            for seat in possibleseats:
+                ff2 = lambda x:  x['Location'] == attemptedrestaurant['Location'] and x['Customer_UserID'] == attemptedrestaurant['UserID'] and seat['TableNum']==x['TableNum'] and attemptedtime - datetime.fromisoformat(x['DateTime'].strip("'")) < timedelta(hours=2) and ( attemptedtime - datetime.fromisoformat(x['DateTime'].strip("'")) > timedelta(hours=-2) )
+                if not list(filter(ff2,reservations.values())):
+                    #found suitable seat
+                    innergenerateReservations(attemptedcustomer['UserID'],seat['TableNum'],attemptedrestaurant['Location'],attemptedrestaurant['UserID'],pax,attemptedtime)
+                    break
+POSSIBLEVOUCHER = ['AAH', 'AAL', 'AAS', 'ABA', 'ABB', 'ABO', 'ABS', 'ABY', 'ACE', 'ACH', 'ACT', 'ADD', 'ADO', 'ADS', 'ADZ', 'AFF', 'AFT', 'AGA', 'AGE', 'AGO', 'AGS', 'AHA', 'AHI', 'AHS', 'AIA', 'AID', 'AIL', 'AIM', 'AIN', 'AIR', 'AIS', 'AIT', 'AKA', 'AKE', 'ALA', 'ALB', 'ALE', 'ALF', 'ALL', 'ALP', 'ALS', 'ALT', 'AMA', 'AMI', 'AMP', 'AMU', 'ANA', 'AND', 'ANE', 'ANI', 'ANN', 'ANT',
+'ANY', 'APE', 'APO', 'APP', 'APT', 'ARB', 'ARC', 'ARD', 'ARE', 'ARF', 'ARK', 'ARM', 'ARS', 'ART', 'ARY', 'ASH', 'ASK', 'ASP', 'ASS', 'ATE', 'ATT', 'AUA', 'AUE', 'AUF', 'AUK', 'AVA', 'AVE', 'AVO', 'AWA', 'AWE', 'AWL', 'AWN', 'AXE', 'AYE', 'AYS', 'AYU', 'AZO', 'BAA', 'BAC', 'BAD', 'BAG', 'BAH', 'BAL', 'BAM', 'BAN', 'BAP', 'BAR', 'BAS', 'BAT', 'BAY', 'BOA', 'BRA', 'CAA', 'CAB', 'CAD', 'CAG', 'CAM', 'CAN', 'CAP', 'CAR', 'CAT', 'CAW', 'CAY', 'CAZ', 'CHA', 'DAB', 'DAD', 'DAE', 'DAG', 'DAH', 'DAK', 'DAL', 'DAM',
+'DAN', 'DAP', 'DAS', 'DAW', 'DAY', 'EAN', 'EAR', 'EAS', 'EAT', 'EAU', 'ERA', 'ETA', 'FAA', 'FAB', 'FAD', 'FAE', 'FAG', 'FAH', 'FAN', 'FAP', 'FAR', 'FAS', 'FAT', 'FAW', 'FAX', 'FAY', 'FRA', 'GAB', 'GAD', 'GAE', 'GAG', 'GAL', 'GAM', 'GAN', 'GAP', 'GAR', 'GAS', 'GAT', 'GAU', 'GAY', 'GOA', 'HAD', 'HAE', 'HAG', 'HAH', 'HAJ', 'HAM', 'HAN', 'HAO', 'HAP', 'HAS', 'HAT', 'HAW', 'HAY', 'HOA', 'ITA', 'JAB', 'JAG', 'JAI', 'JAK', 'JAM', 'JAP', 'JAR', 'JAW', 'JAY', 'KAB', 'KAE', 'KAF', 'KAI', 'KAK', 'KAM', 'KAS', 'KAT',
+'KAW', 'KAY', 'KEA', 'KOA', 'LAB', 'LAC', 'LAD', 'LAG', 'LAH', 'LAM', 'LAP', 'LAR', 'LAS', 'LAT', 'LAV', 'LAW', 'LAX', 'LAY', 'LEA', 'MAA', 'MAC', 'MAD', 'MAE', 'MAG', 'MAK', 'MAL', 'MAM', 'MAN', 'MAP', 'MAR', 'MAS', 'MAT', 'MAW', 'MAX', 'MAY', 'MNA', 'MOA', 'NAB', 'NAE', 'NAG', 'NAH', 'NAM', 'NAN', 'NAP', 'NAS', 'NAT', 'NAW', 'NAY', 'OAF', 'OAK', 'OAR', 'OAT', 'OBA', 'OCA', 'ODA', 'OKA', 'ORA', 'OVA', 'PAC', 'PAD', 'PAH', 'PAL', 'PAM', 'PAN', 'PAP', 'PAR', 'PAS', 'PAT', 'PAV', 'PAW', 'PAX', 'PAY', 'PEA',
+'PIA', 'POA', 'PYA', 'QAT', 'QUA', 'RAD', 'RAG', 'RAH', 'RAI', 'RAJ', 'RAM', 'RAN', 'RAP', 'RAS', 'RAT', 'RAW', 'RAX', 'RAY', 'RIA', 'RYA', 'SAB', 'SAC', 'SAD', 'SAE', 'SAG', 'SAI', 'SAL', 'SAM', 'SAN', 'SAP', 'SAR', 'SAT', 'SAU', 'SAV', 'SAW', 'SAX', 'SAY', 'SAZ', 'SEA', 'SHA', 'SKA', 'SMA', 'SPA', 'TAB', 'TAD', 'TAE', 'TAG', 'TAI', 'TAJ', 'TAK', 'TAM', 'TAN', 'TAO', 'TAP', 'TAR', 'TAS', 'TAT', 'TAU', 'TAV', 'TAW', 'TAX', 'TAY', 'TEA', 'TWA', 'UTA', 'UVA', 'VAC', 'VAE', 'VAG', 'VAN', 'VAR', 'VAS', 'VAT',
+'VAU', 'VAV', 'VAW', 'VIA', 'WAB', 'WAD', 'WAE', 'WAG', 'WAI', 'WAN', 'WAP', 'WAR', 'WAS', 'WAT', 'WAW', 'WAX', 'WAY', 'WHA', 'YAD', 'YAE', 'YAG', 'YAH', 'YAK', 'YAM', 'YAP', 'YAR', 'YAW', 'YAY', 'YEA', 'ZAG', 'ZAP', 'ZAS', 'ZAX', 'ZEA', 'ZOA']
+VOUCHERDESCRIPTOR = ['Affable', 'Affectionate', 'Agreeable', 'Ambitious', 'Amiable', 'Amicable', 'Amusing', 'Brave', 'Bright', 'Broad-minded', 'Calm', 'Careful', 'Charming', 'Communicative', 'Compassionate', 'Conscientious', 'Considerate', 'Convivial', 'Courageous', 'Courteous', 'Creative', 'Decisive', 'Determined', 'Diligent', 'Diplomatic', 'Discreet', 'Dynamic', 'Easygoing', 'Emotional', 'Energetic', 'Enthusiastic', 'Exuberant', 'Fair-minded', 'Faithful', 'Fearless', 'Forceful', 'Frank', 'Friendly', 'Funny', 'Generous', 'Gentle', 'Good', 'Gregarious', 'Hard-working', 'Helpful', 'Honest', 'Humorous', 'Imaginative', 'Impartial', 'Independent', 'Intellectual', 'Intelligent', 'Intuitive', 'Inventive', 'Kind', 'Loving', 'Loyal', 'Modest', 'Neat', 'Nice', 'Optimistic', 'Passionate', 'Patient', 'Persistent', 'Pioneering', 'Philosophical', 'Placid', 'Plucky', 'Polite', 'Powerful', 'Practical', 'Pro-active', 'Quick-witted', 'Quiet', 'Rational', 'Reliable', 'Reserved', 'Resourceful', 'Romantic', 'Self-confident', 'Self-disciplined', 'Sensible', 'Sensitive', 'Shy', 'Sincere', 'Sociable', 'Straightforward',
+'Sympathetic', 'Thoughtful', 'Tidy', 'Tough', 'Unassuming', 'Understanding', 'Versatile', 'Warmhearted', 'Willing', 'Witty']
+possibleVouchers ={}
+customerVouchers = {}
+customerwithVouchers ={}
+NUMPOSSIBLEVOUCHERS =30
+VOUCHERSPERCUSTOMER = 20
+percentOFCUSTOMERSWHOHAVEVOUCHERS = 30
+
+def generateVouchers():
+    counter =0
+    def innergeneratepossibleVouchers():
+        name = 'Hungri' + random.choice(POSSIBLEVOUCHER)
+        discount = random.randint(1,100)
+        des = "Only for our most " + random.choice(VOUCHERDESCRIPTOR) + " customers."
+        cost = random.randint(0,300)
+        if name not in possibleVouchers.keys():
+            possibleVouchers[name] = {
+                "Voucher_code":stringifystring(name),
+                "Discount" :str(discount),
+                "Description" :stringifystring(des),
+                "Cost" :str(cost)
+            }
+    def innergenerateCustomerVouchers(counter):
+        UserID = random.choice(list(useraccounts.keys()))
+        if UserID not in customerwithVouchers.keys():
+            customerwithVouchers[UserID] = 1
+            for i in range(VOUCHERSPERCUSTOMER):
+                Voucher_code = random.choice(list(possibleVouchers.keys()))
+                Is_used = random.choice([True,False])
+                customerVouchers[(Voucher_code, UserID, counter)] = {
+                    "Voucher_code":possibleVouchers[Voucher_code]["Voucher_code"],
+                    "UserID" :useraccounts[UserID]['UserID'],
+                    "Is_used" :stringifystring(str(Is_used))
+                }
+                counter+=1
+
+    while len(possibleVouchers.keys())<  NUMPOSSIBLEVOUCHERS:
+        innergeneratepossibleVouchers()
+    # print(list(possibleVouchers.values())[0])
+    while len(customerwithVouchers.keys()) <  round((len(useraccounts) /100 )* percentOFCUSTOMERSWHOHAVEVOUCHERS):
+        innergenerateCustomerVouchers(counter)
+    # print(list(customerVouchers.values())[0])
 
 def generateSQL():
     #all
@@ -271,6 +381,50 @@ def generateSQL():
         f.write(sql)
     endfile("SpecialOperatingHrsSQL",f)
 
+    f = prepfile("ReservationsSQL")
+    tablename = 'Reservation'
+    #print(reservations)
+    for item in reservations:
+        values = [
+            reservations[item]['Customer_UserID'],
+            reservations[item]['TableNum'],
+            reservations[item]['Location'],
+            reservations[item]['Restaurant_UserID'],
+            reservations[item]['Pax'],
+            reservations[item]['DateTime'],
+            reservations[item]['Rating']
+        ]
+        sql = generateInsertString(tablename,values)
+        f.write(sql)
+    endfile("ReservationsSQL",f)
+
+    f = prepfile("PossiblevoucherSQL")
+    tablename = 'Possible_voucher'
+    #print(reservations)
+    for item in possibleVouchers:
+        values = [
+            possibleVouchers[item]['Voucher_code'],
+            possibleVouchers[item]['Discount'],
+            possibleVouchers[item]['Description'],
+            possibleVouchers[item]['Cost']
+        ]
+        sql = generateInsertString(tablename,values)
+        f.write(sql)
+    endfile("PossiblevoucherSQL",f)
+
+    f = prepfile("CustomervoucherSQL")
+    tablename = 'Customer_voucher'
+    print(list(customerVouchers.values())[0])
+    for item in customerVouchers:
+
+        values = [
+            customerVouchers[item]['Voucher_code'],
+            customerVouchers[item]['UserID'],
+            customerVouchers[item]['Is_used']
+        ]
+        sql = generateInsertString(tablename,values)
+        f.write(sql)
+    endfile("CustomervoucherSQL",f)
 
 def prepfile(filename):
     if os.path.exists(filename+'.js'):
@@ -293,15 +447,17 @@ def ot():
         #l = l.split(" ")
         if not l:
             continue
-        l = l[0].upper() + l[1:]
+        l = l.capitalize()
         ls.append(l)
     print (ls)
     f.close()
 
-#ot()
+# ot()
 generateUser()
 generateFranchisor()
 generateRestaurants()
+generateReservations()
+generateVouchers()
 generateSQL()
 
 #

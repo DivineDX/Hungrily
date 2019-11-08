@@ -132,6 +132,8 @@ const getAllCuisines = (req, res, db) => {
     `
     SELECT DISTINCT cuisine
     FROM food
+    ORDER BY
+    cuisine
     `
     db.raw(sql).timeout(1000)
         .then(cuisine => {
@@ -144,6 +146,8 @@ const getAllAreas = (req, res, db) => {
     `
     SELECT DISTINCT Area
     FROM Restaurant
+    ORDER BY
+    Area
     `
     db.raw(sql).timeout(1000)
         .then(area => {
@@ -156,6 +160,8 @@ const getAllFranchise = (req, res, db) => {
     `
     SELECT DISTINCT FNAME
     FROM FranchiseOwner
+    ORDER BY
+    FNAME
     `
     db.raw(sql).timeout(1000)
         .then(franchisor => {

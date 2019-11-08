@@ -10,7 +10,9 @@ const getPoints = (req, res, db) => {
     `
     db.raw(sql).timeout(1000)
         .then(resp => {
+
             const customerPoints = resp.rows[0].points;
+            console.log(customerPoints)
             if (isNaN(customerPoints)) {
                 res.status(400).json('fail');
             } else {
@@ -26,32 +28,61 @@ const getPoints = (req, res, db) => {
  */
 const voucherList = (req, res, db) => {
     const { userID } = req.body;
-    res.status(200).json([
-        {
-            voucherName: "HungriLOR",
-            cost: 7, //points
-            discount: 10, //percentage
-            description: "Ready to be back for more!",
-            owned: 2,
-            canBuy: true
-        },
-        {
-            voucherName: "HungriSIA",
-            cost: 10, //points
-            discount: 20, //percentage
-            description: "Specially for those with a bottomless appetite",
-            owned: 3,
-            canBuy: false
-        },
-        {
-            voucherName: "HungriLEH",
-            cost: 15, //points
-            discount: 30, //percentage
-            description: "For our most loyal and always perma-hungri users!",
-            owned: 0,
-            available: false
-        }
-    ])
+    const sql =
+    `
+    SELECT Possible_voucher.Voucher_code,
+    Possible_voucher.Cost,
+    Possible_voucher.Discount,
+    Possible_voucher.Description,
+    (
+        SELECT COUNT(*) 
+        FROM
+        Customer_voucher
+        WHERE
+        Customer_voucher.Voucher_code = Possible_voucher.Voucher_code
+        AND Customer_voucher.userid = '${userID}'
+    ) AS owned,
+    EXISTS (
+        SELECT * 
+        FROM
+        Customer
+        WHERE
+        Customer.Points >= Possible_voucher.cost
+        AND Customer.userid = '${userID}'
+    ) AS canBuy
+    FROM Possible_voucher 
+    `
+    db.raw(sql).timeout(1000)
+        .then(resp => {
+            const customerVouchers = resp.rows
+            res.status(200).json(customerVouchers);
+        }).catch(err => {console.log(err);res.status(400).json('Unable to Retrieve')});
+    // res.status(200).json([
+    //     {
+    //         voucherName: "HungriLOR",
+    //         cost: 7, //points
+    //         discount: 10, //percentage
+    //         description: "Ready to be back for more!",
+    //         owned: 2,
+    //         canBuy: true
+    //     },
+    //     {
+    //         voucherName: "HungriSIA",
+    //         cost: 10, //points
+    //         discount: 20, //percentage
+    //         description: "Specially for those with a bottomless appetite",
+    //         owned: 3,
+    //         canBuy: false
+    //     },
+    //     {
+    //         voucherName: "HungriLEH",
+    //         cost: 15, //points
+    //         discount: 30, //percentage
+    //         description: "For our most loyal and always perma-hungri users!",
+    //         owned: 0,
+    //         available: false
+    //     }
+    // ])
 }
 
 /**

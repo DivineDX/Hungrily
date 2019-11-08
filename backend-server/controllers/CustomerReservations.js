@@ -39,23 +39,36 @@ const bookReservation = (req, res, db) => {
  */
 const cancelReservation = (req, res, db) => {
     const {userID, location, resName, dateTime, table, resUrl} = req.body;
+    const parsedDAte =new Date(dateTime)
+    console.log(parsedDAte)
     const sql =
     `
     DELETE FROM Reservation
     USING Restaurant
-    WHERE Reservation.location = Restaurant.location
-    AND Reservation.Restaurant_UserID = Restaurant.UserID
-    AND Reservation.Customer_UserID = '${userID}'
+    WHERE
+    Reservation.Customer_UserID = '${userID}'
     AND Reservation.location = '${location}'
     AND Restaurant.url = '${resUrl}'
     AND Reservation.dateTime = '${dateTime}'
-    AND Reservation.table = '${table}'
+    AND Reservation.TableNum = '${table}'
     `
+
+    // `
+    // SELECT * FROM Reservation ,Restaurant
+    // WHERE Reservation.location = Restaurant.location
+    // AND Reservation.Restaurant_UserID = Restaurant.UserID
+    // AND Reservation.Customer_UserID = '${userID}'
+    // AND Reservation.location = '${location}'
+    // AND Restaurant.url = '${resUrl}'
+    // AND Reservation.dateTime = '${dateTime}'
+    // AND Reservation.TableNum = '${table}'
+    // `
     console.log([userID, location, resName, dateTime, table, resUrl])
     db.raw(sql).timeout(1000)
-    .then(restaurants => {
+    .then(results => {
+        console.log(results)
         res.status(200).json('Success'); //success if successfully cancelled
-    }).catch(err =>  res.status(400).json('Unable to Retrieve'));
+    }).catch(err => { console.log(err);res.status(400).json('Unable to Retrieve')});
     
 }
 
@@ -82,21 +95,24 @@ const seeCustomerReservations = (req, res, db) => {
     ON Reservation.location = Restaurant.location
     AND Reservation.Restaurant_UserID = Restaurant.UserID
     WHERE Reservation.Customer_UserID = '${userID}'
+    ORDER BY
+    Reservation.dateTime
     `
     db.raw(sql).timeout(1000)
     .then(restaurants => {
+        //console.log(restaurants.rows)
         res.status(200).json(restaurants.rows.map(x=>(
             {
                 resName:x.store_name,
                 location:x.location,
                 resUrl:x.url,
-                dateTime:x.dateTime,
-                table:x.tableNum,
+                dateTime:x.datetime,
+                table:x.tablenum,
                 pax:x.pax,
                 rating:x.rating
             }
         )))
-    }).catch(err =>  res.status(400).json('Unable to Retrieve'));
+    }).catch(err =>  {console.log(err);res.status(400).json('Unable to Retrieve')});
 
     // res.status(200).json(
     //     [{

@@ -65,6 +65,7 @@ const viewAllReservations = (req, res, db) => {
     Reservation.TableNum AS tablenum,
     Reservation.pax AS pax,
     Reservation.dateTime AS dateTime
+    FROM
     Restaurant INNER JOIN Reservation
     ON Reservation.location = Restaurant.location
     AND Reservation.Restaurant_UserID = Restaurant.UserID
@@ -83,7 +84,7 @@ const viewAllReservations = (req, res, db) => {
                 dateTime: x.dateTime
             }
         })));
-    }).catch(err => res.status(400).json('Unable to Retrieve'));
+    }).catch(err => {console.log(err);res.status(400).json('Unable to Retrieve')});
     // res.status(200).json(
     //     [{
     //         resName: "Fish & Co. (AMK Hub)",
