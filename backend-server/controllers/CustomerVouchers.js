@@ -1,6 +1,6 @@
 const getPoints = (req, res, db) => {
     const { userID } = req.body;
-
+    console.log(userID)
     const sql =
         `
     SELECT Customer.points
@@ -10,15 +10,15 @@ const getPoints = (req, res, db) => {
     `
     db.raw(sql).timeout(1000)
         .then(resp => {
-
+            console.log(resp)
             const customerPoints = resp.rows[0].points;
-            console.log(customerPoints)
+            
             if (isNaN(customerPoints)) {
                 res.status(400).json('fail');
             } else {
                 res.status(200).json(customerPoints);
             }
-        }).catch(err => res.status(400).json('Unable to Retrieve'));
+        }).catch(err => {console.log(err);res.status(400).json('Unable to Retrieve')});
 }
 
 
@@ -54,7 +54,16 @@ const voucherList = (req, res, db) => {
     `
     db.raw(sql).timeout(1000)
         .then(resp => {
-            const customerVouchers = resp.rows
+            const customerVouchers = resp.rows.map(x=>(
+                {
+                    //name, cuisine, type and price
+                    voucherName:x.voucher_code,
+                    cost:x.cost,
+                    discount:x.discount,
+                    description:x.description,
+                    owned:x.owned,
+                    canBuy:x.canbuy
+                }));
             res.status(200).json(customerVouchers);
         }).catch(err => {console.log(err);res.status(400).json('Unable to Retrieve')});
     // res.status(200).json([

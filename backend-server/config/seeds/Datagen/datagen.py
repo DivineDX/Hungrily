@@ -306,7 +306,7 @@ def generateSQL():
     f = prepfile("CustomerAccountsSQL")
     tablename = 'Customer'
     for item in useraccounts:
-        values = [ useraccounts[item]['UserID'], useraccounts[item]['name'], str(0) ]
+        values = [ useraccounts[item]['UserID'], useraccounts[item]['name'], str(500) ]
         sql = generateInsertString(tablename,values)
         f.write(sql)
     endfile("CustomerAccountsSQL",f)
