@@ -4,7 +4,7 @@ import { Button, Modal, Icon, Dimmer, Loader } from 'semantic-ui-react'
 /**
  * ConfirmBookingModal Component that is used on the BookRestaurantForm
  */
-const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, available, loading, reset }) => {
+const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, available, loading, reset, vouchers }) => {
     return (
         <Modal
             trigger={<Button>Book</Button>}
@@ -32,7 +32,7 @@ const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, ava
                             <b>Number of Pax: </b>{values.pax}
                         </Modal.Description>
                         <Modal.Description className='f4'>
-                            <b>Voucher: </b>{values.voucher}
+                            <b>Voucher: </b>{values.vouchers}
                         </Modal.Description>
                     </div>
                 }
