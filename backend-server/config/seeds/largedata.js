@@ -7,6 +7,7 @@ const tables = require("./Datagen/TablesSQL");
 const reservations = require("./Datagen/ReservationsSQL");
 const possible_voucher = require("./Datagen/PossiblevoucherSQL");
 const customer_voucher = require("./Datagen/CustomervoucherSQL");
+const specialops = require("./Datagen/SpecialOperatingHrsSQL");
 
 exports.seed = function(knex) {
     // Deletes ALL existing entries
@@ -15,6 +16,7 @@ exports.seed = function(knex) {
     .then(() =>knex('possible_voucher').del())
     .then(() =>knex('tables').del())
     .then(() =>knex('food').del())
+    .then(() =>knex('special_operating_hrs').del())
     .then(() =>knex('restaurant').del())
     .then(() =>knex('franchiseowner').del())
     .then(() =>knex('customer').del())
@@ -25,6 +27,7 @@ exports.seed = function(knex) {
     .then(() => knex.raw(restaurant()))
     .then(() => knex.raw(food()))
     .then(() => knex.raw(tables()))
+    .then(() => knex.raw(specialops()))
     .then(() => knex.raw(possible_voucher()))
     .then(() => knex.raw(customer_voucher()))
     .then(() => knex.raw(reservations()));
