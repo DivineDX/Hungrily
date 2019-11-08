@@ -104,7 +104,14 @@ const findRestaurants = (req, res, db) => {
             FROM Food
             WHERE Food.Location = Restaurant.Location
             AND Food.UserID = Restaurant.UserID
-            ) AS price
+            ) AS price,
+            (
+            SELECT ROUND(CAST(AVG(Reservation.Rating) as numeric), 2) AS r
+            FROM Reservation
+            WHERE Reservation.Location = Restaurant.Location
+            AND Reservation.Restaurant_UserID = Restaurant.UserID
+            AND Reservation.Rating IS NOT NULL
+            ) AS rating
             FROM Restaurant INNER JOIN Food
             ON Food.Location = Restaurant.Location
             AND Food.UserID = Restaurant.UserID
@@ -126,7 +133,7 @@ const findRestaurants = (req, res, db) => {
                         closingHours:x.closing_hours,
                         price:'~$'+x.price,
                         url:x.url,
-                        ratings:0
+                        ratings:x.rating == null ? 'Unrated' : x.rating 
                     }
                 )))
         }).catch(err =>{console.log(err);res.status(400).json(err)});//'Unable to Retrieve'));
@@ -187,11 +194,18 @@ const getAllRestaurants = (req, res, db) => {
         AND Food.UserID = Restaurant.UserID
         ) AS cuisine,
         (
-            SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS p
-            FROM Food
-            WHERE Food.Location = Restaurant.Location
-            AND Food.UserID = Restaurant.UserID
-            ) AS price
+        SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS p
+        FROM Food
+        WHERE Food.Location = Restaurant.Location
+        AND Food.UserID = Restaurant.UserID
+        ) AS price,
+        (
+        SELECT ROUND(CAST(AVG(Reservation.Rating) as numeric), 2) AS r
+        FROM Reservation
+        WHERE Reservation.Location = Restaurant.Location
+        AND Reservation.Restaurant_UserID = Restaurant.UserID
+        AND Reservation.Rating IS NOT NULL
+        ) AS rating
     FROM Restaurant INNER JOIN Food
     ON Food.Location = Restaurant.Location
     AND Food.UserID = Restaurant.UserID
@@ -201,6 +215,7 @@ const getAllRestaurants = (req, res, db) => {
     `
     db.raw(sql).timeout(1000)
     .then(restaurants => {
+        console.log(restaurants.rows)
         res.status(200).json(restaurants.rows.map(x=>(
             {
                 name:x.store_name,
@@ -210,10 +225,12 @@ const getAllRestaurants = (req, res, db) => {
                 closingHours:x.closing_hours,
                 price:'~$'+x.price,
                 url:x.url,
-                ratings:0
+                ratings:x.rating == null ? 'Unrated' : x.rating 
             }
         )))
-    }).catch(err =>  res.status(400).json('Unable to Retrieve'));
+    }).catch(err =>  {
+        console.log(err)
+        res.status(400).json('Unable to Retrieve')});
 }
 
 module.exports = {
