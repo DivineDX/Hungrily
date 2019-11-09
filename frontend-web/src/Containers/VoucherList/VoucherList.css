@@ -1,0 +1,12 @@
+.voucherCard {
+    display: flex; 
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#voucherGrid {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    justify-items: center;
+}
