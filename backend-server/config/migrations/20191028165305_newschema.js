@@ -334,6 +334,32 @@ EXECUTE FUNCTION CapacityForRestaurants();
 
 
 
+CREATE OR REPLACE FUNCTION givepoints()
+RETURNS TRIGGER AS $$
+BEGIN 
+IF OLD.rating IS NULL
+THEN
+UPDATE
+customer
+SET points = points + (
+    SELECT ROUND(CAST(AVG(Food.Price) as numeric)) AS p
+    FROM Food
+    WHERE Food.Location = old.Location
+    AND Food.UserID = old.Restaurant_UserID
+    ) 
+WHERE
+old.customer_userid = customer.userid;
+END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER addpoints
+BEFORE UPDATE ON Reservation
+    FOR EACH ROW EXECUTE FUNCTION givepoints();
+
+
+
 `
 const downSQL =
 `
@@ -356,6 +382,16 @@ DROP TRIGGER IF EXISTS non_franchiseowner on Customer;
 DROP FUNCTION IF EXISTS User_Customer_constraint;
 DROP TRIGGER IF EXISTS non_customer on FranchiseOwner;
 DROP FUNCTION IF EXISTS User_FranchiseOwner_constraint;
+
+DROP TRIGGER IF EXISTS tablecap on tables;
+DROP FUNCTION IF EXISTS CapacityForTables;
+
+DROP TRIGGER IF EXISTS rescap on restaurant;
+DROP FUNCTION IF EXISTS CapacityForRestaurants;
+
+DROP TRIGGER IF EXISTS addpoints on reservation;
+DROP FUNCTION IF EXISTS givepoints;
+
 `
 exports.up = function(knex) {
     return knex.schema
@@ -452,7 +488,7 @@ select * from reservation where reservation.location = '35 Paya Lebar Rise #46-5
 --no available tables
 INSERT INTO Reservation
 VALUES
-('EllaMathieson27',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
+('PeterLoth96',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
 INSERT INTO Reservation
 VALUES
 ('EllaMathieson27',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')

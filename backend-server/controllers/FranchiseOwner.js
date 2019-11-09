@@ -185,59 +185,75 @@ const viewRestaurantReservations = (req, res, db) => {
 
 //Other Routes for considerations: CRUD for Special Operating Hours, Food and Table
 
+const getmostloyal = (req, res, db) => {
+    const { franchiseOwnerID, location } = req.body; //PK of Restaurant 
+    console.log(req.body)
+    const getloyal = 
+    `
+    With X AS(
+        SELECT DISTINCT rv.customer_userid, rv.Location,rv.Restaurant_UserID,
+        (
+            SELECT COUNT(*) FROM reservation as res
+            WHERE
+            res.customer_userid = rv.customer_userid
+        ) as totalreservations,
+        (
+            SELECT COUNT(*) FROM reservation as res
+            WHERE
+            res.customer_userid = rv.customer_userid
+            AND res.Location = '35 Paya Lebar Rise #46-516 Singapore083184'
+            AND res.Restaurant_UserID = 'DeandreSubsistenceaccount'
+        ) as thisres,
+        CAST((
+            SELECT COUNT(*) FROM reservation as res
+            WHERE
+            res.customer_userid = rv.customer_userid
+            AND res.Location = '35 Paya Lebar Rise #46-516 Singapore083184'
+            AND res.Restaurant_UserID = 'DeandreSubsistenceaccount'
+        ) AS decimal(8,2))
+        /
+        CAST((
+            SELECT COUNT(*) FROM reservation as res
+            WHERE
+            res.customer_userid = rv.customer_userid
+        ) AS decimal(8,2)) as percent
+        FROM
+        Reservation as rv inner join Restaurant as rs
+        ON rv.Location = rs.Location
+        AND rv.Restaurant_UserID = rs.UserID
+        WHERE rv.Location = '35 Paya Lebar Rise #46-516 Singapore083184'
+        AND rv.Restaurant_UserID = 'DeandreSubsistenceaccount'
+        ORDER BY
+        rv.location
+    )
+    SELECT *
+    FROM X
+    WHERE
+    x.percent * x.thisres >= ALL (
+        SELECT b.percent * b.thisres FROM X as b
+    )
+    LIMIT 1
+    `
+    res.status(200).json("ok")
+    // db.raw(getloyal)
+    // .timeout(1000)
+    // .then(result => {
+    //     res.status(200).json(result.rows.map(x => ({ //should rename some tables for easier reference
+    //             userID: x.customer_userid, 
+    //             table: x.tablenum,
+    //             pax: x.pax,
+    //             dateTime: x.dateTime
+    //     })));
+    // }).catch(err => res.status(400).json('Unable to Retrieve'));
+    // //res.status(200).json(ReservationsData.data1);
+}
+
+
+
 module.exports = {
     ownedRestaurants: ownedRestaurants,
     viewAllReservations: viewAllReservations,
-    viewRestaurantReservations: viewRestaurantReservations
+    viewRestaurantReservations: viewRestaurantReservations,
+    getmostloyal:getmostloyal
 }
 
-const getloyal = 
-`
-With X AS(
-    SELECT DISTINCT rv.customer_userid, rv.Location,rv.Restaurant_UserID,
-    (
-        SELECT COUNT(*) FROM reservation as res
-        WHERE
-        res.customer_userid = rv.customer_userid
-    ) as totalreservations,
-    (
-        SELECT COUNT(*) FROM reservation as res
-        WHERE
-        res.customer_userid = rv.customer_userid
-        AND res.Location = '35 Paya Lebar Rise #46-516 Singapore083184'
-        AND res.Restaurant_UserID = 'DeandreSubsistenceaccount'
-    ) as thisres,
-    CAST((
-        SELECT COUNT(*) FROM reservation as res
-        WHERE
-        res.customer_userid = rv.customer_userid
-        AND res.Location = '35 Paya Lebar Rise #46-516 Singapore083184'
-        AND res.Restaurant_UserID = 'DeandreSubsistenceaccount'
-    ) AS decimal(8,2))
-    /
-    CAST((
-        SELECT COUNT(*) FROM reservation as res
-        WHERE
-        res.customer_userid = rv.customer_userid
-    ) AS decimal(8,2)) as percent
-    FROM
-    Reservation as rv inner join Restaurant as rs
-    ON rv.Location = rs.Location
-    AND rv.Restaurant_UserID = rs.UserID
-    WHERE rv.Location = '35 Paya Lebar Rise #46-516 Singapore083184'
-    AND rv.Restaurant_UserID = 'DeandreSubsistenceaccount'
-    ORDER BY
-    rv.location
-)
-SELECT *
-FROM X
-WHERE
-x.percent * x.thisres >= ALL (
-    SELECT b.percent * b.thisres FROM X as b
-)
-LIMIT 1
-
-
-
-
-`
