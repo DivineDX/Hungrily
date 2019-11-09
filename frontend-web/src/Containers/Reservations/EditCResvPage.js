@@ -26,13 +26,16 @@ class EditCResvPage extends Component {
                     <h3 className> Your Stated DateTime: {dateParser(dateTime)} </h3>
 
                 </div>
-
+                
+                
                 <BookRestaurant 
                     isEditing = {true}
                     userID = {userID}
                     resUrl = {resUrl}
                     franchisorId = {resid}
                     location = {location}
+                    oldDateTime = {dateTime}
+                    oldTableNumber = {table}
                 />
 
                 <h2 className='white pt4 editText'> I wish to cancel my Reservation</h2>

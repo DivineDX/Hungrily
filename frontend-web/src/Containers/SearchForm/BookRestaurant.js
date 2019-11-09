@@ -111,7 +111,9 @@ class BookRestaurant extends React.Component {
                             location: location,
                             resUrl: resUrl,
                             dateTime: values.date,
-                            pax: values.pax
+                            pax: values.pax,
+                            oldDateTime: isEditing ? this.props.oldDateTime : null,
+                            oldTableNumber: isEditing ? this.props.oldTableNumber : null,
                         })
                     })
                         .then(resp => resp.json())
