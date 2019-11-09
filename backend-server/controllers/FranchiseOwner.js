@@ -181,18 +181,22 @@ const getmostloyal = (req, res, db) => {
             res.customer_userid = rv.customer_userid
         ) as totalreservations,
         (
-            SELECT COUNT(*) FROM reservation as res
+            SELECT COUNT(*) FROM 
+            reservation as res
+            INNER JOIN Restaurant as rt
+            ON res.Location = rt.location
+            AND res.Restaurant_UserID = rt.userID
             WHERE
-            res.customer_userid = rv.customer_userid
-            AND res.Location = '35 Paya Lebar Rise #46-516 Singapore083184'
-            AND res.Restaurant_UserID = 'DeandreSubsistenceaccount'
+            rt.url = '${name}'
         ) as thisres,
         CAST((
             SELECT COUNT(*) FROM reservation as res
+            INNER JOIN Restaurant as rt
+            ON res.Location = rt.location
+            AND res.Restaurant_UserID = rt.userID
             WHERE
             res.customer_userid = rv.customer_userid
-            AND res.Location = '35 Paya Lebar Rise #46-516 Singapore083184'
-            AND res.Restaurant_UserID = 'DeandreSubsistenceaccount'
+            AND rt.url ='${name}'
         ) AS decimal(8,2))
         /
         CAST((
@@ -204,8 +208,8 @@ const getmostloyal = (req, res, db) => {
         Reservation as rv inner join Restaurant as rs
         ON rv.Location = rs.Location
         AND rv.Restaurant_UserID = rs.UserID
-        WHERE rv.Location = '35 Paya Lebar Rise #46-516 Singapore083184'
-        AND rv.Restaurant_UserID = 'DeandreSubsistenceaccount'
+        WHERE 
+        rs.url ='${name}'
         ORDER BY
         rv.location
     )
@@ -217,18 +221,17 @@ const getmostloyal = (req, res, db) => {
     )
     LIMIT 1
     `
-    res.status(200).json("ok")
-    // db.raw(getloyal)
-    // .timeout(1000)
-    // .then(result => {
-    //     res.status(200).json(result.rows.map(x => ({ //should rename some tables for easier reference
-    //             userID: x.customer_userid, 
-    //             table: x.tablenum,
-    //             pax: x.pax,
-    //             dateTime: x.dateTime
-    //     })));
-    // }).catch(err => res.status(400).json('Unable to Retrieve'));
-    // //res.status(200).json(ReservationsData.data1);
+    db.raw(getloyal)
+    .timeout(1000)
+    .then(result => {
+        res.status(200).json(result.rows.map(x => ({ //should rename some tables for easier reference
+                userID: x.customer_userid, 
+                table: x.tablenum,
+                pax: x.pax,
+                dateTime: x.dateTime
+        })));
+    }).catch(err => res.status(400).json('Unable to Retrieve'));
+    //res.status(200).json(ReservationsData.data1);
 }
 
 

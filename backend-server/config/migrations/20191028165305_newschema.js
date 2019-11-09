@@ -190,6 +190,12 @@ CREATE OR REPLACE FUNCTION ReservationConstraints() RETURNS TRIGGER AS $Reservat
         WHERE
         NEW.Restaurant_UserID = Restaurant.UserID
         AND NEW.Location = Restaurant.Location
+        AND dayofweek <> ALL (
+            SELECT Special_Operating_Hrs.Day_of_week as dw
+            FROM Special_Operating_Hrs
+            NEW.Restaurant_UserID = Special_Operating_Hrs.UserID
+            AND NEW.Location = Special_Operating_Hrs.Location
+        )
         AND 
         (
             bookingtimestart < (dateofbooking + Restaurant.Opening_hours)
