@@ -13,6 +13,8 @@ DROP TABLE IF EXISTS Customer_voucher Cascade;
 DROP TABLE IF EXISTS Possible_voucher Cascade;
 DROP TABLE IF EXISTS Ratings Cascade; 
 
+
+
 CREATE TABLE Account(
     UserID varchar(100) PRIMARY KEY,
     Password varchar(60) NOT NULL
@@ -20,7 +22,7 @@ CREATE TABLE Account(
 
 CREATE TABLE FranchiseOwner (
     UserID varchar(100) PRIMARY KEY REFERENCES Account ON DELETE CASCADE,
-    FNAME varchar(100)
+    FNAME varchar(100) UNIQUE NOT NULL
 );
 
 CREATE TABLE Restaurant (
@@ -420,6 +422,7 @@ DROP FUNCTION IF EXISTS givepoints;
 DROP TRIGGER IF EXISTS noratings on reservation;
 DROP FUNCTION IF EXISTS noratings;
 
+DROP TYPE IF EXISTS possibleareas Cascade; 
 `
 exports.up = function(knex) {
     return knex.schema
