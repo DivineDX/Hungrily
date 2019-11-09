@@ -47,7 +47,7 @@ const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
                     data={data}
                     userID={userID}
                 >
-                    <Link to={{ pathname: '/editresv', state: { resvData: data, userID: userID } }}>
+                    <Link to={{ pathname: '/editresv', state: { resvData: data, userID: userID } }} id = "link">
                         Edit Reservations
                     </Link>
                 </Button>
