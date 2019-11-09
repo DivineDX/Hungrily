@@ -12,7 +12,6 @@ class EditCResvPage extends Component {
     render() {
         const { resvData, userID } = this.props.location.state;
         const { dateTime, location, pax , resName, resUrl, resid, table } = resvData;
-        console.log(resvData);
 
         return (
             <div className='flex flex-column items-center relative'>

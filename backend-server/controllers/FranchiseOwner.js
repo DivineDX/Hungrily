@@ -63,7 +63,6 @@ const ownedRestaurants = (req, res, db) => {
 
 const viewAllReservations = (req, res, db) => {
     const { franchiseUserID } = req.body;
-    console.log(req.body)
     const sql = 
     `
     SELECT
@@ -81,22 +80,6 @@ const viewAllReservations = (req, res, db) => {
     AND Reservation.Restaurant_UserID = Restaurant.UserID
     WHERE Reservation.Restaurant_UserID = '${franchiseUserID}'
     `
-
-    // { store_name: 'Deandre Subsistence doughtnut shop',
-    // url: 'Deandre-Subsistence-doughtnut-shop4143',
-    // customer_userid: 'EllaMathieson27',
-    // tablenum: 2,
-    // pax: 2,
-    // datetime: 2019-11-23T09:00:00.000Z },
-
-    // resName: x.store_name,
-    // resUrl: x.area,
-    // reservations: {
-    //     userID: x.customer_userid, 
-    //     table: x.tablenum,
-    //     pax: x.pax,
-    //     dateTime: x.dateTime
-    // }
 
     db.raw(sql)
     .timeout(1000)
@@ -128,7 +111,6 @@ const viewAllReservations = (req, res, db) => {
                 }
             }
         })
-        console.log(Object.values(dict));
         res.status(200).json(Object.values(dict));
     }).catch(err => {console.log(err);res.status(400).json('Unable to Retrieve')});
 }
@@ -170,7 +152,6 @@ const viewRestaurantReservations = (req, res, db) => {
 
 const getmostloyal = (req, res, db) => {
     const { franchiseOwnerID, location ,name} = req.body; //PK of Restaurant 
-    console.log(req.body)
     const getloyal = 
     `
         With X AS(
@@ -225,7 +206,6 @@ const getmostloyal = (req, res, db) => {
     db.raw(getloyal)
     .timeout(1000)
     .then(result => {
-        console.log(result.rows)
         if (result.rows.length > 0 ){
             const ans = result.rows.map(x => ({ //should rename some tables for easier reference
                 userID: x.customer_userid, 
@@ -234,7 +214,6 @@ const getmostloyal = (req, res, db) => {
                 numBookings: x.thisres,
                 percentBookings:x.percent 
             }))
-            console.log("hi")
             res.status(200).json(ans[0])
         }
         else {

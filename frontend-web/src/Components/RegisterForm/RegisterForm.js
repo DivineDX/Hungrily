@@ -38,18 +38,15 @@ class RegisterForm extends React.Component {
                         .then(resp => resp.json())
                         .then(data => {
                             if (data === values.userID) { //successful
-                                // console.log('successful registration')
                                 this.setState({
                                     result: 'Successful Registration'
                                 });
                             }
                             else if (data === 'Username Already Taken') { 
-                                // console.log('Username already taken')
                                 this.setState({
                                     result: 'Username already taken'
                                 })
                             } else { //error
-                                // console.log('error');
                                 this.setState({
                                     result: 'Error, cannot register'
                                 })

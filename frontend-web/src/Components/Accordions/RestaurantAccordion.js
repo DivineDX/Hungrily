@@ -23,9 +23,11 @@ const RestaurantAccordion = ({ index, activeIndex, handleClick, reservData }) =>
             </Accordion.Title>
             <Accordion.Content active={activeIndex === index}>
                 <Grid columns={4}>
-                    {reservations.map(reserv => {
+                    {reservations.map((reserv,index) => {
                         return <Grid.Column>
-                            <FResCard data={reserv}/>
+                            <FResCard data={reserv}
+                                key={index}
+                            />
                         </Grid.Column>
                     })}
                 </Grid>

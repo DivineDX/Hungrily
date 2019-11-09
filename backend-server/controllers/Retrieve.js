@@ -48,7 +48,6 @@ const getRestaurant = (req, res, db) => {
 
                     res.status(400).json('Unable to Retrieve')
                 }
-                // console.log(restaurantRows[0]);
                 res.status(200).json(restaurantRows[0])
         }).catch(
             err =>{
@@ -267,7 +266,6 @@ const getAllRestaurants = (req, res, db) => {
 
 const getCompatibleRestaurants = (req, res, db) => {
     const {userid} = req.body
-    console.log(req.body)
     const sql =
     `
     With  X (cuisine,num) AS (
@@ -322,7 +320,6 @@ const getCompatibleRestaurants = (req, res, db) => {
     `
     db.raw(sql).timeout(1000)
     .then(restaurants => {
-        //console.log(restaurants.rows)
         res.status(200).json(restaurants.rows.map(x=>(
             {
                 name:x.store_name,

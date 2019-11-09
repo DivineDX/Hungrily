@@ -24,8 +24,7 @@ class RateModal extends Component {
 
     postRating = () => {
         const { data, userID } = this.props;
-        const { resName, location, dateTime, table, resUrl,resid } = data;
-        console.log(data)
+        const { resName, location, dateTime, table, resid } = data;
         fetch(`${url.fetchURL}/giveReview`, {
             method: 'post',
             headers: { 'Content-type': 'application/json' },
@@ -49,19 +48,19 @@ class RateModal extends Component {
 
     render() {
         return (
-            <Modal 
+            <Modal
                 trigger={<Button> Rate </Button>}
                 onClose={() => this.props.fetchReservations()}
-                size = {'small'}
+                size={'small'}
             >
                 <Modal.Header className='tc'>Post a Rating</Modal.Header>
                 <Modal.Content>
                     <Rating maxRating={5} clearable rating={this.state.rating} onRate={this.handleRate} className='mb2' />
-                    <br/>
+                    <br />
                     <Button negative onClick={() => this.postRating()} content='Confirm/Update Rating' />
                     {
-                        this.state.clicked && 
-                            <div className='black mb2'>Your rating has been posted. Click out of this modal to exit</div>
+                        this.state.clicked &&
+                        <div className='black mb2'>Your rating has been posted. Click out of this modal to exit</div>
                     }
                 </Modal.Content>
             </Modal>

@@ -97,6 +97,7 @@ class CustomerRes extends Component {
                                     data={data}
                                     isCurrent={this.state.isCurrent}
                                     userID={userID}
+                                    key={data.resUrl}
                                     fetchReservations={this.fetchReservations.bind(this)}
                                 />
                             })

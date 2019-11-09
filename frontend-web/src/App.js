@@ -21,7 +21,7 @@ import ProtectedCustomerRoute from './Common/ProtectedCustomerRoute';
 class App extends Component {
 	constructor() {
 		super();
-		this.state = LoginState.franchiseOwner;
+		this.state = LoginState.logout;
 	}
 
 	//for Customers

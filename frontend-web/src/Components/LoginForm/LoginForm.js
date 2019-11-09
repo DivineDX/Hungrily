@@ -33,23 +33,19 @@ class LoginForm extends React.Component {
                     })
                         .then(resp => resp.json())
                         .then(data => {
-                            // console.log(data);
                             if (data.userID && data.name) { //successful
                                 this.props.loginUser(data.userID, data.name, data.franchiseOwner);
                                 this.props.history.push("/"); //go to main page
                             }
                             else if (data === 'No such user') {
-                                // console.log('Username already taken')
                                 this.setState({
                                     result: 'Error: No Such User'
                                 })
                             } else if (data === 'incorrect password') {
-                                // console.log('Username already taken')
                                 this.setState({
                                     result: 'Error: Incorrect Password'
                                 })
                             } else { //error
-                                // console.log('error');
                                 this.setState({
                                     result: 'Error, Unable to Retrieve Login Credentials'
                                 })

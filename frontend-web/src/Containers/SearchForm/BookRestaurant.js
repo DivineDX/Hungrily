@@ -101,7 +101,6 @@ class BookRestaurant extends React.Component {
                         ? urlToUse = 'editResv'
                         : urlToUse = 'resvAvailability'
                     this.setState({ loading: true });
-                    console.log(this.state);
                     fetch(`${url.fetchURL}/${urlToUse}`, {
                         method: 'post',
                         headers: { 'Content-type': 'application/json' },
@@ -119,7 +118,6 @@ class BookRestaurant extends React.Component {
                         .then(resp => resp.json())
                         .then(data => {
                             this.setState({ submitted: true, loading: false });
-                            console.log("Data Resp", data);
                             switch (data) {
                                 case 'available': //todo: After check availability, if available, will do another POST to insert into DB
                                     this.setState({ available: true })

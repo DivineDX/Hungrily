@@ -13,10 +13,6 @@ class NavBar extends Component {
         }
     }
 
-    onSearchChange(event) {
-        // console.log(event);
-    }
-
     render() {
         const { loginProp, isSignedIn, name, isFranchiseOwner } = this.props
 
