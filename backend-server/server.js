@@ -19,7 +19,7 @@ app.use(cors());
 
 app.get('/', (req, res) => { test.test(req, res) });
 
-//For use by all users
+//For use by all usersa
 app.get('/cuisines', (req, res) => retrieve.getAllCuisines(req, res, db));
 app.get('/areas', (req, res) => retrieve.getAllAreas(req, res, db));
 app.get('/franchisors', (req, res) => retrieve.getAllFranchise(req, res, db)); //res names only
