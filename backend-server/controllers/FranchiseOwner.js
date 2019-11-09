@@ -169,11 +169,11 @@ const viewRestaurantReservations = (req, res, db) => {
 //Other Routes for considerations: CRUD for Special Operating Hours, Food and Table
 
 const getmostloyal = (req, res, db) => {
-    const { franchiseOwnerID, location } = req.body; //PK of Restaurant 
+    const { franchiseOwnerID, location ,name} = req.body; //PK of Restaurant 
     console.log(req.body)
     const getloyal = 
     `
-    With X AS(
+        With X AS(
         SELECT DISTINCT rv.customer_userid, rv.Location,rv.Restaurant_UserID,
         (
             SELECT COUNT(*) FROM reservation as res
@@ -181,13 +181,14 @@ const getmostloyal = (req, res, db) => {
             res.customer_userid = rv.customer_userid
         ) as totalreservations,
         (
-            SELECT COUNT(*) FROM 
+            SELECT  COUNT(*) FROM 
             reservation as res
             INNER JOIN Restaurant as rt
             ON res.Location = rt.location
             AND res.Restaurant_UserID = rt.userID
             WHERE
-            rt.url = '${name}'
+            res.customer_userid = rv.customer_userid
+            AND rt.url = '${name}'
         ) as thisres,
         CAST((
             SELECT COUNT(*) FROM reservation as res
@@ -213,7 +214,7 @@ const getmostloyal = (req, res, db) => {
         ORDER BY
         rv.location
     )
-    SELECT *
+    SELECT customer_userid, location, restaurant_userid, thisres, ROUND(percent,2)*100 as percent
     FROM X
     WHERE
     x.percent * x.thisres >= ALL (
@@ -224,13 +225,24 @@ const getmostloyal = (req, res, db) => {
     db.raw(getloyal)
     .timeout(1000)
     .then(result => {
-        res.status(200).json(result.rows.map(x => ({ //should rename some tables for easier reference
+        console.log(result.rows[0])
+        if (result.rows.length > 0 ){
+            const ans = result.rows.map(x => ({ //should rename some tables for easier reference
                 userID: x.customer_userid, 
-                table: x.tablenum,
-                pax: x.pax,
-                dateTime: x.dateTime
-        })));
-    }).catch(err => res.status(400).json('Unable to Retrieve'));
+                location: x.location,
+                restaurant_userid: x.restaurant_userid,
+                numBookings: x.thisres,
+                percentBookings:x.percent 
+            }))
+            res.status(200).json(ans)
+        }
+        else {
+            res.status(400).json('Unable to Retrieve')
+        }
+
+
+    }).catch(err => {
+        res.status(400).json('Unable to Retrieve')});
     //res.status(200).json(ReservationsData.data1);
 }
 
