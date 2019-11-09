@@ -20,10 +20,7 @@ p {
     display: flex; 
     align-items: center !important;
     justify-content: center !important;
-}
-
-#RegisterBut {
-    width: 25%;
+    color: white;
 }
 
 #LoginSegment {
