@@ -18,11 +18,18 @@ const ownedRestaurants = (req, res, db) => {
                 AND Food.UserID = Restaurant.UserID
                 ) AS cuisine,
                 (
-                    SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS c
-                    FROM Food
-                    WHERE Food.Location = Restaurant.Location
-                    AND Food.UserID = Restaurant.UserID
-                    ) AS price
+                SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS c
+                FROM Food
+                WHERE Food.Location = Restaurant.Location
+                AND Food.UserID = Restaurant.UserID
+                ) AS price,
+                (
+                SELECT ROUND(CAST(AVG(Reservation.Rating) as numeric), 2) AS r
+                FROM Reservation
+                WHERE Reservation.Location = Restaurant.Location
+                AND Reservation.Restaurant_UserID = Restaurant.UserID
+                AND Reservation.Rating IS NOT NULL
+                ) AS rating
             FROM Restaurant INNER JOIN Food
             ON Food.Location = Restaurant.Location
             AND Food.UserID = Restaurant.UserID
@@ -42,7 +49,7 @@ const ownedRestaurants = (req, res, db) => {
                 closingHours: x.closing_hours,
                 price: '~$'+x.price,
                 url: x.url,
-                ratings: 0
+                ratings:x.rating == null ? 'Unrated' : x.rating 
             })));
         }).catch(err => res.status(400).json('Unable to Retrieve'));
 

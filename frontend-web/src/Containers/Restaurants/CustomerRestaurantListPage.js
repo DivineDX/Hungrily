@@ -39,7 +39,14 @@ class CustomerRestaurantListPage extends Component {
 
     fetchCompatibleRestaurants() {
         this.setState({loading: true});
-        fetch(`${url.fetchURL}/resData`)
+        console.log(this.props.userID)
+        fetch(`${url.fetchURL}/compatible`, {
+            method: 'post',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                userid: this.props.userID
+            })
+        })
             .then(resp => resp.json())
             .then(data => {
                 this.setState({

@@ -19,7 +19,7 @@ app.use(cors());
 
 app.get('/', (req, res) => { test.test(req, res) });
 
-//For use by all users
+//For use by all usersa
 app.get('/cuisines', (req, res) => retrieve.getAllCuisines(req, res, db));
 app.get('/areas', (req, res) => retrieve.getAllAreas(req, res, db));
 app.get('/franchisors', (req, res) => retrieve.getAllFranchise(req, res, db)); //res names only
@@ -28,6 +28,8 @@ app.get('/restaurant/:name', (req, res) => retrieve.getRestaurant(req, res, db))
 app.get('/restaurantSpecialHrs/:name', (req, res) => retrieve.getRestaurantSpecialOpHrs(req, res, db));
 app.get('/restaurantmenu/:name', (req, res) => retrieve.getRestaurantMenu(req, res, db));
 app.post('/search', (req, res) => retrieve.findRestaurant(req, res, db));
+app.post('/compatible', (req, res) => retrieve.getCompatibleRestaurants(req, res, db));
+
 
 //Account Registration and Login
 app.post('/register', (req, res) => account.registerCustomer(req, res, db));

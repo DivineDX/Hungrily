@@ -51,7 +51,7 @@ CREATE TABLE Tables (
     Location varchar(100) NOT NULL,
     UserID varchar(100) NOT NULL,
     TableNum integer,
-    Capacity integer NOT NULL CHECK (Capacity >= 0), 
+    Capacity integer NOT NULL CHECK (Capacity > 0), 
     PRIMARY KEY (TableNum, Location, UserID), -- is this correct? 
     FOREIGN KEY (Location, UserID) REFERENCES Restaurant ON DELETE CASCADE
 );
@@ -229,9 +229,61 @@ CREATE OR REPLACE FUNCTION ReservationConstraints() RETURNS TRIGGER AS $Reservat
     END;
 $ReservationConstraints$ LANGUAGE plpgsql;
 
+
 CREATE TRIGGER ReservationConstraintsTrigger
 BEFORE INSERT ON Reservation
     FOR EACH ROW EXECUTE FUNCTION ReservationConstraints();
+
+
+
+--trigger checking if the User is already a franchiseowner
+CREATE OR REPLACE FUNCTION User_Customer_constraint()
+RETURNS TRIGGER AS $$
+DECLARE count integer:=(
+    SELECT COUNT(*)
+    FROM FranchiseOwner 
+    WHERE NEW.UserID = FranchiseOwner.UserID
+);
+BEGIN 
+IF count > 0 THEN 
+    RAISE EXCEPTION 'UserID already used as FranchiseOwner' USING HINT = 'UserID already used as FranchiseOwner';
+ELSE 
+    RETURN NEW;
+END IF; 
+END;
+$$ LANGUAGE plpgsql;
+
+--trigger checking if the User is already a customer
+CREATE OR REPLACE FUNCTION User_FranchiseOwner_constraint()
+RETURNS TRIGGER AS $$
+DECLARE count integer:=(
+    SELECT COUNT(*)
+    FROM Customer
+    WHERE NEW.UserID = Customer.UserID
+);
+BEGIN 
+IF count > 0 THEN 
+    RAISE EXCEPTION 'UserID already used as Customer' USING HINT = 'UserID already used as Customer';
+ELSE 
+    RETURN NEW;
+END IF; 
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER non_franchiseowner
+BEFORE INSERT OR UPDATE 
+ON Customer
+FOR EACH ROW 
+EXECUTE FUNCTION User_Customer_constraint();
+
+CREATE TRIGGER non_customer
+BEFORE INSERT OR UPDATE 
+ON FranchiseOwner
+FOR EACH ROW 
+EXECUTE FUNCTION User_FranchiseOwner_constraint();
+
+
 
 `
 const downSQL =
@@ -251,6 +303,10 @@ DROP FUNCTION IF EXISTS test;
 DROP FUNCTION IF EXISTS attemptReserve;
 DROP TRIGGER IF EXISTS ReservationConstraintsTrigger on Reservation;
 DROP FUNCTION IF EXISTS ReservationConstraints;
+DROP TRIGGER IF EXISTS non_franchiseowner on Customer;
+DROP FUNCTION IF EXISTS User_Customer_constraint;
+DROP TRIGGER IF EXISTS non_customer on FranchiseOwner;
+DROP FUNCTION IF EXISTS User_FranchiseOwner_constraint;
 `
 exports.up = function(knex) {
     return knex.schema
