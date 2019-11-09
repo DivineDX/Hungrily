@@ -42,7 +42,7 @@ npm install or yarn install
 
 5. Change your directory to ./DBConfig. Run psql < HungrilyPSQLUserCreation on the Terminal. This creates the superuser that will have access to the database
 
-6. Run psql < Hungrilydb.sql. This initializes the database schema and inserts the large datasets.
+6. Run psql hungrilydb < hungrilydb.sql. This initializes the database schema and inserts the large datasets.
 
 7. Start the backend server 
 ```sh
