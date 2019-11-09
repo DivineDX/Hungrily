@@ -37,12 +37,6 @@ const checkAvailability = (req, res, db) => {
                 res.status(400).json(err);
                 break;
         }
-        if(err.hint === "Shop not open Normal" || err.hint === "Shop not open Special") {
-            res.status(400).json('notOpen');
-        } else if(err.hint === 'no available tables') {
-            res.status(400).json()
-        }
-        res.status(400).json('err')
 
     });
 }
