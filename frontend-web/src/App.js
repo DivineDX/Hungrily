@@ -63,7 +63,7 @@ class App extends Component {
 						<Route path="/restaurants" exact render={(props) => <RestaurantsListPage {...props} isSignedIn={isSignedIn} userID={this.state.userID} isFranchiseOwner={this.state.isFranchiseOwner} />} />
 						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} isFranchiseOwner={this.state.isFranchiseOwner} />
 						<ProtectedCustomerRoute path="/voucherlist" component={Voucherlist} userID={this.state.userID} isCustomer={isCustomer} />
-						<ProtectedCustomerRoute path="/editresv" component={EditCResvPage} userID={this.state.userID} isCustomer={isCustomer} />
+						<ProtectedCustomerRoute path="/editresv" component={EditCResvPage} userID={this.state.userID} isCustomer={isCustomer}/>
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
 						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} isSignedIn={isSignedIn} userID={this.state.userID} isFranchiseOwner={this.state.isFranchiseOwner} />} />

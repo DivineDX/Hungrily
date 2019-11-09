@@ -2,11 +2,10 @@ import React from 'react';
 import { Icon, Image, Card, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
 
-import foodImage from '../../Images/food.jpg';
 
 import RateModal from '../Modals/RateModal'
-import EditCResvPage from '../../Containers/Reservations/EditCResvPage'
 import dateParser from '../../Common/ParserUtil';
+import foodImage from '../../Images/food.jpg';
 import './CustomerResCard.css';
 
 const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
@@ -44,15 +43,15 @@ const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
                 </div>
             </Card.Content>
             {isCurrent
-                ? <Button name='EditCResvPage' 
-                        data = {data} 
-                        userID = {userID} 
-                        fetchReservations = {fetchReservations}>
-                    <Link to="/editresv" className= 'white'>
+                ? <Button
+                    data={data}
+                    userID={userID}
+                >
+                    <Link to={{ pathname: '/editresv', state: { resvData: data, userID: userID } }}>
                         Edit Reservations
                     </Link>
-                </Button> 
-                : <RateModal data = {data} userID = {userID} fetchReservations = {fetchReservations}/>
+                </Button>
+                : <RateModal data={data} userID={userID} fetchReservations={fetchReservations} />
             }
         </Card>
     )
