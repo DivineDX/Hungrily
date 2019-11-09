@@ -49,7 +49,6 @@ class BookRestaurant extends React.Component {
                 data.filter(x => data.owned > 0).map(x => data.voucherName)
                 const dropdownOptions = [];
                 dropdownOptions.push({key: '0', text: 'None', value: ''});
-                let key = 1;
                 data.forEach((data, index) => {
                     const obj = {
                         key: index, 

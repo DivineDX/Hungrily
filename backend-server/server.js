@@ -25,6 +25,7 @@ app.get('/areas', (req, res) => retrieve.getAllAreas(req, res, db));
 app.get('/franchisors', (req, res) => retrieve.getAllFranchise(req, res, db)); //res names only
 app.get('/resData', (req, res) => retrieve.getAllRestaurants(req, res, db)); //data of all restaurants
 app.get('/restaurant/:name', (req, res) => retrieve.getRestaurant(req, res, db));
+app.get('/restaurantSpecialHrs/:name', (req, res) => retrieve.getRestaurantSpecialOpHrs(req, res, db));
 app.get('/restaurantmenu/:name', (req, res) => retrieve.getRestaurantMenu(req, res, db));
 app.post('/search', (req, res) => retrieve.findRestaurant(req, res, db));
 

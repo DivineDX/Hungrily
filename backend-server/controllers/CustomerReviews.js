@@ -1,6 +1,6 @@
 /**
  * GET: View all reviews given for a particular restaurant
- * Join Reservation with Reservations, filtert reservations whose rating is null
+ * Join Reservation with Reservations, filter reservations whose rating is null
  */
 const viewResReviews = (req, res, db) => {
     const franchisor = req.params.franchisor;
