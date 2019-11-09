@@ -286,19 +286,53 @@ EXECUTE FUNCTION User_FranchiseOwner_constraint();
 CREATE OR REPLACE FUNCTION CapacityForRestaurants()
 RETURNS TRIGGER AS $$
 DECLARE cap integer:=(
-    SELECT COALSE(SUM(tables.capacity),0)
+    SELECT coalesce(SUM(tables.capacity),0)
+    FROM tables
+    WHERE New.UserID = tables.UserID
+    AND NEW.location = tables.location
+);
+BEGIN 
+new.capacity = cap;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION CapacityForTables()
+RETURNS TRIGGER AS $$
+DECLARE cap integer:=(
+    SELECT coalesce(SUM(tables.capacity),0)
     FROM tables
     WHERE New.UserID = tables.UserID
     AND NEW.location= tables.location
 );
-BEGIN 
-IF count > 0 THEN 
-    RAISE EXCEPTION 'UserID already used as Customer' USING HINT = 'UserID already used as Customer';
-ELSE 
-    RETURN NEW;
-END IF; 
+BEGIN
+UPDATE
+Restaurant
+SET capacity = cap
+WHERE
+Restaurant.userid = new.userid
+AND Restaurant.location = new.location;
+RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER tablecap
+AFTER INSERT OR DELETE OR UPDATE
+ON tables
+FOR EACH ROW 
+EXECUTE FUNCTION CapacityForTables();
+
+
+
+CREATE TRIGGER rescap
+AFTER INSERT OR UPDATE 
+ON restaurant
+FOR EACH ROW 
+WHEN(pg_trigger_depth() = 0)
+EXECUTE FUNCTION CapacityForRestaurants();
+
+
 
 `
 const downSQL =
