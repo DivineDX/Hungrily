@@ -248,7 +248,6 @@ const getAllRestaurants = (req, res, db) => {
     `
     db.raw(sql).timeout(1000)
     .then(restaurants => {
-        console.log(restaurants.rows)
         res.status(200).json(restaurants.rows.map(x=>(
             {
                 name:x.store_name,

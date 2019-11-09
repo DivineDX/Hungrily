@@ -27,7 +27,7 @@ const RestaurantCard = (props) => {
                     </Card.Meta>
                     <Card.Meta>
                         <span>Price: {price}</span>
-                        <span id='Right'>Ratings: ratings {ratings}</span>
+                        <span id='Right'>Ratings: {ratings}</span>
                     </Card.Meta>
                 </div>
             </Card.Content>
