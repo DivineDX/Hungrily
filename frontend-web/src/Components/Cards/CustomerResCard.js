@@ -1,16 +1,17 @@
 import React from 'react';
-import { Icon, Image, Card } from 'semantic-ui-react';
+import { Icon, Image, Card, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
 
 import foodImage from '../../Images/food.jpg';
 
 import RateModal from '../Modals/RateModal'
-import DeleteModal from '../Modals/DeleteModal'
+import EditCResvPage from '../../Containers/Reservations/EditCResvPage'
 import dateParser from '../../Common/ParserUtil';
 import './CustomerResCard.css';
 
 const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
     const { resName, resUrl, dateTime, table, pax } = data;
+
     return (
         <Card className="ui card" id='ResvCard'>
             <Image
@@ -43,7 +44,14 @@ const CustomerResCard = ({ data, isCurrent, userID, fetchReservations }) => {
                 </div>
             </Card.Content>
             {isCurrent
-                ? <DeleteModal data = {data} userID = {userID} fetchReservations = {fetchReservations}/>
+                ? <Button name='EditCResvPage' 
+                        data = {data} 
+                        userID = {userID} 
+                        fetchReservations = {fetchReservations}>
+                    <Link to="/editresv" className= 'white'>
+                        Edit Reservations
+                    </Link>
+                </Button> 
                 : <RateModal data = {data} userID = {userID} fetchReservations = {fetchReservations}/>
             }
         </Card>

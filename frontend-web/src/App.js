@@ -13,6 +13,7 @@ import Register from './Containers/RegisterPage/RegisterPage';
 import LandingPage from './Containers/RestaurantLandingPage/LandingPage';
 import ProtectedRoute from './Common/ProtectedRoute';
 import Voucherlist from './Containers/VoucherList/VoucherList';
+import EditCResvPage from './Containers/Reservations/EditCResvPage';
 import ParticlesOptions from './Data/ParticlesOptions';
 import LoginState from './Data/LoginState';
 import ProtectedCustomerRoute from './Common/ProtectedCustomerRoute';
@@ -20,7 +21,7 @@ import ProtectedCustomerRoute from './Common/ProtectedCustomerRoute';
 class App extends Component {
 	constructor() {
 		super();
-		this.state = LoginState.franchiseOwner;
+		this.state = LoginState.customer;
 	}
 
 	//for Customers
@@ -62,6 +63,7 @@ class App extends Component {
 						<Route path="/restaurants" exact render={(props) => <RestaurantsListPage {...props} isSignedIn={isSignedIn} userID={this.state.userID} isFranchiseOwner={this.state.isFranchiseOwner} />} />
 						<ProtectedRoute path="/reservations" component={Reservations} userID={this.state.userID} isSignedIn={isSignedIn} isFranchiseOwner={this.state.isFranchiseOwner} />
 						<ProtectedCustomerRoute path="/voucherlist" component={Voucherlist} userID={this.state.userID} isCustomer={isCustomer} />
+						<ProtectedCustomerRoute path="/editresv" component={EditCResvPage} userID={this.state.userID} isCustomer={isCustomer} />
 						<Route path="/login" exact render={(props) => <LoginPage {...props} isSignedIn={isSignedIn} loginUser={this.loginUser} />} />
 						<Route path="/register" exact component={Register} />
 						<Route path="/restaurants/:name" render={(props) => <LandingPage {...props} isSignedIn={isSignedIn} userID={this.state.userID} isFranchiseOwner={this.state.isFranchiseOwner} />} />

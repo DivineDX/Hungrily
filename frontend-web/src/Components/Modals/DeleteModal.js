@@ -37,12 +37,17 @@ class DeleteModal extends Component {
             })
     }
 
+    onClose = () => {
+        this.setState({clicked: false});
+        this.props.fetchReservations();
+    }
+
     render() {
 
         return (
             <Modal
                 trigger={<Button> Cancel Reservation </Button>}
-                onClose={() => this.props.fetchReservations()}
+                onClose={() => this.onClose()}
                 size = {'small'}
             >
                 <Modal.Header className='tc'> Cancel Reservation </Modal.Header>
@@ -61,7 +66,3 @@ class DeleteModal extends Component {
 }
 
 export default DeleteModal;
-
-
-
-
