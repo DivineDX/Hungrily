@@ -19,6 +19,7 @@ const initialState = {
     available: false,
     noSeats: false,
     noDouble: false,
+    notOpen: false,
     loading: false,
     submitted: false,
 }
@@ -48,7 +49,7 @@ class BookRestaurant extends React.Component {
             .then(data => {
                 data.filter(x => data.owned > 0).map(x => data.voucherName)
                 const dropdownOptions = [];
-                dropdownOptions.push({ key: '0', text: 'None', value: '' });
+                dropdownOptions.push({ key: '0', text: 'None', value: 'None' });
                 data.forEach((data, index) => {
                     const obj = {
                         key: index,
@@ -66,8 +67,7 @@ class BookRestaurant extends React.Component {
     }
 
     useVoucher = (userID, voucherCode) => {
-        console.log("userid", userID);
-        console.log("vouchercode", voucherCode);
+        if(voucherCode === 'None') return;
         fetch(`${url.fetchURL}/useVoucher`, {
             method: 'put',
             headers: { 'Content-type': 'application/json' },
@@ -113,6 +113,7 @@ class BookRestaurant extends React.Component {
                         .then(resp => resp.json())
                         .then(data => {
                             this.setState({ submitted: true, loading: false });
+                            console.log("Data Resp", data);
                             switch (data) {
                                 case 'available': //todo: After check availability, if available, will do another POST to insert into DB
                                     this.setState({ available: true })
@@ -124,6 +125,8 @@ class BookRestaurant extends React.Component {
                                 case 'noDouble':
                                     this.setState({ noDouble: true })
                                     break;
+                                case 'notOpen':
+                                    this.setState({notOpen: true})
                                 default: //some error s
                                     break;
                             }
@@ -138,7 +141,6 @@ class BookRestaurant extends React.Component {
                         .min(new Date(), "Your cannot state a past date")
                         .required("You must state a date"),
                     pax: yup.number().min(1).max(10).required("You must state the number of diners"),
-                    voucher: yup.string().required("You must select an option")
                 })}
 
                 render={({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => {
@@ -191,6 +193,7 @@ class BookRestaurant extends React.Component {
                                     submitted={this.state.submitted}
                                     noSeats={this.state.noSeats}
                                     noDouble={this.state.noDouble}
+                                    notOpen={this.state.notOpen}
                                     available={this.state.available}
                                     loading={this.state.loading}
                                     reset={this.resetState}
