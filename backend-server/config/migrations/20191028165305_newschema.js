@@ -283,7 +283,22 @@ ON FranchiseOwner
 FOR EACH ROW 
 EXECUTE FUNCTION User_FranchiseOwner_constraint();
 
-
+CREATE OR REPLACE FUNCTION CapacityForRestaurants()
+RETURNS TRIGGER AS $$
+DECLARE cap integer:=(
+    SELECT COALSE(SUM(tables.capacity),0)
+    FROM tables
+    WHERE New.UserID = tables.UserID
+    AND NEW.location= tables.location
+);
+BEGIN 
+IF count > 0 THEN 
+    RAISE EXCEPTION 'UserID already used as Customer' USING HINT = 'UserID already used as Customer';
+ELSE 
+    RETURN NEW;
+END IF; 
+END;
+$$ LANGUAGE plpgsql;
 
 `
 const downSQL =
@@ -403,10 +418,10 @@ select * from reservation where reservation.location = '35 Paya Lebar Rise #46-5
 --no available tables
 INSERT INTO Reservation
 VALUES
-('PeterLoth96',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
+('EllaMathieson27',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
 INSERT INTO Reservation
 VALUES
-('RudolphNordin88',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
+('EllaMathieson27',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
 
 
 `
