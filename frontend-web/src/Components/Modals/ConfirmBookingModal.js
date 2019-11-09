@@ -4,7 +4,7 @@ import { Button, Modal, Icon, Dimmer, Loader } from 'semantic-ui-react'
 /**
  * ConfirmBookingModal Component that is used on the BookRestaurantForm
  */
-const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, available, loading, reset }) => {
+const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, notOpen, available, loading, reset }) => {
     return (
         <Modal
             trigger={<Button>Book</Button>}
@@ -53,6 +53,12 @@ const ConfirmBookingModal = ({ submit, values, submitted, noSeats, noDouble, ava
                 {noDouble &&
                     <Modal.Description className='red'>
                         Sorry, you already have booked another reservation at that timing.<br/>
+                    </Modal.Description>
+                }
+
+                {notOpen &&
+                    <Modal.Description className='red'>
+                        Sorry, the restaurant is not open at this timing.<br/>
                     </Modal.Description>
                 }
 

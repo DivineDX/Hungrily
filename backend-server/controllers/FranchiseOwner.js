@@ -102,7 +102,6 @@ const viewAllReservations = (req, res, db) => {
     .timeout(1000)
     .then(result => {
         dict = {}
-        console.log(result.rows)
         const a = result.rows.map(x =>{
             if (x.url in dict){
                 dict[x.url].reservations.push({
@@ -132,22 +131,6 @@ const viewAllReservations = (req, res, db) => {
         console.log(Object.values(dict));
         res.status(200).json(Object.values(dict));
     }).catch(err => {console.log(err);res.status(400).json('Unable to Retrieve')});
-    // res.status(200).json(
-    //     [{
-    //         resName: "Fish & Co. (AMK Hub)",
-    //         resUrl: "fish-co-amk-hub",
-    //         reservations: ReservationsData.data1
-    //     },
-    //     {
-    //         resName: "Fish & Co. (Changi Airport T2)",
-    //         resUrl: "fish-co-amk-hub",
-    //         reservations: ReservationsData.data2
-    //     },
-    //     {
-    //         resName: "Fish & Co. (Paragon)",
-    //         resUrl: "fish-co-paragon",
-    //         reservations: ReservationsData.data3
-    //     }]);
 }
 
 /**

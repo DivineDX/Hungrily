@@ -81,7 +81,7 @@ const restaurantSpecialOperatingHours = (req, res, db) => {
     ORDER BY Special_operating_hrs.day_of_week;
     `;
 
-    db.raw(sql).timeout(100)
+    db.raw(sql).timeout(3000)
         .then(result => {
             res.status(200).json(result.rows);
         }).catch(err => {
