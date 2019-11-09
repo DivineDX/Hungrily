@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Grid } from 'semantic-ui-react';
 
 import url from '../../Config/url';
 import VoucherCard from '../../Components/Cards/VoucherCard';
-// import BulletinMenuBar from '../../Components/MenuBar/BulletinMenuBar';
+import './VoucherList.css';
 
 class Voucherlist extends Component {
     constructor(props) {
@@ -18,8 +17,7 @@ class Voucherlist extends Component {
 
     componentDidMount() {
         //refresh userdata (for point refresh)
-        this.getUserPoints();
-        this.fetchVouchers();
+        this.refreshPage();
     }
 
     refreshPage() {
@@ -61,14 +59,6 @@ class Voucherlist extends Component {
             })
     }
 
-    // handleCategoryClick = (cat) => {
-    //     if (cat === 'All') { //select All
-
-    //     } else { //select owned
-
-    //     }
-    // }
-
     render() {
         return (
             <div className="w-75 pt5 center bb b--black-10 relative">
@@ -82,23 +72,15 @@ class Voucherlist extends Component {
                     }
 
                 </h3>
-
-                {/* <BulletinMenuBar
-                    handleCategoryClick={this.handleCategoryClick.bind(this)}
-                    options={["All", "Owned"]}
-                /> */}
-
-                <Grid columns={3}>
+                <div id='voucherGrid'>
                     {this.state.vouchers.map((data) => {
-                        return <Grid.Column>
-                            <VoucherCard
-                                data={data}
-                                userID={this.props.userID}
-                                refresh={this.refreshPage.bind(this)}
-                            />
-                        </Grid.Column>
+                        return <VoucherCard
+                            data={data}
+                            userID={this.props.userID}
+                            refresh={this.refreshPage.bind(this)}
+                        />
                     })}
-                </Grid>
+                </div>
             </div>
         );
     }

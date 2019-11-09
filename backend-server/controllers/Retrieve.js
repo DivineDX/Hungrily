@@ -268,6 +268,7 @@ const getAllRestaurants = (req, res, db) => {
 
 const getCompatibleRestaurants = (req, res, db) => {
     const {userid} = req.body
+    console.log(req.body)
     const sql =
     `
     With  X (cuisine,num) AS (
@@ -327,7 +328,7 @@ const getCompatibleRestaurants = (req, res, db) => {
             {
                 name:x.store_name,
                 area:x.area,
-                cuisine:x.cuisine + " in common",
+                cuisine:x.cuisine + " in common with your favourites",
                 openingHours:x.opening_hours,
                 closingHours:x.closing_hours,
                 price:'~$'+x.price,

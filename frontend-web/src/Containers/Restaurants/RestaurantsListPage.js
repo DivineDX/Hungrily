@@ -16,7 +16,7 @@ class RestaurantsListPage extends Component {
                     {
                         isFranchiseOwner
                             ? <FranchiseOwnedResPage userID={userID} />
-                            : <CustomerRestaurantListPage />
+                            : <CustomerRestaurantListPage userID={userID}/>
                     }
                 </div>
             </div>
