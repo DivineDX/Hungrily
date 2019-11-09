@@ -178,8 +178,13 @@ maxreservationspercustomer = 10
 def generateReservations():
     def innergenerateReservations(cuid,tnum,loc,ruid,pax,attemptedtime):
         #datetime.isoformat(sep='T')
-        attemptedtime = stringifystring(attemptedtime.isoformat(sep='T'))
         rating =['NULL','1','2','3','4','5']
+        if attemptedtime < datetime.today() :
+            myrate = random.choice(rating)
+        else:
+            myrate = random.choice('NULL')
+        attemptedtime = stringifystring(attemptedtime.isoformat(sep='T'))
+        myrate = random.choice(rating)
         reservations[(cuid,ruid,tnum,loc,attemptedtime)] = {
             'Customer_UserID':cuid,
             'TableNum': tnum,
@@ -197,7 +202,7 @@ def generateReservations():
         numberofresestotry = random.randint(1,maxreservationspercustomer)
         customerswhoreserved[attemptedcustomer['UserID']] = 0
         while (customerswhoreserved[attemptedcustomer['UserID']] < numberofresestotry):
-            attemptedtime=datetime.today() + timedelta(days = random.randint(0,31),hours=random.randint(0,24),minutes=random.randint(0,12)*5)
+            attemptedtime=random.choice([datetime.today() + timedelta(days = random.randint(0,31),hours=random.randint(0,24),minutes=random.randint(0,12)*5),datetime.today() - timedelta(days = random.randint(0,31),hours=random.randint(0,24),minutes=random.randint(0,12)*5)])
             attemptedtime= attemptedtime.replace(minute=0,second =0,microsecond=0)
             dayofweek = attemptedtime.weekday()
             attempteddate = datetime(attemptedtime.year,attemptedtime.month,attemptedtime.day)
@@ -306,7 +311,7 @@ def generateSQL():
     f = prepfile("CustomerAccountsSQL")
     tablename = 'Customer'
     for item in useraccounts:
-        values = [ useraccounts[item]['UserID'], useraccounts[item]['name'], str(500) ]
+        values = [ useraccounts[item]['UserID'], useraccounts[item]['name'], str(random.randint(0,9999)) ]
         sql = generateInsertString(tablename,values)
         f.write(sql)
     endfile("CustomerAccountsSQL",f)
