@@ -242,3 +242,44 @@ module.exports = {
     getAllFranchise: getAllFranchise,
     getAllRestaurants:getAllRestaurants
 }
+
+//
+const suggestedRestaurants = 
+`
+--reccomended restaurants
+With  X (cuisine,num) AS (
+    SELECT DISTINCT Food.cuisine , COUNT (Food.cuisine) AS num
+    FROM Reservation
+    INNER JOIN
+    Food
+    ON Food.Location =  Reservation.Location
+    AND Food.UserID  = Reservation.Restaurant_UserID
+    WHERE Reservation.customer_userid = 'PeterLoth96'
+    GROUP BY
+    Food.cuisine
+    ORDER BY
+    num DESC
+),
+Y (id, location,  cuisine, num ) AS (
+    SELECT Food.userid,location,  Food.cuisine, num
+    FROM
+    Food INNER JOIN X
+    ON X.cuisine = Food.cuisine
+    GROUP BY
+    Food.userid,location,Food.cuisine, num
+    ORDER BY
+    location
+)
+SELECT id,location,sum(num) AS matchrate,string_agg( Y.Cuisine,', ')
+FROM
+Y
+Group by
+id,location
+ORDER BY
+matchrate DESC
+
+
+
+
+
+`

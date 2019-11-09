@@ -51,7 +51,7 @@ CREATE TABLE Tables (
     Location varchar(100) NOT NULL,
     UserID varchar(100) NOT NULL,
     TableNum integer,
-    Capacity integer NOT NULL CHECK (Capacity >= 0), 
+    Capacity integer NOT NULL CHECK (Capacity > 0), 
     PRIMARY KEY (TableNum, Location, UserID), -- is this correct? 
     FOREIGN KEY (Location, UserID) REFERENCES Restaurant ON DELETE CASCADE
 );
@@ -228,6 +228,17 @@ CREATE OR REPLACE FUNCTION ReservationConstraints() RETURNS TRIGGER AS $Reservat
     RETURN NEW;
     END;
 $ReservationConstraints$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION ReservationConstraints() RETURNS TRIGGER AS $ReservationConstraints$
+    DECLARE
+
+    BEGIN
+
+    RETURN NEW;
+    END;
+$ReservationConstraints$ LANGUAGE plpgsql;
+
+
 
 CREATE TRIGGER ReservationConstraintsTrigger
 BEFORE INSERT ON Reservation
