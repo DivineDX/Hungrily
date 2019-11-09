@@ -234,7 +234,8 @@ const getmostloyal = (req, res, db) => {
                 numBookings: x.thisres,
                 percentBookings:x.percent 
             }))
-            res.status(200).json(ans)
+            console.log("hi")
+            res.status(200).json(ans[0])
         }
         else {
             res.status(400).json('Unable to Retrieve')
@@ -242,6 +243,7 @@ const getmostloyal = (req, res, db) => {
 
 
     }).catch(err => {
+        console.log(err)
         res.status(400).json('Unable to Retrieve')});
     //res.status(200).json(ReservationsData.data1);
 }
