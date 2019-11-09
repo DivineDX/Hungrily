@@ -12,7 +12,7 @@ const RestaurantDisplayBulletin = ({ loading, resDisplay, visibleItemsNum, total
                 {resDisplay.slice(0, visibleItemsNum).map((data) => {
                     return <RestaurantCard
                         data={data}
-                        key={data.Name} />
+                        key={data.name + data.area} />
                 })}
             </div>
 

@@ -52,6 +52,7 @@ class FOwnerRes extends Component {
                             activeIndex={activeIndex}
                             handleClick={this.handleClick.bind(this)}
                             reservData={restaurant}
+                            key={restaurant.resUrl}
                         />
                     })
                 }

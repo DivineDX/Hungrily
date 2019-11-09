@@ -7,16 +7,16 @@ const initialState = {
 
 const loginCustomerState = {
 	isSignedIn: true,
-	userID: 'DanetteKester65',
-	name: 'Danette Kester',
+	userID: 'ArianaBlizzard0',
+	name: 'Ariana Blizzard',
 	isFranchiseOwner: false,
 	points: 500
 }
 
 const loginFranchiseState = {
 	isSignedIn: true,
-	userID: 'BlizzardSoul-foodaccount',
-	name: 'Blizzard Soul-food',
+	userID: 'AdahJunk-foodaccount',
+	name: 'Adah Junk-food',
 	isFranchiseOwner: true,
 }
 

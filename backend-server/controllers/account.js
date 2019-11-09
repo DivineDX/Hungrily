@@ -19,7 +19,6 @@ const registerCustomer = (req, res, db) => {
             return
         }
         hashedPw = hash;
-        //console.log("pw hashed!" + hashedPw);
         const sql =
         `
         INSERT INTO Account
@@ -31,7 +30,6 @@ const registerCustomer = (req, res, db) => {
             .then(c => {
                 res.status(200).json(userID);
             }).catch(err =>  {
-                //console.log(err)
                 if (err.code == UNIQUE_ERROR_CODE){
                     res.status(400).json('Username Already Taken')
                 }
@@ -47,7 +45,6 @@ const registerCustomer = (req, res, db) => {
  * Logins a user into the WebApp. Works for both Customer and FranchiseOwner.
  * Return res.json(400) if invalid credentials
  */
-//Stub Function
 const loginUser = (req, res, db) => {
     const {userID, password} = req.body;
     const sql =
@@ -71,8 +68,6 @@ const loginUser = (req, res, db) => {
                 res.status(400).json('Hashing Err')
                 return
             }
-            // res is boolean
-            //console.log('res');
             if (isCorrect) {
                 res.status(200).json({
                     userID: userID,

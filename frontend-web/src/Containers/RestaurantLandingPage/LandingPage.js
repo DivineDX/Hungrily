@@ -62,7 +62,6 @@ class LandingPage extends Component {
         })
             .then(resp => resp.json())
             .then(data => {
-                console.log(data)
                 if (data === 'Unable to Retrieve') {
                     this.setState({ noLoyalCustomer: true });
                 } else {

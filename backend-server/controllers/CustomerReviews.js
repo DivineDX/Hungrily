@@ -23,20 +23,6 @@ const viewResReviews = (req, res, db) => {
             Rating: x.rating
         })));
     }).catch(err => res.status(400).json('Unable to Retrieve'));
-    // res.status(200).json([
-    //     {
-    //         Reviewer: "John Doe", //Customer.name
-    //         Rating: 5, //max 5
-    //     },
-    //     {
-    //         Reviewer: "Jane Doe", //Customer.name
-    //         Rating: 3, //max 5
-    //     },
-    //     {
-    //         Reviewer: "James Bond", //Customer.name
-    //         Rating: 2, //max 5
-    //     },
-    // ])
 }
 
 /**
@@ -58,11 +44,9 @@ const postRating = (req, res, db) => {
     AND Reservation.tablenum ='${table}'
     AND Reservation.datetime ='${dateTime}'
     `
-    //console.log(req.body)
     db.raw(sql)
     .timeout(1000)
     .then(result => {
-        //console.log(result)
         res.status(200).json('Success')
     }).catch(err => {
         console.log(err)

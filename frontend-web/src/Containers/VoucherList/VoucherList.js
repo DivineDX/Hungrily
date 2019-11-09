@@ -75,6 +75,7 @@ class Voucherlist extends Component {
                 <div id='voucherGrid'>
                     {this.state.vouchers.map((data) => {
                         return <VoucherCard
+                            key={data.voucherName}
                             data={data}
                             userID={this.props.userID}
                             refresh={this.refreshPage.bind(this)}

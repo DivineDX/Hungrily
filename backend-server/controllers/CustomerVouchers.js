@@ -129,11 +129,9 @@ const buyVoucher = (req, res, db) => {
         console.log(err);
         db.raw(`ROLLBACK;`).timeout(1000)
         .then(rollback => {
-            // console.log("rollback sucess");
             res.status(400).json('Failed');
         }).catch(
             rollbackerr => {
-                // console.log(rollbackerr);
                 res.status(400).json('Failed');
             }
         )
