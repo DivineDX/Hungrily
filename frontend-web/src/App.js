@@ -20,7 +20,7 @@ import ProtectedCustomerRoute from './Common/ProtectedCustomerRoute';
 class App extends Component {
 	constructor() {
 		super();
-		this.state = LoginState.customer;
+		this.state = LoginState.franchiseOwner;
 	}
 
 	//for Customers
