@@ -63,13 +63,13 @@ const restaurantSpecialOperatingHours = (req, res, db) => {
     const sql = 
     `SELECT 
     CASE 
-    WHEN Special_operating_hrs.day_of_week = 0 THEN 'Monday' 
-    WHEN Special_operating_hrs.day_of_week = 1 THEN 'Tuesday'
-    WHEN Special_operating_hrs.day_of_week = 2 THEN 'Wednesday'
-    WHEN Special_operating_hrs.day_of_week = 3 THEN 'Thursday'
-    WHEN Special_operating_hrs.day_of_week = 4 THEN 'Friday'
-    WHEN Special_operating_hrs.day_of_week = 5 THEN 'Saturday'
-    WHEN Special_operating_hrs.day_of_week = 6 THEN 'Sunday'
+    WHEN Special_operating_hrs.day_of_week = 0 THEN 'Sunday' 
+    WHEN Special_operating_hrs.day_of_week = 1 THEN 'Monday'
+    WHEN Special_operating_hrs.day_of_week = 2 THEN 'Tuesday'
+    WHEN Special_operating_hrs.day_of_week = 3 THEN 'Wednesday'
+    WHEN Special_operating_hrs.day_of_week = 4 THEN 'Thursday'
+    WHEN Special_operating_hrs.day_of_week = 5 THEN 'Friday'
+    WHEN Special_operating_hrs.day_of_week = 6 THEN 'Saturday'
     ELSE NULL END
     AS DAY
     , Special_operating_hrs.opening_hours AS open, Special_operating_hrs.closing_hours AS CLOSE
