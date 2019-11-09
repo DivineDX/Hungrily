@@ -28,6 +28,8 @@ app.get('/restaurant/:name', (req, res) => retrieve.getRestaurant(req, res, db))
 app.get('/restaurantSpecialHrs/:name', (req, res) => retrieve.getRestaurantSpecialOpHrs(req, res, db));
 app.get('/restaurantmenu/:name', (req, res) => retrieve.getRestaurantMenu(req, res, db));
 app.post('/search', (req, res) => retrieve.findRestaurant(req, res, db));
+app.post('/compatible', (req, res) => retrieve.getCompatibleRestaurants(req, res, db));
+
 
 //Account Registration and Login
 app.post('/register', (req, res) => account.registerCustomer(req, res, db));

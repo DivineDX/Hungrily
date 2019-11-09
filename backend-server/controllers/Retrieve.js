@@ -266,6 +266,81 @@ const getAllRestaurants = (req, res, db) => {
         res.status(400).json('Unable to Retrieve')});
 }
 
+const getCompatibleRestaurants = (req, res, db) => {
+    const {userid} = req.body
+    const sql =
+    `
+    With  X (cuisine,num) AS (
+        SELECT Food.cuisine, count(DISTINCT Reservation.Location) as num
+        FROM Reservation
+        INNER JOIN
+        Food
+        ON Food.Location =  Reservation.Location
+        AND Food.UserID  = Reservation.Restaurant_UserID
+        WHERE Reservation.customer_userid = '${userid}'
+        GROUP BY
+        Food.cuisine
+        ORDER BY
+        num DESC
+    ),
+    Y (Store_Name,Location,UserID,Capacity,Area,Opening_hours,Closing_hours,url,cuisine,num ) AS (
+        SELECT DISTINCT r.Store_Name,r.Location,r.UserID,r.Capacity,r.Area,r.Opening_hours,r.Closing_hours,r.url,f.cuisine,num  --string_agg(DISTINCT Food.cuisine, ',') , sum(DISTINCT num)
+        FROM
+        Food as f 
+        INNER JOIN 
+        X as X
+        ON X.cuisine = f.cuisine
+        INNER JOIN 
+        restaurant as r
+        ON f.location = r.location
+        and 
+        f.UserID = r.userID
+        ORDER BY
+        r.location
+    )
+    SELECT Store_Name,Location,UserID,Capacity,Area,Opening_hours,Closing_hours,url,string_agg( y.cuisine, ',') as cuisine , sum( num) as matchrate,
+    (
+    SELECT ROUND(CAST(AVG(Food.Price) as numeric), 2) AS p
+    FROM Food
+    WHERE Food.Location = Y.Location
+    AND Food.UserID = Y.UserID
+    ) AS price,
+    (
+    SELECT ROUND(CAST(AVG(Reservation.Rating) as numeric), 2) AS r
+    FROM Reservation
+    WHERE Reservation.Location = y.Location
+    AND Reservation.Restaurant_UserID = y.UserID
+    AND Reservation.Rating IS NOT NULL
+    ) AS rating
+    FROM
+    Y
+    GROUP BY
+    Store_Name,Location,UserID,Capacity,Area,Opening_hours,Closing_hours,url,price,rating
+    ORDER BY
+    matchrate DESC,
+    location ASC
+    `
+    db.raw(sql).timeout(1000)
+    .then(restaurants => {
+        //console.log(restaurants.rows)
+        res.status(200).json(restaurants.rows.map(x=>(
+            {
+                name:x.store_name,
+                area:x.area,
+                cuisine:x.cuisine + " in common",
+                openingHours:x.opening_hours,
+                closingHours:x.closing_hours,
+                price:'~$'+x.price,
+                url:x.url,
+                ratings:x.rating == null ? 'Unrated' : x.rating 
+            }
+        )))
+    }).catch(err =>  {
+        console.log(err)
+        res.status(400).json('Unable to Retrieve')});
+}
+
+
 module.exports = {
     getRestaurant: getRestaurant,
     getRestaurantMenu: getRestaurantMenu,
@@ -274,7 +349,8 @@ module.exports = {
     getAllCuisines: getAllCuisines, 
     getAllAreas: getAllAreas,
     getAllFranchise: getAllFranchise,
-    getAllRestaurants:getAllRestaurants
+    getAllRestaurants:getAllRestaurants,
+    getCompatibleRestaurants:getCompatibleRestaurants
 }
 
 //
@@ -311,9 +387,4 @@ Group by
 id,location
 ORDER BY
 matchrate DESC
-
-
-
-
-
 `

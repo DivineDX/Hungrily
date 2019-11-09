@@ -17,7 +17,13 @@ class CustomerRestaurantListPage extends Component {
     }
 
     componentDidMount() {
-        fetch(`${url.fetchURL}/resData`)
+        fetch(`${url.fetchURL}/compatible`, {
+            method: 'post',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                userid: this.props.userID
+            })
+        })
             .then(resp => resp.json())
             .then(data => {
                 this.setState({
