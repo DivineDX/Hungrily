@@ -8,6 +8,9 @@ Qiu Tian Hao
 Sean Tan
 
 ## Product Introduction
+__Hungrily__ is a full stack Web Application Milestone Project done by students of the CS2102 Database Systems module at the National University of Singapore. This project demonstrate our learning and progress in deploying a complex database system as part of a web application. The database consists of multiple complex queries, triggers, and a well designed schema that demonstrates our learning outcomes in the module.
+
+__Hungrily__ is a restaurant reservation application that allows diners to book reservations at restaurants, similar to <a href = "https://www.chope.co/">Chope</a>. Restaurants can advertise their availability (e.g., cuisine type, branch locations, opening hours, menu prices, etc) and diners can search for restaurants to book reservations by providing various information (e.g., date and time, cuisine type, number of people, preferred locations, etc) and rate restaurants based on their dining experience. Each reservation booking is confirmed based on various criteria (e.g., booking time, availability, number of diners, etc). Diners could cancel and make edits to their reservations. __Hungrily__ provides for various incentives through the use of points given after reviews to attract and maintain customer loyalty.
 
 ## Tech Stack
 * ReactJS
@@ -37,9 +40,9 @@ npm start or yarn start
 npm install or yarn install
 ```
 
-5. Ensure that you have PostgreSQL installed.
+5. Change your directory to ./DBConfig. Run psql < HungrilyPSQLUserCreation on the Terminal. This creates the superuser that will have access to the database
 
-6. Restore the PostgreSQL database 
+6. Run psql < Hungrilydb.sql. This initializes the database schema and inserts the large datasets.
 
 7. Start the backend server 
 ```sh

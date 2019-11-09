@@ -1,1 +1,0 @@
-Run the sql once to set up the local DB for use with the project
