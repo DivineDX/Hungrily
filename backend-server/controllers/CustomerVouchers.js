@@ -1,16 +1,18 @@
+/**
+ * POST: Gets the user current points available for spending
+ */
 const getPoints = (req, res, db) => {
     const { userID } = req.body;
-    // console.log(userID)
     const sql =
-        `
+    `
     SELECT Customer.points
     FROM Customer 
     WHERE Customer.userid = '${userID}'
     LIMIT 1
     `
-    db.raw(sql).timeout(1000)
+
+    db.raw(sql).timeout(3000)
         .then(resp => {
-            // console.log(resp)
             const customerPoints = resp.rows[0].points;
             
             if (isNaN(customerPoints)) {
@@ -20,7 +22,6 @@ const getPoints = (req, res, db) => {
             }
         }).catch(err => {console.log(err);res.status(400).json('Unable to Retrieve')});
 }
-
 
 /**
  * POST: Return a list of all vouchers, together with a boolean that indicates whether the Customer can buy
@@ -41,6 +42,7 @@ const voucherList = (req, res, db) => {
         WHERE
         Customer_voucher.Voucher_code = Possible_voucher.Voucher_code
         AND Customer_voucher.userid = '${userID}'
+        AND Customer_voucher.is_used = false
     ) AS owned,
     EXISTS (
         SELECT * 
@@ -52,10 +54,10 @@ const voucherList = (req, res, db) => {
     ) AS canBuy
     FROM Possible_voucher 
     `
-    db.raw(sql).timeout(1000)
+
+    db.raw(sql).timeout(3000)
         .then(resp => {
-            const customerVouchers = resp.rows.map(x=>(
-                {
+            const customerVouchers = resp.rows.map(x=>({
                     //name, cuisine, type and price
                     voucherName:x.voucher_code,
                     cost:x.cost,
@@ -66,34 +68,12 @@ const voucherList = (req, res, db) => {
                 }));
             res.status(200).json(customerVouchers);
         }).catch(err => {console.log(err);res.status(400).json('Unable to Retrieve')});
-    // res.status(200).json([
-    //     {
-    //         voucherName: "HungriLOR",
-    //         cost: 7, //points
-    //         discount: 10, //percentage
-    //         description: "Ready to be back for more!",
-    //         owned: 2,
-    //         canBuy: true
-    //     },
-    //     {
-    //         voucherName: "HungriSIA",
-    //         cost: 10, //points
-    //         discount: 20, //percentage
-    //         description: "Specially for those with a bottomless appetite",
-    //         owned: 3,
-    //         canBuy: false
-    //     },
-    //     {
-    //         voucherName: "HungriLEH",
-    //         cost: 15, //points
-    //         discount: 30, //percentage
-    //         description: "For our most loyal and always perma-hungri users!",
-    //         owned: 0,
-    //         available: false
-    //     }
-    // ])
 }
 
+/**
+ * POST: List of Vouchers that the Customer can use during Reservation Booking, based on its 
+ * current owned list
+ */
 const voucherUseList = (req, res, db) => {
     const {userID} = req.body;
     const sql = 
@@ -114,6 +94,7 @@ const voucherUseList = (req, res, db) => {
         res.status(400).json('Unable to Retrieve')
     });
 }
+
 /**
  * POST: Customer spends points to buy a voucher that he can spend/apply 
  * Inserts tuple into the "CustomerVouchers" table, Updates (Deducts) Points of Customers.
@@ -160,12 +141,41 @@ const buyVoucher = (req, res, db) => {
 }
 
 /**
- * PUT: Customer applies the voucher code on a reservation at checkout
+ * PUT: Customer applies the voucher code on a reservation during bookean
  * Updates boolean isUsed of Voucher in CustomerVouchers table to true
  */
 const useVoucher = (req, res, db) => {
-    const { userID, voucherID } = req.body
-    res.status(200).json('Success');
+    const { userID, voucherCode } = req.body
+    const sql = 
+    `
+    WITH cte AS (
+        SELECT * 
+        FROM Customer_voucher
+        WHERE userid = '${userID}' 
+        AND voucher_code = '${voucherCode}'
+        AND is_used = FALSE
+        LIMIT 1
+        )
+    
+    UPDATE Customer_voucher
+    SET is_used = TRUE
+    FROM cte
+    WHERE cte.serialnum = Customer_voucher.serialnum
+    RETURNING Customer_voucher.voucher_code, Customer_voucher.userid, Customer_voucher.is_used
+    `;
+
+    db.raw(sql).timeout(2000)
+    .then(resp => {
+        const voucherObj = resp.rows[0];
+        if(voucherObj.is_used && voucherObj.voucher_code == voucherCode && voucherObj.userid == userID) {
+            res.status(200).json('success');
+        } else {
+            res.status(400).json('fail');
+        }
+    }).catch(err => {
+        console.log(err);
+        res.status(400).json('fail')
+    });
 }
 
 module.exports = {
