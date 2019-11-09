@@ -26,7 +26,7 @@ const registerCustomer = (req, res, db) => {
         INSERT INTO Customer
         VALUES ('${userID}','${name}',0);
         `
-        db.raw(sql).timeout(1000)
+        db.raw(sql).timeout(5000)
             .then(c => {
                 res.status(200).json(userID);
             }).catch(err =>  {
@@ -56,7 +56,7 @@ const loginUser = (req, res, db) => {
     ON Account.UserID = FranchiseOwner.UserID
     WHERE Account.UserID = '${userID}'
     `
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
     .then(x=>{
         if (x.rowCount <= 0){
             res.status(400).json("No such user")

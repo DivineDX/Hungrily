@@ -16,7 +16,7 @@ const viewResReviews = (req, res, db) => {
     AND Reservation.location ='${location}'
     `
     db.raw(sql)
-    .timeout(1000)
+    .timeout(5000)
     .then(result => {
         res.status(200).json(result.rows.map(x => ({ //should rename some tables for easier reference
             Reviewer: x.reviewer, 
@@ -45,7 +45,7 @@ const postRating = (req, res, db) => {
     AND Reservation.datetime ='${dateTime}'
     `
     db.raw(sql)
-    .timeout(1000)
+    .timeout(5000)
     .then(result => {
         res.status(200).json('Success')
     }).catch(err => {

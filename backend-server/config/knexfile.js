@@ -23,9 +23,8 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      database: 'hungrilydb',
-      user:     'hungrilyapp',
-      password: '12345'
+      connectionString: process.env.DATABASE_URL,
+      ssl: true
     }
   }
 

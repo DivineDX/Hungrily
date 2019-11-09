@@ -39,7 +39,7 @@ const ownedRestaurants = (req, res, db) => {
             GROUP BY Restaurant.UserID,Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours, FranchiseOwner.FNAME, Restaurant.url
             `
     db.raw(sql)
-        .timeout(1000)
+        .timeout(5000)
         .then(result => {
             res.status(200).json(result.rows.map(x => ({ //should rename some tables for easier reference
                 name: x.store_name,
@@ -82,7 +82,7 @@ const viewAllReservations = (req, res, db) => {
     `
 
     db.raw(sql)
-    .timeout(1000)
+    .timeout(5000)
     .then(result => {
         dict = {}
         const a = result.rows.map(x =>{
@@ -136,7 +136,7 @@ const viewRestaurantReservations = (req, res, db) => {
     AND Reservation.location = '${location}'
     `
     db.raw(sql)
-    .timeout(1000)
+    .timeout(5000)
     .then(result => {
         res.status(200).json(result.rows.map(x => ({ //should rename some tables for easier reference
                 userID: x.customer_userid, 
@@ -204,7 +204,7 @@ const getmostloyal = (req, res, db) => {
     LIMIT 1
     `
     db.raw(getloyal)
-    .timeout(1000)
+    .timeout(5000)
     .then(result => {
         if (result.rows.length > 0 ){
             const ans = result.rows.map(x => ({ //should rename some tables for easier reference

@@ -29,7 +29,7 @@ const getRestaurant = (req, res, db) => {
             GROUP BY Restaurant.UserID,Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours, FranchiseOwner.FNAME, Restaurant.url,FranchiseOwner.userid
             LIMIT 1
             `)
-            .timeout(1000).then(
+            .timeout(5000).then(
             result => {
                 const restaurantRows = result.rows.map(x=>(
                     {
@@ -80,7 +80,7 @@ const restaurantSpecialOperatingHours = (req, res, db) => {
     ORDER BY Special_operating_hrs.day_of_week;
     `;
 
-    db.raw(sql).timeout(3000)
+    db.raw(sql).timeout(5000)
         .then(result => {
             res.status(200).json(result.rows);
         }).catch(err => {
@@ -102,7 +102,7 @@ const getRestaurantMenu = (req, res, db) => {
             ON FranchiseOwner.UserID = Restaurant.UserID
             WHERE restaurant.url = '${req.params.name}'
             `)
-            .timeout(1000).then(
+            .timeout(5000).then(
             result => {
                 const restaurantRows = result.rows.map(x=>(
                     {
@@ -154,7 +154,7 @@ const findRestaurants = (req, res, db) => {
             AND Cuisine LIKE '%${cuisine}%'
             GROUP BY Restaurant.UserID,Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours, FranchiseOwner.FNAME, Restaurant.url
             `)
-            .timeout(1000).then(
+            .timeout(5000).then(
             result => {
                 res.status(200).json(result.rows.map(x=>(
                     {
@@ -179,7 +179,7 @@ const getAllCuisines = (req, res, db) => {
     ORDER BY
     cuisine
     `
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
         .then(cuisine => {
             res.status(200).json(cuisine.rows.map(x=>x.cuisine));
         }).catch(err =>  res.status(400).json('Unable to Retrieve'));
@@ -193,7 +193,7 @@ const getAllAreas = (req, res, db) => {
     ORDER BY
     Area
     `
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
         .then(area => {
             res.status(200).json(area.rows.map(x => x.area));
         }).catch(err =>  res.status(400).json('Unable to Retrieve'));
@@ -207,7 +207,7 @@ const getAllFranchise = (req, res, db) => {
     ORDER BY
     FNAME
     `
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
         .then(franchisor => {
             res.status(200).json(franchisor.rows.map(x=>x.fname));
         }).catch(err =>  res.status(400).json('Unable to Retrieve'));
@@ -245,7 +245,7 @@ const getAllRestaurants = (req, res, db) => {
     ON FranchiseOwner.UserID = Restaurant.UserID
     GROUP BY Restaurant.UserID,Restaurant.Store_Name, Restaurant.Location, Restaurant.Capacity, Restaurant.Area, Restaurant.Opening_hours, Restaurant.Closing_hours, FranchiseOwner.FNAME, Restaurant.url
     `
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
     .then(restaurants => {
         res.status(200).json(restaurants.rows.map(x=>(
             {
@@ -318,7 +318,7 @@ const getCompatibleRestaurants = (req, res, db) => {
     matchrate DESC,
     location ASC
     `
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
     .then(restaurants => {
         res.status(200).json(restaurants.rows.map(x=>(
             {

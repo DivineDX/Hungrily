@@ -1,5 +1,6 @@
 const url = {
-    fetchURL: 'http://localhost:3001', //for local hosting
+    fetchURL: 'https://hungrily-server.herokuapp.com/', //for local hosting
+    // fetchURL: 'http://localhost:3001', //heroku deployment
 }
 
 export default url;

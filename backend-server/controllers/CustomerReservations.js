@@ -16,7 +16,7 @@ const checkAvailability = (req, res, db) => {
     ('${userID}',NULL,'${location}','${franchisorId}',${pax},'${dateTime}',NULL)
     `
     
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
     .then(results => {
         res.status(200).json('available');
     }).catch(err => { 
@@ -69,7 +69,7 @@ const checkAvailability = (req, res, db) => {
     ('${userID}',NULL,'${location}','${franchisorId}',${pax},'${dateTime}',NULL);
     COMMIT;
      `
-    db.raw(deleteandadd).timeout(1000)
+    db.raw(deleteandadd).timeout(5000)
     .then(results => {
         res.status(200).json('available');
     }).catch(err => { 
@@ -92,7 +92,7 @@ const checkAvailability = (req, res, db) => {
                 errtype = err
                 break;
         }
-        db.raw(`ROLLBACK;`).timeout(1000)
+        db.raw(`ROLLBACK;`).timeout(5000)
         .then(rollback => {
             res.status(400).json(errtype);
         }).catch(
@@ -133,7 +133,7 @@ const cancelReservation = (req, res, db) => {
     AND Reservation.TableNum = '${table}'
     `
 
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
     .then(results => {
         res.status(200).json('Success'); //success if successfully cancelled
     }).catch(err => { console.log(err);res.status(400).json('Unable to Retrieve')});
@@ -168,7 +168,7 @@ const seeCustomerReservations = (req, res, db) => {
     Reservation.dateTime
     `
     //(Customer_UserID, Restaurant_UserID, TableNum, Location, DateTime),
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
     .then(restaurants => {
         res.status(200).json(restaurants.rows.map(x=>(
             {

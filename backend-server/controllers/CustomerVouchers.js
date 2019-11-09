@@ -11,7 +11,7 @@ const getPoints = (req, res, db) => {
     LIMIT 1
     `
 
-    db.raw(sql).timeout(3000)
+    db.raw(sql).timeout(5000)
         .then(resp => {
             const customerPoints = resp.rows[0].points;
             
@@ -55,7 +55,7 @@ const voucherList = (req, res, db) => {
     FROM Possible_voucher 
     `
 
-    db.raw(sql).timeout(3000)
+    db.raw(sql).timeout(5000)
         .then(resp => {
             const customerVouchers = resp.rows.map(x=>({
                     //name, cuisine, type and price
@@ -86,7 +86,7 @@ const voucherUseList = (req, res, db) => {
     Customer_voucher.is_used = FALSE
     GROUP BY Customer_voucher.Voucher_code
     `
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
     .then(resp => {
         res.status(200).json(resp.rows);
     }).catch(err => {
@@ -122,12 +122,12 @@ const buyVoucher = (req, res, db) => {
     WHERE Customer.UserID = '${userID}';
     COMMIT;
      `
-    db.raw(sql).timeout(1000)
+    db.raw(sql).timeout(5000)
     .then(resp => {
         res.status(200).json('success');
     }).catch(err => {
         console.log(err);
-        db.raw(`ROLLBACK;`).timeout(1000)
+        db.raw(`ROLLBACK;`).timeout(5000)
         .then(rollback => {
             res.status(400).json('Failed');
         }).catch(
@@ -162,7 +162,7 @@ const useVoucher = (req, res, db) => {
     RETURNING Customer_voucher.voucher_code, Customer_voucher.userid, Customer_voucher.is_used
     `;
 
-    db.raw(sql).timeout(2000)
+    db.raw(sql).timeout(5000)
     .then(resp => {
         const voucherObj = resp.rows[0];
         if(voucherObj.is_used && voucherObj.voucher_code == voucherCode && voucherObj.userid == userID) {
