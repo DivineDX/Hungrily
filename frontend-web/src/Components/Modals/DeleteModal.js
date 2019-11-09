@@ -39,7 +39,6 @@ class DeleteModal extends Component {
 
     onClose = () => {
         this.setState({clicked: false});
-        this.props.fetchReservations();
     }
 
     render() {
@@ -66,7 +65,3 @@ class DeleteModal extends Component {
 }
 
 export default DeleteModal;
-
-
-
-

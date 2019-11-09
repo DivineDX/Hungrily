@@ -100,6 +100,7 @@ class LandingPage extends Component {
                                 resUrl={this.state.resData.resUrl}
                                 location={this.state.resData.location}
                                 franchisorId={this.state.resData.userid} //of franchisor
+                                isEditing = {false}
                             />
                         </div>
                     }

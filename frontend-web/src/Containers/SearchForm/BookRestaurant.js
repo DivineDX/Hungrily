@@ -85,7 +85,7 @@ class BookRestaurant extends React.Component {
     }
 
     render() {
-        const { userID, resUrl, franchisorId, location } = this.props;
+        const { userID, resUrl, franchisorId, location, isEditing } = this.props;
 
         return (
             <Formik
@@ -96,9 +96,13 @@ class BookRestaurant extends React.Component {
                 }}
 
                 onSubmit={(values) => {
+                    let urlToUse;
+                    isEditing
+                        ? urlToUse = 'editResv'
+                        : urlToUse = 'resvAvailability'
                     this.setState({ loading: true });
                     console.log(this.state);
-                    fetch(`${url.fetchURL}/resvAvailability`, {
+                    fetch(`${url.fetchURL}/${urlToUse}`, {
                         method: 'post',
                         headers: { 'Content-type': 'application/json' },
                         body: JSON.stringify({
