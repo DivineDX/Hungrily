@@ -5,6 +5,7 @@ import './LandingPage.css';
 import BookRestaurant from '../SearchForm/BookRestaurant';
 import food from '../../Images/food.jpg'
 import RestaurantDetailBox from './RestaurantDetailBox';
+import LoyalCustomerCard from '../../Components/Cards/LoyalCustomerCard';
 
 class LandingPage extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class LandingPage extends Component {
         this.state = {
             notFound: true,
             name: '',
+            loyalCustomerData: {},
             resData: {}, //Array of objs, Select * from Restaurants
             menuData: [],
             specialOpHrs: [],
@@ -48,6 +50,21 @@ class LandingPage extends Component {
                 this.setState({ specialOpHrs: data });
             }
         });
+
+        
+        fetch(`${url.fetchURL}/mostLoyalCustomer`, {
+            method: 'post',
+            headers: { 'Content-type': 'application/json' },
+        })
+            .then(resp => resp.json())
+            .then(data => {
+                if (data === 'Unable to Retrieve') {
+                } else {
+                    this.setState({ loyalCustomerData: data });
+                }
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
     render() {
@@ -68,7 +85,7 @@ class LandingPage extends Component {
                         alt="Error" />
 
                     <div className="pv3">
-                        <h1 className='f2 pageText relative'> {this.state.resData.store_name} </h1>
+                        <h1 className='f2 pageText relative tc'> {this.state.resData.store_name} </h1>
                     </div>
 
                     {(!isFranchiseOwner && isSignedIn) &&
@@ -81,6 +98,7 @@ class LandingPage extends Component {
                             />
                         </div>
                     }
+
                     <RestaurantDetailBox
                         userID={userID}
                         resData={this.state.resData}
@@ -88,6 +106,15 @@ class LandingPage extends Component {
                         specialOpHrs={this.state.specialOpHrs}
                         className = 'restaurantDetails'
                         />
+
+                    {(isFranchiseOwner && isSignedIn) &&
+                        <div>
+                            <h1 className='b f3 tc mt5 loyalCText'> Most Loyal Customer </h1>
+                            <LoyalCustomerCard
+                                loyalCustomerData = {this.state.loyalCustomerData}  
+                            />
+                        </div>
+                    }          
                 </article>
             );
         }

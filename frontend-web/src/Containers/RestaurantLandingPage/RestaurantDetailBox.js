@@ -8,7 +8,7 @@ const RestaurantDetailBox = (props) => {
 
     return (
         <div id='resDetailsBox' className='relative flex flex-row justify-center mt4 mb4'>
-            <div className='flex flex-column pr6 detailBoxColumn'>
+            <div className='flex flex-column pr3 detailBoxColumn'>
                 <div className='containerText fl'>
                     <h3 className='b f3'> Cuisine </h3>
                     <p className=''> {cuisine} </p>
@@ -54,10 +54,7 @@ const RestaurantDetailBox = (props) => {
                                 })
                             } </div>
                     }
-
-
                 </div>
-
             </div>
         </div>
     );
