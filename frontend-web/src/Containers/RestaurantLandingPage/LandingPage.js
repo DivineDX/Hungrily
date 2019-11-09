@@ -55,6 +55,9 @@ class LandingPage extends Component {
         fetch(`${url.fetchURL}/mostLoyalCustomer`, {
             method: 'post',
             headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                name: name
+            })
         })
             .then(resp => resp.json())
             .then(data => {

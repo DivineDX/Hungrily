@@ -39,6 +39,7 @@ app.post('/login', (req, res) => account.loginUser(req, res, db));
 app.post('/ownedRestaurants', (req, res) => franchiseOwner.ownedRestaurants(req, res, db));
 app.post('/viewAllReservations', (req, res) => franchiseOwner.viewAllReservations(req, res, db));
 app.post('/viewRestaurantReservations', (req, res) => franchiseOwner.viewRestaurantReservations(req, res, db));
+app.post('/mostLoyalCustomer', (req, res) => franchiseOwner.getmostloyal(req, res, db));
 
 //Customer Reservations
 app.post('/resvAvailability', (req, res) => customerReservations.checkAvailability(req, res, db));
