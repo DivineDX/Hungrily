@@ -57,6 +57,39 @@ const getRestaurant = (req, res, db) => {
 }
 
 /**
+ * Returns an array that contains all the special operating hours of a specific restaurant
+ */
+const restaurantSpecialOperatingHours = (req, res, db) => {
+    const sql = 
+    `SELECT 
+    CASE 
+    WHEN Special_operating_hrs.day_of_week = 0 THEN 'Monday' 
+    WHEN Special_operating_hrs.day_of_week = 1 THEN 'Tuesday'
+    WHEN Special_operating_hrs.day_of_week = 2 THEN 'Wednesday'
+    WHEN Special_operating_hrs.day_of_week = 3 THEN 'Thursday'
+    WHEN Special_operating_hrs.day_of_week = 4 THEN 'Friday'
+    WHEN Special_operating_hrs.day_of_week = 5 THEN 'Saturday'
+    WHEN Special_operating_hrs.day_of_week = 6 THEN 'Sunday'
+    ELSE NULL END
+    AS DAY
+    , Special_operating_hrs.opening_hours AS open, Special_operating_hrs.closing_hours AS CLOSE
+    FROM Special_operating_hrs 
+    JOIN Restaurant
+    ON Special_operating_hrs.userid = Restaurant.userid
+    AND Special_operating_hrs.location = Restaurant.location
+    WHERE restaurant.url = '${req.params.name}'
+    ORDER BY Special_operating_hrs.day_of_week;
+    `;
+
+    db.raw(sql).timeout(100)
+        .then(result => {
+            res.status(200).json(result.rows);
+        }).catch(err => {
+            res.status(400).json(err);  
+        })
+    
+}
+/**
  * GET: Similar to the getRestaurant query above, but now returns the menu (all food items) of that specific restaurant
  * Returns an array of objects with keys name, cuisine, type and price
  */
@@ -219,6 +252,7 @@ const getAllRestaurants = (req, res, db) => {
 module.exports = {
     getRestaurant: getRestaurant,
     getRestaurantMenu: getRestaurantMenu,
+    getRestaurantSpecialOpHrs: restaurantSpecialOperatingHours,
     findRestaurant: findRestaurants,
     getAllCuisines: getAllCuisines, 
     getAllAreas: getAllAreas,

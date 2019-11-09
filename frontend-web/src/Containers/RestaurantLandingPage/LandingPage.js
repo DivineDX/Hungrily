@@ -14,6 +14,7 @@ class LandingPage extends Component {
             name: '',
             resData: {}, //Array of objs, Select * from Restaurants
             menuData: [],
+            specialOpHrs: [],
         }
     }
 
@@ -38,6 +39,15 @@ class LandingPage extends Component {
                     this.setState({ menuData: data });
                 }
             });
+
+        fetch(`${url.fetchURL}/restaurantSpecialHrs/${name}`)
+        .then(resp => resp.json())
+        .then(data => {
+            if (data === 'Unable to Retrieve') {
+            } else {
+                this.setState({ specialOpHrs: data });
+            }
+        });
     }
 
     render() {
@@ -74,7 +84,8 @@ class LandingPage extends Component {
                     <RestaurantDetailBox
                         userID={userID}
                         resData={this.state.resData}
-                        menuData={this.state.menuData} 
+                        menuData={this.state.menuData}
+                        specialOpHrs={this.state.specialOpHrs}
                         className = 'restaurantDetails'
                         />
                 </article>
