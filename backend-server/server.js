@@ -49,7 +49,7 @@ app.post('/userPoints', (req, res) => customerVouchers.getPoints(req, res, db));
 app.post('/voucherList', (req, res) => customerVouchers.voucherList(req, res, db));
 app.post('/voucherUseList', (req, res) => customerVouchers.voucherUseList(req, res, db));
 app.post('/buyVoucher', (req, res) => customerVouchers.buyVoucher(req, res, db));
-app.post('/useVoucher', (req, res) => customerVouchers.useVoucher(req, res, db));
+app.put('/useVoucher', (req, res) => customerVouchers.useVoucher(req, res, db));
 
 //Customer Reviews
 app.get('/review/:franchisor/:location', (req, res) => customerReviews.viewResReviews(req, res, db));
