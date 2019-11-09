@@ -41,6 +41,74 @@ const checkAvailability = (req, res, db) => {
     });
 }
 
+
+/**
+ * edit reservations of restaurant in that specific datetime
+ * will return 3 results: 
+ * 1) available: Literal meaning
+ * 2) noSeats: No seats at new timing
+ * 3) noDouble: Customer already has a reservation at another 
+ */ // just use this for book reservations
+ const editReservation = (req, res, db) => {
+    const {userID, location,franchisorId, resUrl, dateTime, pax,oldDateTime,oldTableNumber } = req.body;
+    const deleteandadd = 
+    `
+    BEGIN;
+
+    DELETE FROM Reservation
+    WHERE
+    Reservation.Customer_UserID = '${userID}'
+    AND Reservation.location = '${location}'
+    AND Reservation.Restaurant_UserID = '${franchisorId}'
+    AND Reservation.dateTime = '${oldDateTime}'
+    AND Reservation.tablenum = '${oldTableNumber}';
+
+    INSERT INTO Reservation
+    (Customer_UserID,TableNum,Location,Restaurant_UserID,Pax,DateTime,Rating)
+    VALUES
+    ('${userID}',NULL,'${location}','${franchisorId}',${pax},'${dateTime}',NULL);
+    COMMIT;
+     `
+    db.raw(deleteandadd).timeout(1000)
+    .then(results => {
+        res.status(200).json('available');
+    }).catch(err => { 
+        console.log(err)
+        var errtype = err
+        switch(err.hint) {
+            case "Shop not open Normal":
+                errtype = 'notOpen'
+                break;
+            case "Shop not open Special":
+                errtype = 'notOpen'
+                break;
+            case "no available tables":
+                errtype = 'noSeats'
+                break;
+            case "Doublebooked":
+                errtype = 'noDouble'
+                break;
+            default:
+                errtype = err
+                break;
+        }
+        db.raw(`ROLLBACK;`).timeout(1000)
+        .then(rollback => {
+            // console.log("rollback sucess");
+            res.status(400).json(errtype);
+        }).catch(
+            rollbackerr => {
+                // console.log(rollbackerr);
+                errtype = rollbackerr
+                res.status(400).json(errtype);
+            }
+        )
+    });
+}
+
+
+
+
 /**
  * Books a Reservation. Assumed to have checked availability beforehand
  */
@@ -170,4 +238,5 @@ module.exports = {
     bookReservation: bookReservation,
     cancelReservation: cancelReservation,
     seeCustomerReservations: seeCustomerReservations,
+    editReservation:editReservation
 }

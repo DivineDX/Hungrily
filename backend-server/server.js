@@ -46,7 +46,7 @@ app.post('/resvAvailability', (req, res) => customerReservations.checkAvailabili
 app.post('/bookResv', (req, res) => customerReservations.checkAvailability(req, res, db));
 app.delete('/cancelResv', (req, res) => customerReservations.cancelReservation(req, res, db));
 app.post('/seeMyResv', (req, res) => customerReservations.seeCustomerReservations(req, res, db));
-
+app.post('/editResv', (req, res) => customerReservations.editReservation(req, res, db));
 //Customer Vouchers
 app.post('/userPoints', (req, res) => customerVouchers.getPoints(req, res, db));
 app.post('/voucherList', (req, res) => customerVouchers.voucherList(req, res, db));

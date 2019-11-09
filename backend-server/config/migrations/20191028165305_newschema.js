@@ -362,10 +362,28 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER addpoints
-BEFORE UPDATE ON Reservation
+AFTER UPDATE ON Reservation
     FOR EACH ROW EXECUTE FUNCTION givepoints();
 
 
+
+CREATE OR REPLACE FUNCTION noratings()
+RETURNS TRIGGER AS $$
+DECLARE
+bookingtimeend timestamp with time zone := date_trunc('minute', OLD.datetime) + interval '2 hour';
+BEGIN
+IF
+bookingtimeend > now()
+THEN
+RAISE EXCEPTION 'cannot add' USING HINT = 'OnlyCanRateAfter';
+END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER noratings
+BEFORE UPDATE ON Reservation
+    FOR EACH ROW EXECUTE FUNCTION noratings();
 
 `
 const downSQL =
@@ -398,6 +416,9 @@ DROP FUNCTION IF EXISTS CapacityForRestaurants;
 
 DROP TRIGGER IF EXISTS addpoints on reservation;
 DROP FUNCTION IF EXISTS givepoints;
+
+DROP TRIGGER IF EXISTS noratings on reservation;
+DROP FUNCTION IF EXISTS noratings;
 
 `
 exports.up = function(knex) {
