@@ -127,6 +127,7 @@ class BookRestaurant extends React.Component {
                                     break;
                                 case 'notOpen':
                                     this.setState({notOpen: true})
+                                    break;
                                 default: //some error s
                                     break;
                             }

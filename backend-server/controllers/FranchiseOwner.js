@@ -225,7 +225,7 @@ const getmostloyal = (req, res, db) => {
     db.raw(getloyal)
     .timeout(1000)
     .then(result => {
-        console.log(result.rows[0])
+        console.log(result.rows)
         if (result.rows.length > 0 ){
             const ans = result.rows.map(x => ({ //should rename some tables for easier reference
                 userID: x.customer_userid, 
