@@ -7,7 +7,6 @@
  */ // just use this for book reservations
 const checkAvailability = (req, res, db) => {
     const {userID, location,franchisorId, resUrl, dateTime, pax} = req.body;
-    console.log(req.body)
     const sql =
     `
     INSERT INTO Reservation
@@ -20,8 +19,25 @@ const checkAvailability = (req, res, db) => {
     .then(results => {
         res.status(200).json('available');
     }).catch(err => { 
-        console.log(err)
-        res.status(400).json('err')
+        console.log(err.hint)
+        switch(err.hint) {
+            case "Shop not open Normal":
+                res.status(400).json('notOpen');
+                break;
+            case "Shop not open Special":
+                res.status(400).json('notOpen');
+                break;
+            case "no available tables":
+                res.status(400).json('noSeats');
+                break;
+            case "Doublebooked":
+                res.status(400).json('noDouble');
+                break;
+            default:
+                res.status(400).json(err);
+                break;
+        }
+
     });
 }
 

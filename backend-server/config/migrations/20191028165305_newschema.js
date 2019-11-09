@@ -190,6 +190,13 @@ CREATE OR REPLACE FUNCTION ReservationConstraints() RETURNS TRIGGER AS $Reservat
         WHERE
         NEW.Restaurant_UserID = Restaurant.UserID
         AND NEW.Location = Restaurant.Location
+        AND dayofweek <> ALL (
+            SELECT Special_Operating_Hrs.Day_of_week as dw
+            FROM Special_Operating_Hrs
+            WHERE
+            NEW.Restaurant_UserID = Special_Operating_Hrs.UserID
+            AND NEW.Location = Special_Operating_Hrs.Location
+        )
         AND 
         (
             bookingtimestart < (dateofbooking + Restaurant.Opening_hours)
@@ -283,6 +290,81 @@ ON FranchiseOwner
 FOR EACH ROW 
 EXECUTE FUNCTION User_FranchiseOwner_constraint();
 
+CREATE OR REPLACE FUNCTION CapacityForRestaurants()
+RETURNS TRIGGER AS $$
+DECLARE cap integer:=(
+    SELECT coalesce(SUM(tables.capacity),0)
+    FROM tables
+    WHERE New.UserID = tables.UserID
+    AND NEW.location = tables.location
+);
+BEGIN 
+new.capacity = cap;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION CapacityForTables()
+RETURNS TRIGGER AS $$
+DECLARE cap integer:=(
+    SELECT coalesce(SUM(tables.capacity),0)
+    FROM tables
+    WHERE New.UserID = tables.UserID
+    AND NEW.location= tables.location
+);
+BEGIN
+UPDATE
+Restaurant
+SET capacity = cap
+WHERE
+Restaurant.userid = new.userid
+AND Restaurant.location = new.location;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER tablecap
+AFTER INSERT OR DELETE OR UPDATE
+ON tables
+FOR EACH ROW 
+EXECUTE FUNCTION CapacityForTables();
+
+
+
+CREATE TRIGGER rescap
+AFTER INSERT OR UPDATE 
+ON restaurant
+FOR EACH ROW 
+WHEN(pg_trigger_depth() = 0)
+EXECUTE FUNCTION CapacityForRestaurants();
+
+
+
+CREATE OR REPLACE FUNCTION givepoints()
+RETURNS TRIGGER AS $$
+BEGIN 
+IF OLD.rating IS NULL
+THEN
+UPDATE
+customer
+SET points = points + (
+    SELECT ROUND(CAST(AVG(Food.Price) as numeric)) AS p
+    FROM Food
+    WHERE Food.Location = old.Location
+    AND Food.UserID = old.Restaurant_UserID
+    ) 
+WHERE
+old.customer_userid = customer.userid;
+END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER addpoints
+BEFORE UPDATE ON Reservation
+    FOR EACH ROW EXECUTE FUNCTION givepoints();
+
 
 
 `
@@ -307,6 +389,16 @@ DROP TRIGGER IF EXISTS non_franchiseowner on Customer;
 DROP FUNCTION IF EXISTS User_Customer_constraint;
 DROP TRIGGER IF EXISTS non_customer on FranchiseOwner;
 DROP FUNCTION IF EXISTS User_FranchiseOwner_constraint;
+
+DROP TRIGGER IF EXISTS tablecap on tables;
+DROP FUNCTION IF EXISTS CapacityForTables;
+
+DROP TRIGGER IF EXISTS rescap on restaurant;
+DROP FUNCTION IF EXISTS CapacityForRestaurants;
+
+DROP TRIGGER IF EXISTS addpoints on reservation;
+DROP FUNCTION IF EXISTS givepoints;
+
 `
 exports.up = function(knex) {
     return knex.schema
@@ -406,7 +498,7 @@ VALUES
 ('PeterLoth96',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
 INSERT INTO Reservation
 VALUES
-('RudolphNordin88',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
+('EllaMathieson27',NULL,'35 Paya Lebar Rise #46-516 Singapore083184','DeandreSubsistenceaccount',19,'2019-11-20 14:00:00+08')
 
 
 `

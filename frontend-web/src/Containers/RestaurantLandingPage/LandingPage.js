@@ -12,6 +12,7 @@ class LandingPage extends Component {
         super(props);
         this.state = {
             notFound: true,
+            noLoyalCustomer: false,
             name: '',
             loyalCustomerData: {},
             resData: {}, //Array of objs, Select * from Restaurants
@@ -23,7 +24,7 @@ class LandingPage extends Component {
     componentDidMount() {
         const name = this.props.match.params.name;
         this.setState({ name: name });
-        
+
         fetch(`${url.fetchURL}/restaurant/${name}`)
             .then(resp => resp.json())
             .then(data => {
@@ -43,22 +44,27 @@ class LandingPage extends Component {
             });
 
         fetch(`${url.fetchURL}/restaurantSpecialHrs/${name}`)
-        .then(resp => resp.json())
-        .then(data => {
-            if (data === 'Unable to Retrieve') {
-            } else {
-                this.setState({ specialOpHrs: data });
-            }
-        });
-
-        
-        fetch(`${url.fetchURL}/mostLoyalCustomer`, {
-            method: 'post',
-            headers: { 'Content-type': 'application/json' },
-        })
             .then(resp => resp.json())
             .then(data => {
                 if (data === 'Unable to Retrieve') {
+                } else {
+                    this.setState({ specialOpHrs: data });
+                }
+            });
+
+
+        fetch(`${url.fetchURL}/mostLoyalCustomer`, {
+            method: 'post',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                name: name
+            })
+        })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data)
+                if (data === 'Unable to Retrieve') {
+                    this.setState({ noLoyalCustomer: true });
                 } else {
                     this.setState({ loyalCustomerData: data });
                 }
@@ -68,7 +74,6 @@ class LandingPage extends Component {
     }
 
     render() {
-       
         const { isSignedIn, userID, isFranchiseOwner } = this.props;
         if (this.state.notFound) {
             return (
@@ -93,7 +98,7 @@ class LandingPage extends Component {
                             <BookRestaurant
                                 userID={userID}
                                 resUrl={this.state.resData.resUrl}
-                                location = {this.state.resData.location}
+                                location={this.state.resData.location}
                                 franchisorId={this.state.resData.userid} //of franchisor
                             />
                         </div>
@@ -104,17 +109,19 @@ class LandingPage extends Component {
                         resData={this.state.resData}
                         menuData={this.state.menuData}
                         specialOpHrs={this.state.specialOpHrs}
-                        className = 'restaurantDetails'
-                        />
+                        className='restaurantDetails'
+                    />
 
                     {(isFranchiseOwner && isSignedIn) &&
-                        <div>
-                            <h1 className='b f3 tc mt5 loyalCText'> Most Loyal Customer </h1>
-                            <LoyalCustomerCard
-                                loyalCustomerData = {this.state.loyalCustomerData}  
-                            />
+                        <div className='flex flex-column justify-center items-center mb5'>
+                            <h1 className=''> Most Loyal Customer </h1>
+                            {this.state.noLoyalCustomer
+                                    ? <div className = 'white'>No Data Yet!</div>
+                                    : <LoyalCustomerCard loyalCustomerData={this.state.loyalCustomerData} />
+                            }
+
                         </div>
-                    }          
+                    }
                 </article>
             );
         }
