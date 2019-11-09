@@ -225,7 +225,7 @@ const getmostloyal = (req, res, db) => {
     db.raw(getloyal)
     .timeout(1000)
     .then(result => {
-        console.log(result.rows[0])
+        console.log(result.rows)
         if (result.rows.length > 0 ){
             const ans = result.rows.map(x => ({ //should rename some tables for easier reference
                 userID: x.customer_userid, 
@@ -234,7 +234,8 @@ const getmostloyal = (req, res, db) => {
                 numBookings: x.thisres,
                 percentBookings:x.percent 
             }))
-            res.status(200).json(ans)
+            console.log("hi")
+            res.status(200).json(ans[0])
         }
         else {
             res.status(400).json('Unable to Retrieve')
@@ -242,6 +243,7 @@ const getmostloyal = (req, res, db) => {
 
 
     }).catch(err => {
+        console.log(err)
         res.status(400).json('Unable to Retrieve')});
     //res.status(200).json(ReservationsData.data1);
 }

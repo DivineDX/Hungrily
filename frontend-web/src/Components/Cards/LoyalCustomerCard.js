@@ -2,12 +2,12 @@ import React from 'react';
 import { Icon, Card } from 'semantic-ui-react';
 import './LoyalCustomerCard.css'
 
-const LoyalCustomerCard = (loyalCustomerData) => {
+const LoyalCustomerCard = ({loyalCustomerData}) => {
 
     const { userID, numBookings, percentBookings } = loyalCustomerData;
 
     return (
-        <Card className="ui card" id = 'loyalCustomer'>
+        <Card>
             <Card.Content>
                 <Card.Header className = 'mb2 loyalHeaderText'>
                 Customer UserID: {userID}
