@@ -28,8 +28,10 @@ export default class VoucherCard extends Component {
             .then(data => {
                 if (data === 'success') {
                     this.setState({ buyingLoad: false, buySuccess: true })
+                    this.props.refresh()
                 } else { //not enough points
                     this.setState({ buyingLoad: false, error: true })
+                    this.props.refresh()
                 }
             }).catch(error => {
                 console.log(error);
